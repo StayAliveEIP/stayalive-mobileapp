@@ -24,10 +24,10 @@ Here is the Mobile application repository.<br/> You will find all the source cod
         <a href="#installation">Installation</a>
     </li>    
     <li>
-    <a href="#Commit norm">Commit norm</a>
+    <a href="#commit-norm">Commit norm</a>
     </li>
     <li> 
-    <a href="#Our group">Our group</a>
+    <a href="#our-group">Our group</a>
     </li>
 
 </ol>
