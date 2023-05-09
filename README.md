@@ -95,12 +95,12 @@ When working on something:
 # Our group
 
 | Name            | GitHub                 | Working on |
-| --------------- | ---------------------- | ---------- |
+| --------------- | ---------------------- |------------|
 | Martin LEBLANCS | [MartinLeblancs][GhML] | Mobile APP |
 | Noel VARGA      | [noelvarga25][GhNV]    | Mobile APP |
 | Matthieu QUERU  | [Matthieu33197][GhMQ]  | Web APP    |
-| Bastien CANTET  | [bastosbob][GhBC]      | Web APP    |
-| Florian DAMIOT  | [florianepitech][GhFD] | Web APP    |
+| Bastien CANTET  | [bastosbob][GhBC]      | API        |
+| Florian DAMIOT  | [florianepitech][GhFD] | API        |
 
 [//]: # "These are the links used above"
 [GhML]: https://github.com/MartinLeblancs
