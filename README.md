@@ -14,20 +14,23 @@ Here is the Mobile application repository.<br/> You will find all the source cod
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
-        <li><a href="#our-group">Our group</a></li>
-        <li><a href="#commits-norm">Commits norm</a></li>
+        <li><a href="#built-using">Built Using</a></li>
       </ul>
     </li>
     <li>
-      <ul>
-        <li><a href="#documentation">Documentation</a></li>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
+        <a href="#prerequisites">Prerequisites</a>
     </li>
-    <li><a href="#usage">Usage</a></li>
-  </ol>
+    <li>
+        <a href="#installation">Installation</a>
+    </li>    
+    <li>
+    <a href="#Commit norm">Commit norm</a>
+    </li>
+    <li> 
+    <a href="#Our group">Our group</a>
+    </li>
+
+</ol>
 </details>
 
 # About The Project
@@ -43,66 +46,67 @@ StayAlive is a mobile application that allows emergency services such as SAMU to
 
 ### Built using:
 
-* [React-Native](https://reactnative.dev)
-
-# Documentation
-
-In this directory you have access to documentation explaining things to know about this program.
+- [React-Native](https://reactnative.dev)
 
 # Prerequisites
 
-* [Node.JS(Version 14.x.x and newer)](https://nodejs.org/en)
-* [npm](https://www.npmjs.com)
-* [React Native CLI](https://reactnative.dev/docs/environment-setup)
+- [Node.JS(Version 14.x.x and newer)](https://nodejs.org/en)
+- [npm](https://www.npmjs.com)
+- [React Native CLI](https://reactnative.dev/docs/environment-setup)
 
 # Installation
 
 Clone the repo
-   ```sh
-   - git clone git@github.com:StayAliveEIP/stayalive-mobileapp.git
-   - npm i
-   - npm run build
-   - npx react-native start
-   - npx react-native run-android
-   ```
+
+```sh
+- git clone git@github.com:StayAliveEIP/stayalive-mobileapp.git
+- npm i
+- npm run build
+- npx react-native start
+- npx react-native run-android
+```
 
 # Commit norm
 
 When adding something:
+
 ```sh
 [ADD] Adding this
-   ```
+```
+
 When fixing something:
+
 ```sh
 [FIX] Fixing this
-   ```
+```
+
 When deleting something:
+
 ```sh
 [DEL] Deleting this
-   ```
+```
+
 When working on something:
+
 ```sh
 [WIP] Work in progress
-   ```
+```
 
 # Our group
-| Name            | GitHub                | Working on |
-|-----------------|-----------------------|------------|
+
+| Name            | GitHub                 | Working on |
+| --------------- | ---------------------- | ---------- |
 | Martin LEBLANCS | [MartinLeblancs][GhML] | Mobile APP |
-| Noel VARGA      | [noelvarga25][GhNV]   | Mobile APP |
-| Matthieu QUERU  | [Matthieu33197][GhMQ] | Web APP |
-| Bastien CANTET  | [bastosbob][GhBC] | Web APP |
-| Florian DAMIOT  | [florianepitech][GhFD]              | Web APP |
+| Noel VARGA      | [noelvarga25][GhNV]    | Mobile APP |
+| Matthieu QUERU  | [Matthieu33197][GhMQ]  | Web APP    |
+| Bastien CANTET  | [bastosbob][GhBC]      | Web APP    |
+| Florian DAMIOT  | [florianepitech][GhFD] | Web APP    |
 
-
-
-[//]: # (These are the links used above)
-
-[GhML]: <https://github.com/MartinLeblancs>
-[GhMQ]: <https://github.com/Matthieu33197>
-[GhNV]: <https://github.com/noelvarga25>
-[GhBC]: <https://github.com/bastosbob>
-[GhFD]: <https://github.com/florianepitech>
-
+[//]: # "These are the links used above"
+[GhML]: https://github.com/MartinLeblancs
+[GhMQ]: https://github.com/Matthieu33197
+[GhNV]: https://github.com/noelvarga25
+[GhBC]: https://github.com/bastosbob
+[GhFD]: https://github.com/florianepitech
 
 <p align="right">(<a href="#top">back to top</a>)</p>
