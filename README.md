@@ -1,1 +1,1 @@
-# stayalive-mobileapp
+# stayalive-mobile
