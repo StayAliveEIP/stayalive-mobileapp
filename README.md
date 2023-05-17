@@ -1,3 +1,5 @@
+![Branches](./coverage/badge-branches.svg)
+![Lines](./coverage/badge-lines.svg)
 <div id="top"></div>
 <br />
 <div align="center">

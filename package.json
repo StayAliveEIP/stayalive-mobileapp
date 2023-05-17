@@ -7,9 +7,13 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "npm test -- --coverage",
+    "test:badges": "npm run test:coverage  && jest-coverage-badges"
   },
   "dependencies": {
+    "@testing-library/react-native": "^12.1.2",
+    "jest-coverage-badges": "^1.1.2",
     "react": "18.2.0",
     "react-native": "0.71.7"
   },
@@ -33,6 +37,10 @@
   "jest": {
     "preset": "react-native",
     "collectCoverage": true,
-    "coverageReporters": ["json", "html"]
+    "coverageReporters": [
+      "json-summary",
+      "json",
+      "html"
+    ]
   }
 }
