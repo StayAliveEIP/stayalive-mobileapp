@@ -1,5 +1,4 @@
-![Branches](./coverage/badge-branches.svg)
-![Lines](./coverage/badge-lines.svg)
+[![codecov](https://codecov.io/github/StayAliveEIP/stayalive-mobileapp/branch/main/graph/badge.svg?token=6YAPJ9HYPQ)](https://codecov.io/github/StayAliveEIP/stayalive-mobileapp)
 <div id="top"></div>
 <br />
 <div align="center">
