@@ -1,4 +1,4 @@
-name: Build Test and Apk
+name: Build Tests and Apk
 
 on:
   push:

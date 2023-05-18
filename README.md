@@ -1,5 +1,5 @@
 [![codecov](https://codecov.io/github/StayAliveEIP/stayalive-mobileapp/branch/main/graph/badge.svg?token=6YAPJ9HYPQ)](https://codecov.io/github/StayAliveEIP/stayalive-mobileapp)
-[![Build Test and Apk](https://github.com/StayAliveEIP/stayalive-mobileapp/actions/workflows/Build-Test&Apk.yml/badge.svg?branch=main)](https://github.com/StayAliveEIP/stayalive-mobileapp/actions/workflows/Build-Test&Apk.yml)<div id="top"></div>
+[![Build Tests and Apk](https://github.com/StayAliveEIP/stayalive-mobileapp/actions/workflows/Build-Test&Apk.yml/badge.svg?branch=main)](https://github.com/StayAliveEIP/stayalive-mobileapp/actions/workflows/Build-Test&Apk.yml)<div id="top"></div>
 <br />
 <div align="center">
   <a href="https://github.com/StayAliveEIP/stayalive-mobileapp">
