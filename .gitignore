@@ -14,6 +14,7 @@ ios/Pods/
 # Ignore the Android build folders
 android/build/
 android/app/build/
+android/local.properties
 
 # Ignore any logs or temporary files
 *.log

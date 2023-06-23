@@ -12,10 +12,12 @@
     "test:badges": "npm run test:coverage  && jest-coverage-badges"
   },
   "dependencies": {
+    "@react-native-community/checkbox": "^0.5.16",
     "@testing-library/react-native": "^12.1.2",
     "jest-coverage-badges": "^1.1.2",
     "react": "18.2.0",
-    "react-native": "0.71.7"
+    "react-native": "0.71.7",
+    "react-native-linear-gradient": "^2.7.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
