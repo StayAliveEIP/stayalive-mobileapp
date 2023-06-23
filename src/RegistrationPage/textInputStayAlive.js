@@ -1,5 +1,5 @@
 import React from 'react';
-import {Keyboard, Text, TextInput, View} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 import { colors } from '../Style/StayAliveStyle'
 
 export function TextInputStayAlive(props) {
@@ -13,6 +13,7 @@ export function TextInputStayAlive(props) {
                 fontSize: 16,
             }}>{props.text}</Text>
             <TextInput
+                testID={props.valueTestID}
                 style={{
                     height: 45,
                     width: 280,
@@ -28,4 +29,4 @@ export function TextInputStayAlive(props) {
             />
         </View>
     );
-};
+}

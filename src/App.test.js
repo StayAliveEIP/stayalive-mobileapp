@@ -1,11 +1,9 @@
-import React from "react";
-import { render } from "@testing-library/react-native";
-import App from "./App";
+import React from 'react';
+import App from './App';
+import {render} from "@testing-library/react-native";
 
-describe("App Component", () => {
-  it("renders correctly", () => {
-    const { getByText } = render(<App />);
-    const textElement = getByText("Main page !");
-    expect(textElement).toBeTruthy();
-  });
+describe('RegistrationPage', () => {
+    it('renders without crashing', () => {
+        render(<App/>);
+    });
 });

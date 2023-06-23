@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {TextInputStayAlive} from './textInputStayAlive';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../Style/StayAliveStyle'
 
@@ -13,8 +12,12 @@ export default function RegistrationPage() {
     const [phone, onChangePhone] = useState('');
     const [selectCGUV, setSelectionCGUV] = useState(false);
 
+    const onClickJoinUs = () => {
+        console.log(names, email, password, phone, selectCGUV);
+    };
+
     return (
-        <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1}}>
+        <ScrollView >
             <View
                 style={{
                     position: 'absolute',
@@ -86,6 +89,7 @@ export default function RegistrationPage() {
 
                     <View style={{marginTop: 15}}>
                         <TextInputStayAlive
+                            valueTestID={"names-input"}
                             text={'Votre nom et prénom'}
                             field={names}
                             onChangeField={onChangeNames}
@@ -93,6 +97,7 @@ export default function RegistrationPage() {
                             secureTextEntry={false}
                         />
                         <TextInputStayAlive
+                            valueTestID={"email-input"}
                             text={'Votre adresse E-mail'}
                             field={email}
                             onChangeField={onChangeEmail}
@@ -100,6 +105,7 @@ export default function RegistrationPage() {
                             style={{marginTop: -50}}
                         />
                         <TextInputStayAlive
+                            valueTestID={"password-input"}
                             text={'Votre mot de passe'}
                             field={password}
                             onChangeField={onChangePassword}
@@ -107,6 +113,7 @@ export default function RegistrationPage() {
                             secureTextEntry={true}
                         />
                         <TextInputStayAlive
+                            valueTestID={"phone-input"}
                             text={'Votre téléphone'}
                             field={phone}
                             onChangeField={onChangePhone}
@@ -124,6 +131,7 @@ export default function RegistrationPage() {
                         }}
                     >
                         <CheckBox
+                            testID={'checkboxCGUV'}
                             value={selectCGUV}
                             onValueChange={setSelectionCGUV}
                             tintColors={{true: colors.StayAliveRed}}
@@ -135,6 +143,7 @@ export default function RegistrationPage() {
 
                     </View>
                     <TouchableOpacity
+                        onPress={onClickJoinUs}
                         style={{
                             marginTop: 20,
                             borderWidth: 3,
@@ -152,12 +161,13 @@ export default function RegistrationPage() {
                                 color: colors.StayAliveRed,
                                 fontWeight: 'bold',
                             }}
+                            testID={'joinUs-button'}
                         >
                             Nous rejoindre
                         </Text>
                     </TouchableOpacity>
                 </View>
             </View>
-        </KeyboardAwareScrollView>
+        </ScrollView>
     );
 }
