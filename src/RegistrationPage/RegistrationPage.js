@@ -89,7 +89,7 @@ export default function RegistrationPage() {
                         style={{
                             width: 400,
                             height: 400,
-                            marginTop: -50,
+                            marginTop: -30,
                             resizeMode: 'contain',
                         }}
                         source={require('../../assets/StayAlive1.png')}
