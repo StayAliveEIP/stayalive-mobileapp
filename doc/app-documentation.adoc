@@ -1,0 +1,82 @@
+# Application Documentation
+:sectnumlevels: 4
+:toclevels: 4
+:sectnums: 4
+:toc: left
+:icons: font
+:toc-title: Table of contents
+
+*Last modified* : {docdate}
+
+*Last editor* : link:https://github.com/noelvarga25[Noel Varga]
+
+## Introduction
+This document serves as the documentation for the application. It contains a general explanation of the application, its features, and how it is built.
+
+Furthermore, the ins and outs of the application will be detailed in other documents such as each document will be linked to its detailed counterpart.
+
+### Document Versioning
+
+.Versioning reference
+[cols="1,1,4,4"]
+|===
+| Version | Editor | Comments | Date
+
+| 0.1 | Noel Varga | Creation of the document | 18/06/2022
+
+|===
+
+### Application Description
+
+#### What is StayAlive?
+StayAlive is a mobile application that allows public service call centers to notify healthcare providers, nursing assistants, and rescuers within 3 minutes of the patient via a mobile application in order to reduce response time.
+
+Indeed, 50,000 people die from cardiac arrests. The survival rates are low, ranging between 5% and 10%, due to high response times. However, rapid response increases the survival rate by 72% in the case of a cardiac arrest, for example. StayAlive would be an application that enables emergency call centers like SAMU to notify healthcare providers, nursing assistants, and rescuers (who are our users) within 3 minutes of the victim. This would significantly reduce the time it takes to access initial medical care.
+
+Furthermore, this would expedite the SAMU's response by utilizing the information gathered by the rescuer, who is also a user of our application. Ultimately, the goal is to notify individuals with medical qualifications during their routines, with the aim of saving lives.
+
+#### Tech used
+The SatyAlive application is built using React-Native. More precisly we are using:
+
+- Metro v0.73.10
+- React v18.2.0
+- React-Native v0.71.7
+- Typescript v4.8.4
+- Jest v29.5.0
+
+The application is built for Android and iOS compatibility.
+
+### Rules
+
+#### Editing
+
+When editing this document, it is madatory to change the version number and the last editor. Furthermore, the date of the last modification must be changed as well.
+
+#### Commits
+
+When commiting changes to this document, it is mandatory to use the following syntax:
+
+For any ADDition use the following syntax:
+
+```sh
+[ADD] Adding <functionnality>
+```
+
+When FIXing code, use the following syntax:
+
+```sh
+[FIX] Fixing <description>
+```
+
+In case you need to DELeting code or files, use the following syntax:
+
+```sh
+[DEL] Deleting <file_or_code_description>
+```
+
+When you would like to save your work ,please use the following syntax (Work In Progress):
+
+```sh
+[WIP] <description_of_the_ongoing_work>
+```
+
