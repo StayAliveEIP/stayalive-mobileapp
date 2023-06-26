@@ -12,13 +12,21 @@ export default function LoginPage() {
         console.log(email, password);
     };
 
+    const onClickJoin = () => {
+        console.log('Join !');
+    };
+
+    const onClickLoginWithGoogle = () => {
+        console.log('Google !');
+    };
+
     return (
         <ScrollView >
             <View
                 style={{
                     position: 'absolute',
-                    bottom: 30,
-                    right: -420,
+                    bottom: -30,
+                    left: -420,
                     width: 500,
                     height: 500,
                     borderRadius: 10000,
@@ -36,7 +44,7 @@ export default function LoginPage() {
                 style={{
                     position: 'absolute',
                     bottom: -150,
-                    right: -150,
+                    left: -150,
                     width: 300,
                     height: 300,
                     borderRadius: 10000,
@@ -57,10 +65,9 @@ export default function LoginPage() {
                         style={{
                             width: 400,
                             height: 400,
-                            marginTop: -50,
                             resizeMode: 'contain',
                         }}
-                        source={require('../../assets/StayAlive1.png')}
+                        source={require('../../assets/StayAlive2.png')}
                     />
                     <Image
                         style={{
@@ -80,7 +87,7 @@ export default function LoginPage() {
                             fontWeight: 'bold',
                         }}
                     >
-                        Se connecter
+                        Accéder à votre espace
                     </Text>
 
                     <View style={{marginTop: 15}}>
@@ -89,7 +96,7 @@ export default function LoginPage() {
                             text={'Votre adresse E-mail'}
                             field={email}
                             onChangeField={onChangeEmail}
-                            label={'  E-mail'}
+                            label={'E-mail'}
                         />
                         <TextInputStayAlive
                             valueTestID={"login-password-input"}
@@ -99,12 +106,49 @@ export default function LoginPage() {
                             label={'Mot de passe'}
                             secureTextEntry={true}
                         />
+                        <TouchableOpacity onPress={() => console.log('Forgot Password?')}>
+                            <Text style={{
+                                fontWeight: 'bold',
+                                marginTop: 5,
+                                color: colors.StayAliveRed,
+                                textDecorationLine: 'underline',
+                            }}>
+                                Vous avez oublié votre mot de passe ?
+                            </Text>
+                        </TouchableOpacity>
                     </View>
 
                     <TouchableOpacity
                         onPress={onClickLogin}
                         style={{
                             marginTop: 20,
+                            marginBottom: 10,
+                            borderWidth: 3,
+                            borderRadius: 50,
+                            borderColor: colors.StayAliveRed,
+                            paddingHorizontal: 50,
+                            paddingVertical: 10,
+                            backgroundColor: colors.StayAliveRed,
+                        }}
+                    >
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                fontSize: 18,
+                                color: 'white',
+                                fontWeight: 'bold',
+                            }}
+                            testID={'login-button'}
+                        >
+                            Se connecter
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={onClickJoin}
+                        style={{
+                            marginTop: 10,
+                            marginBottom: 30,
                             borderWidth: 3,
                             borderRadius: 50,
                             borderColor: colors.StayAliveRed,
@@ -120,9 +164,50 @@ export default function LoginPage() {
                                 color: colors.StayAliveRed,
                                 fontWeight: 'bold',
                             }}
-                            testID={'login-button'}
+                            testID={'join-button'}
                         >
-                            Se connecter
+                            Nous rejoindre
+                        </Text>
+                    </TouchableOpacity>
+
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 16
+                    }}>OU</Text>
+
+                    <TouchableOpacity
+                        onPress={onClickLoginWithGoogle}
+                        style={{
+                            marginTop: 30,
+                            borderWidth: 3,
+                            borderRadius: 50,
+                            borderColor: colors.StayAliveRed,
+                            paddingHorizontal: 20,
+                            paddingVertical: 10,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: 'white',
+                        }}
+                    >
+                        <Image
+                            style={{
+                                width: 24,
+                                height: 24,
+                                marginRight: 10,
+                            }}
+                            source={require('../../assets/GoogleLogo.png')}
+                        />
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                fontSize: 18,
+                                color: colors.StayAliveRed,
+                                fontWeight: 'bold',
+                            }}
+                            testID={'login-button-google'}
+                        >
+                            Se connecter avec Google
                         </Text>
                     </TouchableOpacity>
                 </View>
