@@ -12,8 +12,36 @@ export default function RegistrationPage() {
     const [phone, onChangePhone] = useState('');
     const [selectCGUV, setSelectionCGUV] = useState(false);
 
-    const onClickJoinUs = () => {
+    const handleRegistration = () => {
+        if (selectCGUV === false)
+            return;
+        const userData = {
+            "names": names,
+            "email": email,
+            "password": password,
+            "phone": phone
+        };
+        body: JSON.stringify(userData),
+
         console.log(names, email, password, phone, selectCGUV);
+        fetch('http://localhost:8080/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 200)
+                    console.log("success");
+                else
+                    console.log("error");
+            })
+            .catch(error => {
+                console.log("error");
+                console.log(error);
+            });
     };
 
     return (
@@ -143,7 +171,7 @@ export default function RegistrationPage() {
 
                     </View>
                     <TouchableOpacity
-                        onPress={onClickJoinUs}
+                        onPress={handleRegistration}
                         style={{
                             marginTop: 20,
                             borderWidth: 3,
