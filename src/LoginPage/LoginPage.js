@@ -3,10 +3,16 @@ import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
 import {TextInputStayAlive} from './textInputStayAlive';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../Style/StayAliveStyle'
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 export default function LoginPage() {
     const [email, onChangeEmail] = useState('');
     const [password, onChangePassword] = useState('');
+
+    GoogleSignin.configure({
+        webClientId: '623976211169-f3d8of65h6cf9n1uuja30odeldll6cnb.apps.googleusercontent.com',
+      });
 
     const onClickLogin = () => {
         console.log(email, password);
@@ -16,8 +22,20 @@ export default function LoginPage() {
         console.log('Join !');
     };
 
-    const onClickLoginWithGoogle = () => {
+    const onClickLoginWithGoogle = async () => {
         console.log('Google !');
+        // Get the users ID token
+        const { idToken } = await GoogleSignin.signIn();
+
+        // Create a Google credential with the token
+        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+        // Sign-in the user with the credential
+        const SignedUser = auth().signInWithCredential(googleCredential);
+
+        SignedUser.then(ret => {
+            console.log(ret);
+        })
     };
 
     return (
