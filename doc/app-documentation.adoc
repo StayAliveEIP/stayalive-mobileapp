@@ -80,3 +80,28 @@ When you would like to save your work ,please use the following syntax (Work In 
 [WIP] <description_of_the_ongoing_work>
 ```
 
+## Target architecture
+
+In this section we will discuss evrything related to to the application's architecture ranging from the diffrent use of folders to the diffrent components used.
+
+### Folder structure
+
+This section is dedicated to the folder structure of the application.
+
+#### Main folder
+
+Our application is built using React-Native. Therefore, the main folder of the application is the `src` folder. This folder contains all the code of the application.
+
+Inside the `src` folder, we have three folders:
+
+- LoginPage
+- RegistrationPage
+- Style
+
+Inside the `LoginPage` folder, we currently have a file called `LoginPage.js`. This file contains the code of the login page.
+
+Inside the `RegistrationPage` folder, we currently have three files called `RegistrationPage.js`, `RegistrationPage.test.js` and `textInputStayAlive.js`. The first file contains the code of the registration page, the second file contains the tests of the registration page and the third file contains the code of the text input fields used in the registration page.
+
+Inside the `Style` folder, we currently have a file called `StayAliveStyle.js`. This file contains the code of the color style of our application.
+
+Besides these folders, we can also find the `App.js` file. This is core file in our project since evrything will be routed threw this file.
