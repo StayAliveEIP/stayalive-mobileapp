@@ -14,8 +14,6 @@
 		38F1E5A48E10729B12AC971D /* Pods_Stayalive_StayaliveTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4211C25AF8081F189188BF7 /* Pods_Stayalive_StayaliveTests.framework */; };
 		44B1AA8306BA3B43F27F360A /* Pods_Stayalive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D92CD4D5958ABFC5F80F1FC9 /* Pods_Stayalive.framework */; };
 		7C404A542A4AE90C00A6DCBD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C404A532A4AE90C00A6DCBD /* GoogleService-Info.plist */; };
-		7CD05C392A4AE1AD000EC9E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7CD05C382A4AE1AD000EC9E1 /* GoogleService-Info.plist */; };
-		7CD05C3A2A4AE1AD000EC9E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7CD05C382A4AE1AD000EC9E1 /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +41,6 @@
 		5709B34CF0A7D63546082F79 /* Pods-Stayalive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stayalive.release.xcconfig"; path = "Target Support Files/Pods-Stayalive/Pods-Stayalive.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Stayalive-StayaliveTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stayalive-StayaliveTests.debug.xcconfig"; path = "Target Support Files/Pods-Stayalive-StayaliveTests/Pods-Stayalive-StayaliveTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7C404A532A4AE90C00A6DCBD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		7CD05C382A4AE1AD000EC9E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Stayalive/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Stayalive-StayaliveTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stayalive-StayaliveTests.release.xcconfig"; path = "Target Support Files/Pods-Stayalive-StayaliveTests/Pods-Stayalive-StayaliveTests.release.xcconfig"; sourceTree = "<group>"; };
 		D92CD4D5958ABFC5F80F1FC9 /* Pods_Stayalive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stayalive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,7 +119,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				7CD05C382A4AE1AD000EC9E1 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Stayalive */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* StayaliveTests */,
@@ -243,7 +239,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CD05C3A2A4AE1AD000EC9E1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,7 +249,6 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				7C404A542A4AE90C00A6DCBD /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				7CD05C392A4AE1AD000EC9E1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
