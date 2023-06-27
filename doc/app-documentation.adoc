@@ -135,3 +135,27 @@ The documentation folder also called `doc`, is home to all the documentation of 
 The plan for this folder is to contain all the detailed components documentation so developers will be able to understand the code and the application better.
 
 It will also be hosting an asset folder. This asset folder will contain all the documents and images used in the documentation.
+
+### Application architecture
+
+Our application will be a visual interface. It will only house the 'front end' of our project. Evrything seen on the application will be stored in a dabase tha we will query to get all the necessary information.
+
+In acordance to this, the user will require an internet access in order to use the application. This is important in order to be able to notify the user in case of an intervention.
+
+As mentionned, the application will querry a database. The database will be responsible for the storage and security of the user's data.
+
+## Constraints
+
+## Warnings
+
+## Contributors
+
+|===
+| Name | GitHub links | Role
+
+| Martin LEBLANCS | link:https://github.com/MartinLeblancs[MartinLeblancs] | Mobile APP
+| Noel VARGA      | link:https://github.com/noelvarga25[noelvarga25]    | Mobile APP
+| Matthieu QUERU  | link:https://github.com/Matthieu33197[Matthieu33197]  | Web APP
+| Bastien CANTET  | link:https://github.com/bastosbob[bastosbob]    | API
+| Florian DAMIOT  | link:https://github.com/florianepitech[florianepitech] | API
+|===
