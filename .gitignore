@@ -3,6 +3,7 @@ node_modules/
 
 # Ignore tests folder
 __tests__
+coverage
 
 # Ignore the yarn lock file or npm lock file
 yarn.lock
