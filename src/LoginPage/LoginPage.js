@@ -3,8 +3,10 @@ import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
 import {TextInputStayAlive} from './textInputStayAlive';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../Style/StayAliveStyle'
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function LoginPage() {
+export default function LoginPage({ navigation }) {
     const [email, onChangeEmail] = useState('');
     const [password, onChangePassword] = useState('');
 
@@ -13,6 +15,7 @@ export default function LoginPage() {
     };
 
     const onClickJoin = () => {
+        navigation.push('RegistrationPage');
         console.log('Join !');
     };
 
@@ -65,6 +68,7 @@ export default function LoginPage() {
                         style={{
                             width: 400,
                             height: 400,
+                            marginTop: -50,
                             resizeMode: 'contain',
                         }}
                         source={require('../../assets/StayAlive2.png')}

@@ -4,8 +4,8 @@ import CheckBox from '@react-native-community/checkbox';
 import {TextInputStayAlive} from './textInputStayAlive';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../Style/StayAliveStyle'
-
-export default function RegistrationPage() {
+import Icon from 'react-native-vector-icons/FontAwesome';
+export default function RegistrationPage({ navigation }) {
     const [names, onChangeNames] = useState('');
     const [email, onChangeEmail] = useState('');
     const [password, onChangePassword] = useState('');
@@ -56,12 +56,26 @@ export default function RegistrationPage() {
             </View>
 
             <View style={{flex: 1}}>
+                <TouchableOpacity
+                    style={{flex: 1, zIndex: 1}}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Icon
+                        name="arrow-left"
+                        size={30}
+                        style={{
+                            marginTop: 20,
+                            marginLeft: 20,
+                        }}
+                        onPress={() => navigation.goBack()}>
+                    </Icon>
+                </TouchableOpacity>
                 <View style={{flex: 1, alignItems: 'center'}}>
                     <Image
                         style={{
                             width: 400,
                             height: 400,
-                            marginTop: -50,
+                            marginTop: -100,
                             resizeMode: 'contain',
                         }}
                         source={require('../../assets/StayAlive1.png')}
