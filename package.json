@@ -52,7 +52,6 @@
       "html"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(@react-native|react-native|react-native-linear-gradient))"
-    ]
+      "node_modules/(?!(react-native|@react-native|@react-navigation|@react-navigation/.*|react-navigation))"    ]
   }
 }
