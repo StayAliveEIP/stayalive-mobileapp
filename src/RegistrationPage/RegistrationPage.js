@@ -5,6 +5,7 @@ import {TextInputStayAlive} from './textInputStayAlive';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {SlideInView} from '../Animations/Animations'
 export default function RegistrationPage({ navigation }) {
     const [names, onChangeNames] = useState('');
     const [email, onChangeEmail] = useState('');
@@ -17,7 +18,8 @@ export default function RegistrationPage({ navigation }) {
     };
 
     return (
-        <ScrollView >
+        <SlideInView>
+        <ScrollView>
             <View
                 style={{
                     position: 'absolute',
@@ -67,7 +69,7 @@ export default function RegistrationPage({ navigation }) {
                             marginTop: 20,
                             marginLeft: 20,
                         }}
-                        onPress={() => navigation.goBack()}>
+                        onPress={() => navigation.navigate("LoginPage")}>
                     </Icon>
                 </TouchableOpacity>
                 <View style={{flex: 1, alignItems: 'center'}}>
@@ -183,5 +185,6 @@ export default function RegistrationPage({ navigation }) {
                 </View>
             </View>
         </ScrollView>
+        </SlideInView>
     );
 }

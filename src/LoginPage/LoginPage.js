@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../Style/StayAliveStyle'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {FadeInView} from '../Animations/Animations'
 
 export default function LoginPage({ navigation }) {
     const [email, onChangeEmail] = useState('');
@@ -15,7 +16,7 @@ export default function LoginPage({ navigation }) {
     };
 
     const onClickJoin = () => {
-        navigation.push('RegistrationPage');
+        navigation.navigate('RegistrationPage');
         console.log('Join !');
     };
 
@@ -24,6 +25,7 @@ export default function LoginPage({ navigation }) {
     };
 
     return (
+        <FadeInView>
         <ScrollView >
             <View
                 style={{
@@ -217,5 +219,6 @@ export default function LoginPage({ navigation }) {
                 </View>
             </View>
         </ScrollView>
+        </FadeInView>
     );
 }
