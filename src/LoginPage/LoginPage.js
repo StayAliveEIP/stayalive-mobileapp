@@ -25,7 +25,7 @@ export default function LoginPage({ navigation }) {
     };
 
     return (
-        <FadeInView>
+        <FadeInView duration={200}>
         <ScrollView >
             <View
                 style={{

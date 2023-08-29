@@ -18,7 +18,7 @@ export default function RegistrationPage({ navigation }) {
     };
 
     return (
-        <SlideInView>
+        <SlideInView duration={400} value={200}>
         <ScrollView>
             <View
                 style={{
