@@ -1,6 +1,12 @@
 import * as React from "react";
-import {Animated} from "react-native";
-import {useFocusEffect} from "@react-navigation/native";
+import { Animated } from "react-native";
+const useFocusEffect = (effect) => {
+    const cleanup = () => {};
+
+    effect();
+
+    return cleanup;
+};
 
 export const FadeInView = (props) => {
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
@@ -11,19 +17,14 @@ export const FadeInView = (props) => {
             duration: props.duration,
             useNativeDriver: true,
         }).start();
-
     });
 
     return (
-        <Animated.View
-            style={{
-                opacity: fadeAnim,
-            }}>
+        <Animated.View style={{ opacity: fadeAnim }}>
             {props.children}
         </Animated.View>
     );
 };
-
 
 export const SlideInView = (props) => {
     const slideAnim = React.useRef(new Animated.Value(props.value)).current;
