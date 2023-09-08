@@ -86,6 +86,7 @@ export default function ProfilePage({ navigation }) {
                 </View>
 
                 <Text
+                    testID={"user-name"}
                     style={{
                         alignSelf: "center",
                         top: -210,
@@ -99,13 +100,14 @@ export default function ProfilePage({ navigation }) {
                 </Text>
 
                 <TouchableOpacity
+                    testID={"button-left-arrow"}
                     style={{
                         position: 'absolute',
                         top: -440,
                         left: 30,
                         zIndex: 1,
                     }}
-                    onPress={() => console.log("arrow left clicked ! ")}
+                    onPress={() => console.log("arrow left clicked !")}
                 >
                     <Icon
                         name="arrow-left"
@@ -118,6 +120,7 @@ export default function ProfilePage({ navigation }) {
                 <Menu name={"Mes Documents"} icon={"document-text-outline"} />
                 <Menu name={"Préférences"} icon={"settings-outline"} />
                 <TouchableOpacity
+                    testID={"button-disconnect"}
                     style={{
                         position: "absolute",
                         alignSelf: "center",
@@ -129,6 +132,7 @@ export default function ProfilePage({ navigation }) {
                         paddingVertical: 10,
                         backgroundColor: 'white',
                     }}
+                    onPress={() => console.log("disconnect button press !")}
                 >
                     <Text
                         style={{
