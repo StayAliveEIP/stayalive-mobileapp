@@ -16,6 +16,7 @@
     "@react-native-community/checkbox": "^0.5.16",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
+    "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^12.1.2",
     "install": "^0.13.0",
     "jest-coverage-badges": "^1.1.2",
