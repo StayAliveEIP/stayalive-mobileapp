@@ -2,6 +2,17 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import ProfilePage from './ProfilePage';
 
+jest.mock('react-native-image-picker', () => ({
+    launchImageLibrary: (options, callback) => {
+        const response = { uri: 'image-uri' };
+        callback(response);
+    },
+    launchCamera: (options, callback) => {
+        const response = { uri: 'image-uri' };
+        callback(response);
+    },
+}));
+
 describe('ProfilePage', () => {
     it('displays user name', () => {
         const { getByTestId } = render(<ProfilePage />);
@@ -22,9 +33,19 @@ describe('ProfilePage', () => {
     it('clicks the disconnect button', () => {
         const consoleLogSpy = jest.spyOn(console, 'log');
         const { getByTestId } = render(<ProfilePage />);
-        const leftArrowButton = getByTestId('button-disconnect');
-        fireEvent.press(leftArrowButton);
+        const disconnectButton = getByTestId('button-disconnect');
+        fireEvent.press(disconnectButton);
         expect(consoleLogSpy).toHaveBeenCalledWith('disconnect button press !');
         consoleLogSpy.mockRestore();
+    });
+
+    it('updates avatarSource when selectImage is called', () => {
+        const { getByTestId } = render(<ProfilePage />);
+        const selectImageButton = getByTestId('select-image-button');
+
+        fireEvent.press(selectImageButton);
+
+        const avatarSource = getByTestId('user-avatar').props.source;
+        expect(avatarSource).not.toBeNull();
     });
 });

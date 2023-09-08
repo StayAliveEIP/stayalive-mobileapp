@@ -3,7 +3,6 @@ import { render, fireEvent } from '@testing-library/react-native';
 import '@testing-library/jest-native/extend-expect';
 import { Menu } from './Menu';
 
-// Créez un composant mock pour react-native-vector-icons
 jest.mock('react-native-vector-icons/Ionicons', () => 'Icon');
 
 describe('Menu', () => {

@@ -53,13 +53,16 @@ export default function ProfilePage({ navigation }) {
             <View style={{ flex: 1, alignItems: 'center' }}>
                 <View style={{ position: 'absolute', alignItems: 'center' }}>
                     <TouchableOpacity
+                        testID={"select-image-button"}
                         style={{
+                            position: 'absolute',
                             justifyContent: 'center',
-                            marginTop: '-230%', // Ajuster la marge supérieure pour le centrage vertical
+                            top: -360,
                         }}
                         onPress={selectImage}
                     >
                         <Image
+                            testID={"user-avatar"}
                             style={{
                                 alignSelf: "center",
                                 width: 160,
