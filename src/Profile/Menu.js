@@ -5,10 +5,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export function Menu(props) {
     const onClickMenu = () => {
-        console.log("Menu clicked !");
     }
     return (
-        <View style={{
+        <View
+            testID={"box-menu"}
+            style={{
             flex: 1,
             justifyContent: "center",
             top: -160,
@@ -18,11 +19,14 @@ export function Menu(props) {
             borderColor: "gray",
         }}>
             <Icon
+                testID={"icon-menu"}
                 style={{position: "absolute", marginLeft: 30}}
                 name={props.icon}
                 size={35}>
             </Icon>
-        <Text style={{
+        <Text
+            testID={"text-menu"}
+            style={{
             marginLeft: -100,
             textAlign: "center",
             color: "black",
@@ -31,8 +35,10 @@ export function Menu(props) {
         }} >{props.name}</Text>
 
             <TouchableOpacity
+                testID={"button-right-arrow"}
                 style={{flex: 1, zIndex: 1, position: "absolute"}}
-                onPress={() => onClickMenu()}>
+                onPress={() => console.log("Menu " + props.name)}
+            >
             <Icon
                 style={{marginLeft: "90%"}}
                 name="chevron-forward-outline"
