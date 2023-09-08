@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Animated } from "react-native";
+
 const useFocusEffect = (effect) => {
     const cleanup = () => {};
 
@@ -20,7 +21,7 @@ export const FadeInView = (props) => {
     });
 
     return (
-        <Animated.View style={{ opacity: fadeAnim }}>
+        <Animated.View style={{ opacity: fadeAnim }} testID={props.testID}>
             {props.children}
         </Animated.View>
     );
@@ -41,7 +42,9 @@ export const SlideInView = (props) => {
         <Animated.View
             style={{
                 transform: [{ translateX: slideAnim }],
-            }}>
+            }}
+            testID={props.testID}
+        >
             {props.children}
         </Animated.View>
     );
@@ -53,7 +56,7 @@ export const ScaleInView = (props) => {
     useFocusEffect(() => {
         Animated.spring(scaleAnim, {
             toValue: 1,
-            friction: 5, // contrôle la vitesse de la transition
+            friction: 5,
             useNativeDriver: true,
         }).start();
     });
@@ -62,7 +65,9 @@ export const ScaleInView = (props) => {
         <Animated.View
             style={{
                 transform: [{ scale: scaleAnim }],
-            }}>
+            }}
+            testID={props.testID}
+        >
             {props.children}
         </Animated.View>
     );
@@ -81,14 +86,16 @@ export const RotateInView = (props) => {
 
     const interpolatedRotate = rotateAnim.interpolate({
         inputRange: [0, 1],
-        outputRange: ['0deg', '360deg'],
+        outputRange: ["0deg", "360deg"],
     });
 
     return (
         <Animated.View
             style={{
                 transform: [{ rotate: interpolatedRotate }],
-            }}>
+            }}
+            testID={props.testID}
+        >
             {props.children}
         </Animated.View>
     );
