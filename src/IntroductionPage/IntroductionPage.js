@@ -2,19 +2,59 @@ import React from 'react';
 import {View, StyleSheet, Image, Text, TouchableOpacity} from 'react-native';
 import Swiper from 'react-native-swiper';
 import { colors } from '../Style/StayAliveStyle';
+import LinearGradient from "react-native-linear-gradient";
 
 
-function IntroductionPage1({ navigation }) {
+export function IntroductionPage1({ navigation }) {
     return (
         <View style={styles.slide}>
+            <View
+                style={{
+                    position: "absolute",
+                    bottom: -300,
+                    left: -400,
+                    width: 500,
+                    height: 500,
+                    borderRadius: 10000,
+                    overflow: 'hidden',
+                }}
+            >
+                <LinearGradient
+                    colors={[colors.StayAliveRed, colors.white]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={{ flex: 1 }}
+                />
+            </View>
+            <View
+                style={{
+                    position: 'absolute',
+                    bottom: -450,
+                    width: 300,
+                    height: 300,
+                    left: -100,
+                    borderRadius: 10000,
+                    overflow: 'hidden',
+                    zIndex: 2, // zIndex plus élevé pour le gradient
+                }}
+            >
+                <LinearGradient
+                    colors={[colors.StayAliveRed, colors.white]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={{ flex: 1 }}
+                />
+            </View>
             <View style={styles.slideContent}>
                 <Image
                     style={styles.image}
                     source={require('../../assets/Introduction1.png')}
+                    testID="introImage1"
                 />
                 <Image
                     style={styles.logo}
                     source={require('../../assets/StayAlive-logo.png')}
+                    testID="introLogo1"
                 />
                 <View style={styles.textContainer}>
                     <Text style={styles.title}>Bienvenue sur StayAlive !</Text>
@@ -22,7 +62,7 @@ function IntroductionPage1({ navigation }) {
                         Chaque <Text style={styles.redText}>seconde</Text> compte pour sauver une vie
                     </Text>
                     <Text style={styles.description}>
-                        C'est la  <Text style={styles.redText}>mission</Text> de StayAlive
+                        C'est la <Text style={styles.redText}>mission</Text> de StayAlive
                     </Text>
                     <Text style={styles.description}>
                         StayAlive <Text style={styles.redText}>révolutionne</Text> l'intervention d'urgence.
@@ -32,15 +72,18 @@ function IntroductionPage1({ navigation }) {
         </View>
     );
 }
-function IntroductionPage2({ navigation }) {
+export function IntroductionPage2({ navigation }) {
     return (
         <View style={styles.slide}>
+
             <View style={styles.slideContent}>
                 <Image
+                    testID={"introImage2"}
                     style={styles.image}
                     source={require('../../assets/Introduction2.png')}
                 />
                 <Image
+                    testID={"introLogo2"}
                     style={styles.logo}
                     source={require('../../assets/StayAlive-logo.png')}
                 />
@@ -83,7 +126,8 @@ function IntroductionPage2({ navigation }) {
     );
 }
 
-function IntroductionPage3({ navigation }) {
+
+export function IntroductionPage3({ navigation }) {
     const onClickUnderstand = () => {
         navigation.navigate("LoginPage");
     }
@@ -91,10 +135,12 @@ function IntroductionPage3({ navigation }) {
         <View style={styles.slide}>
             <View style={styles.slideContent}>
                 <Image
+                    testID={"introImage3"}
                     style={styles.image}
                     source={require('../../assets/Introduction3.png')}
                 />
                 <Image
+                    testID={"introLogo3"}
                     style={styles.logo}
                     source={require('../../assets/StayAlive-logo.png')}
                 />
@@ -158,9 +204,11 @@ export default function IntroductionPage({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    wrapper: {},
+    wrapper: {
+    },
     slide: {
         flex: 1,
+        position: "absolute",
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -245,9 +293,9 @@ const styles = StyleSheet.create({
         marginLeft: 15,
     },
     paginationContainer: {
+        position: 'absolute',
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 50,
+        marginTop: '170%',
+        alignSelf: "center",
     },
 });
