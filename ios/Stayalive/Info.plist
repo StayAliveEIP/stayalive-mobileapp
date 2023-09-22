@@ -25,16 +25,23 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSExceptionDomains</key>
 		<dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
+		    <key>NSExceptionDomains</key>
+		    <dict>
+		        <key>localhost</key>
+		        <dict>
+		            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+		            <true/>
+		        </dict>
+		        <key>api.stayalive.fr</key>
+		        <dict>
+		            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+		            <true/>
+		            <key>NSIncludesSubdomains</key>
+		            <true/>
+		        </dict>
+		    </dict>
 		</dict>
-	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>

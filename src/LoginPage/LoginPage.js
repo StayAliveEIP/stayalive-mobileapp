@@ -12,7 +12,36 @@ export default function LoginPage({ navigation }) {
     const [password, onChangePassword] = useState('');
 
     const onClickLogin = () => {
-        console.log(email, password);
+        console.log(email.toLocaleLowerCase(), password);
+
+        const url = 'http://api.stayalive.fr:3000/auth/login';
+        const body = JSON.stringify({
+            email: email.toLocaleLowerCase(),
+            password: password,
+        });
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: body,
+        })
+        .then((response) => {
+            //! Check response
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Network response was KO: ' + response.statusText);
+            }
+        })
+        .then((data) => {
+            console.log('Response was OK:', data);
+            navigation.navigate('UnavailablePage');
+        })
+        .catch((error) => {
+            console.error('There has been an issue with the fetch operation:', error);
+        });
     };
 
     const onClickJoin = () => {
