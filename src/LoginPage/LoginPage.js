@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, Image, ScrollView, Alert} from 'react-native';
 import {TextInputStayAlive} from './textInputStayAlive';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../Style/StayAliveStyle'
@@ -32,7 +32,8 @@ export default function LoginPage({ navigation }) {
             if (response.ok) {
                 return response.json();
             } else {
-                throw new Error('Network response was KO: ' + response.statusText);
+                Alert.alert('Error', 'Mauvais identifiants ou mot de passe');
+                return Promise.reject('Invalid credentials');
             }
         })
         .then((data) => {
@@ -40,7 +41,10 @@ export default function LoginPage({ navigation }) {
             navigation.navigate('UnavailablePage');
         })
         .catch((error) => {
-            console.error('There has been an issue with the fetch operation:', error);
+            if (error !== 'Invalid credentials') {
+                console.error('There has been an issue with the fetch operation:', error);
+                Alert.alert('Error', 'Nous ne parvenons pas a contacter nos serveurs');
+            }
         });
     };
 
