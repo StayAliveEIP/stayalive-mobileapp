@@ -10,7 +10,7 @@ const imagePaths = {
     documentSauveteur: require('../../assets/DocumentSauveteur.png'),
 };
 
-function BoxDocument(props) {
+export function BoxDocument(props) {
     const { id, onFileSelect } = props;
     const [filename, setFilename] = useState(null);
 
@@ -22,14 +22,9 @@ function BoxDocument(props) {
 
             const selectedFilename = result[0].name;
             setFilename(selectedFilename);
-
-            // Appel de la fonction de rappel pour transmettre le nom du fichier au parent
             onFileSelect(id, result[0]);
         } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-            } else {
-                throw err;
-            }
+            throw err;
         }
     };
 
@@ -68,7 +63,7 @@ function BoxDocument(props) {
                         color: 'white',
                         fontWeight: 'bold',
                     }}
-                    testID={'login-button'}
+                    testID={`selectDocument-button-${id}`} // Utilisez une chaîne unique pour l'attribut testID
                 >
                     {filename ? (filename.length > 20 ? filename.slice(0, 20) + '...' : filename) : "Télécharger mon document"}
                 </Text>
@@ -98,14 +93,16 @@ export default function SendDocumentPage({ navigation }) {
     };
 
     const onPressSendDocuments = () => {
-        console.log("Noms des fichiers sélectionnés :", selectedFiles);
+        if (selectedFiles["documentID"] !== null && selectedFiles["documentSauveteur"] !== null) {
+            console.log("Noms des fichiers sélectionnés : " + selectedFiles["documentID"].name + " " + selectedFiles["documentSauveteur"].name);
+        }
     };
-
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <TouchableOpacity
+                testID={"button-left-arrow"}
                 style={{ position: 'absolute', top: 20, left: 20, zIndex: 1 }}
-                onPress={() => navigation.goBack()}
+                onPress={() => console.log("arrow left clicked !")}
             >
                 <Icon
                     name="arrow-left"
@@ -135,6 +132,7 @@ export default function SendDocumentPage({ navigation }) {
                         paddingVertical: 10,
                         backgroundColor: 'white',
                     }}
+                    testID={'sendDocument-button'}
                 >
                     <Text
                         style={{
@@ -143,7 +141,6 @@ export default function SendDocumentPage({ navigation }) {
                             color: colors.StayAliveRed,
                             fontWeight: 'bold',
                         }}
-                        testID={'joinUs-button'}
                     >
                         Envoyer vos documents
                     </Text>
