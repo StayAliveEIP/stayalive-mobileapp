@@ -4,48 +4,22 @@ import CheckBox from '@react-native-community/checkbox';
 import {TextInputStayAlive} from './textInputStayAlive';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../Style/StayAliveStyle'
-
-export default function RegistrationPage() {
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {SlideInView} from '../Animations/Animations'
+export default function RegistrationPage({ navigation }) {
     const [names, onChangeNames] = useState('');
     const [email, onChangeEmail] = useState('');
     const [password, onChangePassword] = useState('');
     const [phone, onChangePhone] = useState('');
     const [selectCGUV, setSelectionCGUV] = useState(false);
 
-    const handleRegistration = () => {
-        if (selectCGUV === false)
-            return;
-        const userData = {
-            "names": names,
-            "email": email,
-            "password": password,
-            "phone": phone
-        };
-        body: JSON.stringify(userData),
-
+    const onClickJoinUs = () => {
         console.log(names, email, password, phone, selectCGUV);
-        fetch('http://localhost:8080/api/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 200)
-                    console.log("success");
-                else
-                    console.log("error");
-            })
-            .catch(error => {
-                console.log("error");
-                console.log(error);
-            });
     };
 
     return (
-        <ScrollView >
+        <SlideInView duration={400} value={200}>
+        <ScrollView>
             <View
                 style={{
                     position: 'absolute',
@@ -84,12 +58,26 @@ export default function RegistrationPage() {
             </View>
 
             <View style={{flex: 1}}>
+                <TouchableOpacity
+                    style={{flex: 1, zIndex: 1}}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Icon
+                        name="arrow-left"
+                        size={30}
+                        style={{
+                            marginTop: 20,
+                            marginLeft: 20,
+                        }}
+                        onPress={() => navigation.navigate("LoginPage")}>
+                    </Icon>
+                </TouchableOpacity>
                 <View style={{flex: 1, alignItems: 'center'}}>
                     <Image
                         style={{
                             width: 400,
                             height: 400,
-                            marginTop: -30,
+                            marginTop: -100,
                             resizeMode: 'contain',
                         }}
                         source={require('../../assets/StayAlive1.png')}
@@ -171,7 +159,7 @@ export default function RegistrationPage() {
 
                     </View>
                     <TouchableOpacity
-                        onPress={handleRegistration}
+                        onPress={onClickJoinUs}
                         style={{
                             marginTop: 20,
                             borderWidth: 3,
@@ -197,5 +185,6 @@ export default function RegistrationPage() {
                 </View>
             </View>
         </ScrollView>
+        </SlideInView>
     );
 }
