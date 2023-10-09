@@ -8,14 +8,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {SlideInView} from '../Animations/Animations'
 import Snackbar from 'react-native-snackbar';
 
-
 export default function RegistrationPage({ navigation }) {
     const [names, onChangeNames] = useState('');
     const [email, onChangeEmail] = useState('');
     const [password, onChangePassword] = useState('');
     const [phone, onChangePhone] = useState('');
     const [selectCGUV, setSelectionCGUV] = useState(false);
+    let fetchController = new AbortController();
 
+    useEffect(() => {
+    }, []);
     const onClickJoinUs = async () => {
         let message = "";
         let code = 0;
@@ -49,7 +51,7 @@ export default function RegistrationPage({ navigation }) {
             message = "Vous devez acceptez nos CGU et nos CGV";
         Snackbar.show({
             text: message.toString(),
-            duration: 3000,
+            duration: Snackbar.LENGTH_LONG,
             backgroundColor: "white",
             textColor: code === 200 || code === 201 ? "green" : "red"
         });
