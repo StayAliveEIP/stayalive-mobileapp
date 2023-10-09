@@ -63,7 +63,7 @@ export function BoxDocument(props) {
                         color: 'white',
                         fontWeight: 'bold',
                     }}
-                    testID={`selectDocument-button-${id}`} // Utilisez une chaîne unique pour l'attribut testID
+                    testID={`selectDocument-button-${id}`}
                 >
                     {filename ? (filename.length > 20 ? filename.slice(0, 20) + '...' : filename) : "Télécharger mon document"}
                 </Text>
@@ -76,7 +76,7 @@ BoxDocument.propTypes = {
     id: PropTypes.oneOf(Object.keys(imagePaths)),
     description: PropTypes.string,
     title: PropTypes.string,
-    onFileSelect: PropTypes.func, // Ajoutez une prop pour la fonction de rappel
+    onFileSelect: PropTypes.func,
 };
 
 export default function SendDocumentPage({ navigation }) {
@@ -105,6 +105,7 @@ export default function SendDocumentPage({ navigation }) {
                 onPress={() => console.log("arrow left clicked !")}
             >
                 <Icon
+                    testID={'document-logo'}
                     name="arrow-left"
                     size={30}
                 />

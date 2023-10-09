@@ -1,7 +1,6 @@
 import React from 'react';
-import { fireEvent, render, waitFor } from '@testing-library/react-native';
-import SendDocumentPage from './SendDocumentPage';
-import { BoxDocument } from './SendDocumentPage';
+import { fireEvent, render } from '@testing-library/react-native';
+import SendDocumentPage, { BoxDocument } from './SendDocumentPage';
 
 jest.mock('react-native-document-picker', () => ({
     DocumentPicker: {
@@ -18,7 +17,9 @@ jest.mock('react-native-document-picker', () => ({
 
 describe('SendDocumentPage', () => {
     it('renders correctly', () => {
-        const { getByText } = render(<SendDocumentPage />);
+        const { getByText, getByTestId } = render(<SendDocumentPage />);
+        const logo = getByTestId('document-logo');
+        expect(logo).toBeTruthy();
         expect(getByText('Envoyer mes documents')).toBeTruthy();
     });
 
@@ -32,6 +33,16 @@ describe('SendDocumentPage', () => {
         expect(buttonText).toBe('Télécharger mon document');
     });
 
+    it('renders two BoxDocuments with specific ids', () => {
+        const { getByTestId } = render(<SendDocumentPage />);
+
+        const documentIDBox = getByTestId('selectDocument-button-documentID');
+        const documentSauveteurBox = getByTestId('selectDocument-button-documentSauveteur');
+
+        expect(documentIDBox).toBeTruthy();
+        expect(documentSauveteurBox).toBeTruthy();
+    });
+
     it('clicks the left arrow button', () => {
         const consoleLogSpy = jest.spyOn(console, 'log');
         const { getByTestId } = render(<SendDocumentPage />);
@@ -39,5 +50,11 @@ describe('SendDocumentPage', () => {
         fireEvent.press(leftArrowButton);
         expect(consoleLogSpy).toHaveBeenCalledWith('arrow left clicked !');
         consoleLogSpy.mockRestore();
+    });
+
+    it('renders the "Envoyer vos documents" button', () => {
+        const { getByText } = render(<SendDocumentPage />);
+        const button = getByText('Envoyer vos documents');
+        expect(button).toBeTruthy();
     });
 });
