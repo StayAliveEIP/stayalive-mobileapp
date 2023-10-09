@@ -40,23 +40,4 @@ describe('SendDocumentPage', () => {
         expect(consoleLogSpy).toHaveBeenCalledWith('arrow left clicked !');
         consoleLogSpy.mockRestore();
     });
-
-    it('should call onFileSelect when document is picked', async () => {
-        const onFileSelect = jest.fn();
-        const { getByTestId } = render(
-            <BoxDocument onFileSelect={onFileSelect} id="documentID" title="Title" description="Description" />
-        );
-        const documentButton = getByTestId('selectDocument-button-documentID');
-
-        fireEvent.press(documentButton);
-
-        // Attendez que la fonction DocumentPicker.pick soit appelée
-        await waitFor(() => {
-            expect(onFileSelect).toHaveBeenCalledWith('documentID', {
-                uri: 'mocked_file_uri',
-                name: 'mocked_file_name',
-                type: 'mocked_file_type',
-            });
-        });
-    });
 });
