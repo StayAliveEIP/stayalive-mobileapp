@@ -14,7 +14,6 @@ export default function RegistrationPage({ navigation }) {
     const [password, onChangePassword] = useState('');
     const [phone, onChangePhone] = useState('');
     const [selectCGUV, setSelectionCGUV] = useState(false);
-    let fetchController = new AbortController();
 
     useEffect(() => {
     }, []);
