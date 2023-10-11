@@ -2,6 +2,11 @@ import React from 'react';
 import App from './App';
 import {render} from "@testing-library/react-native";
 
+jest.mock('@react-native-community/geolocation', () => {
+    return {
+        getCurrentPosition: jest.fn(),
+    };
+});
 jest.mock('react-native-snackbar', () => ({
     show: jest.fn(),
 }));
