@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import IntroductionPage from './IntroductionPage/IntroductionPage';
 import UnavailablePage from './UnavailablePage/UnavailablePage';
+import SendDocumentPage from './SendDocumentPage/SendDocumentPage';
 import Maps from './Maps/maps';
 
 const Stack = createNativeStackNavigator();
@@ -14,13 +15,14 @@ const Stack = createNativeStackNavigator();
 export default function App() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName={'Maps'} screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName={'SendDocumentPage'} screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="LoginPage" component={LoginPage} />
                 <Stack.Screen name="RegistrationPage" component={RegistrationPage} />
                 <Stack.Screen name="ProfilePage" component={ProfilePage} />
                 <Stack.Screen name="AvailablePage" component={AvailablePage} />
                 <Stack.Screen name="UnavailablePage" component={UnavailablePage} />
                 <Stack.Screen name="IntroductionPage" component={IntroductionPage} />
+                <Stack.Screen name="SendDocumentPage" component={SendDocumentPage} />
                 <Stack.Screen name="Maps" component={Maps} />
             </Stack.Navigator>
         </NavigationContainer>
