@@ -43,7 +43,7 @@ export default function RegistrationPage({ navigation }) {
                 message = responseData.message;
                 code = response.status;
             } catch (error) {
-                console.error('Erreur lors de la requête POST :', error);
+                console.log('Erreur lors de la requête POST :', error);
             }
         }
         else
