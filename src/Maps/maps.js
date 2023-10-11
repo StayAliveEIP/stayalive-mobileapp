@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, View, Text, Dimensions, TouchableOpacity, Linking, Platform, ActionSheetIOS, Alert } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { colors } from '../Style/StayAliveStyle'; // Import colors
 
 const { width, height } = Dimensions.get("window");
-
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+const address = '24 Rue Pasteur, 94270, France'; // Address variable
 
 export default function Maps() {
   const [region, setRegion] = useState(null);
 
   const pinLocation = {
-    latitude: 48.815788, // replace with the desired latitude (Currently Epitech)
-    longitude: 2.363280, // replace with the desired longitude (Currently Epitech)
+    latitude: 48.815788,
+    longitude: 2.363280,
   };
 
   useEffect(() => {
@@ -35,6 +37,40 @@ export default function Maps() {
     return () => Geolocation.clearWatch(watchId);
   }, []);
 
+  const showMapOptions = () => {
+    if (Platform.OS === 'ios') {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['Cancel', 'Apple Maps', 'Google Maps'],
+          cancelButtonIndex: 0,
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 1) {
+            openAppleMaps();
+          } else if (buttonIndex === 2) {
+            openGoogleMaps();
+          }
+        }
+      );
+    } else {
+      Alert.alert('Open in Maps', 'Choose a map application', [
+        { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+        { text: 'Apple Maps', onPress: () => openAppleMaps() },
+        { text: 'Google Maps', onPress: () => openGoogleMaps() },
+      ]);
+    }
+  };
+
+  const openAppleMaps = () => {
+    const url = `http://maps.apple.com/?address=${encodeURIComponent(address)}`;
+    Linking.openURL(url);
+  };
+
+  const openGoogleMaps = () => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+    Linking.openURL(url);
+  };
+
   return (
     <View style={styles.container}>
       {region ? (
@@ -47,9 +83,40 @@ export default function Maps() {
           <Marker coordinate={pinLocation} />
         </MapView>
       ) : null}
+
+      <View style={styles.floatingWindow}>
+        <View style={styles.header}>
+          <Image source={require('../../assets/SaveLogo.png')} style={styles.image} />
+          <Text style={styles.title}>Sauvetage en cours</Text>
+        </View>
+
+        <View style={styles.infoSection}>
+          <InfoItem icon={'📍'} name={'Destination'} detail={address} />
+          <InfoItem icon={'👤'} name={'Personne à secourir'} detail={'John Doe'} />
+        </View>
+
+        <View style={styles.buttonSection}>
+          <TouchableOpacity style={styles.redButton} onPress={showMapOptions}>
+            <Text style={styles.buttonText}>Ouvrir dans maps</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.whiteButton}>
+            <Text style={styles.redText}>Fin de l'intervention</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
+
+const InfoItem = ({ icon, name, detail }) => (
+  <View style={styles.infoItem}>
+    <Text style={styles.icon}>{icon}</Text>
+    <View>
+      <Text style={styles.infoName}>{name}</Text>
+      <Text style={styles.infoDetail}>{detail}</Text>
+    </View>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -58,5 +125,82 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: '100%',
+  },
+  floatingWindow: {
+    position: 'absolute',
+    bottom: 50,
+    alignSelf: 'center',
+    width: '80%',
+    maxHeight: height / 2,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+  },
+  header: {
+    alignItems: 'center',
+  },
+  image: {
+    width: 50,
+    height: 50,
+  },
+  title: {
+    color: colors.StayAliveRed,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  infoSection: {
+    marginVertical: 20,
+  },
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  icon: {
+    marginRight: 10,
+    fontSize: 24,
+    color: 'grey',
+  },
+  infoName: {
+    fontSize: 16,
+  },
+  infoDetail: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  buttonSection: {
+    alignItems: 'center',
+  },
+  redButton: {
+    marginTop: 10,
+    marginBottom: 5,
+    borderWidth: 3,
+    borderRadius: 50,
+    borderColor: colors.StayAliveRed,
+    paddingHorizontal: 50,
+    paddingVertical: 10,
+    backgroundColor: colors.StayAliveRed,
+  },
+  whiteButton: {
+    marginTop: 5,
+    marginBottom: 10,
+    borderWidth: 3,
+    borderRadius: 50,
+    borderColor: colors.StayAliveRed,
+    paddingHorizontal: 50,
+    paddingVertical: 10,
+    backgroundColor: 'white',
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  redText: {
+    textAlign: 'center',
+    fontSize: 18,
+    color: colors.StayAliveRed,
+    fontWeight: 'bold',
   },
 });
