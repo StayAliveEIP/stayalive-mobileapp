@@ -1,10 +1,12 @@
 import React from 'react';
-import {render, fireEvent, cleanup} from '@testing-library/react-native';
+import { render, fireEvent, cleanup } from '@testing-library/react-native';
 import RegistrationPage from './RegistrationPage';
-import fetch from 'node-fetch';
-import {wait} from "@testing-library/react-native/build/user-event/utils";
+import { wait } from "@testing-library/react-native/build/user-event/utils";
 
-jest.mock('node-fetch');
+import fetchMock from 'jest-fetch-mock'; // Import jest-fetch-mock
+
+fetchMock.enableMocks(); // Activez le mock de fetch
+
 jest.mock('react-native-snackbar', () => ({
     show: jest.fn(),
 }));
@@ -45,7 +47,6 @@ describe('RegistrationPage', () => {
 
     it('Should do the Registration request and get a success status', async () => {
         const { getByTestId } = render(<RegistrationPage />);
-
         const namesInput = getByTestId('names-input');
         const emailInput = getByTestId('email-input');
         const passwordInput = getByTestId('password-input');
@@ -79,7 +80,10 @@ describe('RegistrationPage', () => {
             );
         });
     });
+
     it('Should handle a successful registration', async () => {
+        fetchMock.mockOnce(JSON.stringify({ message: 'Success' }), { status: 200 });
+
         const { getByTestId } = render(<RegistrationPage />);
         const joinUsButton = getByTestId('joinUs-button');
         const checkbox = getByTestId('checkboxCGUV');
@@ -95,6 +99,10 @@ describe('RegistrationPage', () => {
         fireEvent.changeText(phoneInput, '(+33) 09 08 07 06 05');
         fireEvent(checkbox, 'valueChange', true);
         fireEvent.press(joinUsButton);
+
+        fetch.mockResolvedValueOnce({
+            status: 200,
+        });
 
         await wait(() => {
             expect(fetch).toHaveBeenCalledWith(
@@ -128,7 +136,9 @@ describe('RegistrationPage', () => {
     });
 
     it('Should handle a failed registration', async () => {
+        fetchMock.mockOnce('', { status: 400 });
         const { getByTestId } = render(<RegistrationPage />);
+
         const joinUsButton = getByTestId('joinUs-button');
         const checkbox = getByTestId('checkboxCGUV');
         const namesInput = getByTestId('names-input');
@@ -142,6 +152,10 @@ describe('RegistrationPage', () => {
         fireEvent.changeText(phoneInput, '(+33) 09 08 07 06 05');
         fireEvent(checkbox, 'valueChange', true);
         fireEvent.press(joinUsButton);
+
+        fetch.mockResolvedValueOnce({
+            status: 400,
+        });
 
         await wait(() => {
             expect(fetch).toHaveBeenCalledWith(
