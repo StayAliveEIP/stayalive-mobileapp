@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, Image, ScrollView, Alert} from 'react-native';
 import {TextInputStayAlive} from './textInputStayAlive';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../Style/StayAliveStyle'
@@ -12,7 +12,40 @@ export default function LoginPage({ navigation }) {
     const [password, onChangePassword] = useState('');
 
     const onClickLogin = () => {
-        console.log(email, password);
+        console.log(email.toLocaleLowerCase(), password);
+
+        const url = 'http://api.stayalive.fr:3000/auth/login';
+        const body = JSON.stringify({
+            email: email.toLocaleLowerCase(),
+            password: password,
+        });
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: body,
+        })
+        .then((response) => {
+            //! Check response
+            if (response.ok) {
+                return response.json();
+            } else {
+                Alert.alert('Error', 'Mauvais identifiants ou mot de passe');
+                return Promise.reject('Invalid credentials');
+            }
+        })
+        .then((data) => {
+            console.log('Response was OK:', data);
+            navigation.navigate('UnavailablePage');
+        })
+        .catch((error) => {
+            if (error !== 'Invalid credentials') {
+                console.error('There has been an issue with the fetch operation:', error);
+                Alert.alert('Error', 'Nous ne parvenons pas a contacter nos serveurs');
+            }
+        });
     };
 
     const onClickJoin = () => {
