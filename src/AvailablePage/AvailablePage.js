@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { colors } from '../Style/StayAliveStyle';
 
-function TextSlider() {
+export function TextSlider() {
     const [currentPage, setCurrentPage] = useState(0);
 
     const pages = [
@@ -18,7 +18,7 @@ function TextSlider() {
     };
 
     return (
-        <View style={{ alignItems: 'center', marginTop: 60 }}>
+        <View style={{ alignItems: 'center', marginTop: 60 }} testID="slider-container">
             <View style={{
                 backgroundColor: 'white',
                 paddingVertical: 15,
@@ -42,7 +42,7 @@ function TextSlider() {
                     justifyContent: 'center',
                 }}>
                     {pages.map((_, index) => (
-                        <TouchableOpacity key={index} onPress={() => handleBubblePress(index)} style={{ marginHorizontal: 5 }}>
+                        <TouchableOpacity key={index} onPress={() => handleBubblePress(index)} style={{ marginHorizontal: 5 }} testID={`Bubble-${index + 1}`}>
                             <View style={{
                                 width: 10,
                                 height: 10,
@@ -84,6 +84,7 @@ export default function AvailablePage() {
                     shadowRadius: 3.84,
                     elevation: 5,
                 }}
+                testID="profile-badge"
             >
                 <Image
                     style={{ width: 60, height: 60 }}
@@ -92,7 +93,7 @@ export default function AvailablePage() {
             </TouchableOpacity>
 
             <Text style={{ fontSize: 24, color: 'black' }}>Votre statut:</Text>
-            <Text style={{ fontSize: 28, fontWeight: 'bold', color: colors.StayAliveRed, marginTop: 5 }}>Disponible</Text>
+            <Text style={{ fontSize: 28, fontWeight: 'bold', color: colors.StayAliveRed, marginTop: 5 }} testID="status-text">Disponible</Text>
 
             <Image
                 style={{ width: 150, height: 150, marginTop: 30 }}
@@ -113,6 +114,7 @@ export default function AvailablePage() {
                     paddingVertical: 15,
                     backgroundColor: 'transparent',
                 }}
+                testID="indisponible-button"
             >
                 <Text
                     style={{
