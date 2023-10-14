@@ -13,8 +13,9 @@ export default function UnavailablePage() {
     };
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View testID="main-view" style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <TouchableOpacity
+                testID="profile-badge"
                 onPress={onProfileBadgeClick}
                 style={{
                     position: 'absolute',
@@ -31,20 +32,22 @@ export default function UnavailablePage() {
                 }}
             >
                 <Image
+                    testID="profile-badge-image"
                     style={{ width: 60, height: 60 }}
                     source={require('../../assets/ProfileBadge.png')}
                 />
             </TouchableOpacity>
 
-            <Text style={{ fontSize: 24, color: 'black' }}>Votre statut:</Text>
-            <Text style={{ fontSize: 28, fontWeight: 'bold', color: colors.StayAliveRed, marginTop: 5 }}>Indisponible</Text>
+            <Text testID="status-text" style={{ fontSize: 24, color: 'black' }}>Votre statut:</Text>
+            <Text testID="status-indisponible" style={{ fontSize: 28, fontWeight: 'bold', color: colors.StayAliveRed, marginTop: 5 }}>Indisponible</Text>
 
             <Image
+                testID="unavailable-logo"
                 style={{ width: 150, height: 150, marginTop: 30 }}
                 source={require('../../assets/UnavailableLogo.png')}
             />
 
-            <View style={{
+            <View testID="warning-view" style={{
                 backgroundColor: 'white',
                 paddingVertical: 15,
                 paddingHorizontal: 10,
@@ -59,12 +62,13 @@ export default function UnavailablePage() {
                 width: 400,
                 marginTop: 50,
             }}>
-                <Image source={require('../../assets/WarningLogo.png')} style={{ width: 80, height: 80, marginBottom: 15 }} />
-                <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.StayAliveRed, marginBottom: 10 }}>Avant de se rendre disponible:</Text>
-                <Text style={{ fontSize: 16, textAlign: 'center', maxWidth: '80%' }}>Lorem ipsum dolor sit amet consectetur molestiae quas vel sint commodi repudiandae consequuntur voluptatum  fugiat iusto fuga praesentiumoptio, eaque rerum!</Text>
+                <Image testID="warning-logo" source={require('../../assets/WarningLogo.png')} style={{ width: 80, height: 80, marginBottom: 15 }} />
+                <Text testID="warning-title" style={{ fontSize: 18, fontWeight: 'bold', color: colors.StayAliveRed, marginBottom: 10 }}>Avant de se rendre disponible:</Text>
+                <Text testID="warning-text" style={{ fontSize: 16, textAlign: 'center', maxWidth: '80%' }}>Lorem ipsum dolor sit amet consectetur molestiae quas vel sint commodi repudiandae consequuntur voluptatum  fugiat iusto fuga praesentiumoptio, eaque rerum!</Text>
             </View>
 
             <TouchableOpacity
+                testID="available-button"
                 onPress={onClickButton}
                 style={{
                     position: 'absolute',
@@ -78,6 +82,7 @@ export default function UnavailablePage() {
                 }}
             >
                 <Text
+                    testID="available-button-text"
                     style={{
                         textAlign: 'center',
                         fontSize: 18,
