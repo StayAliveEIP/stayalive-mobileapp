@@ -36,3 +36,9 @@ yarn-error.log*
 
 # Ignore macOS files
 .DS_Store
+
+#env files
+.env*
+
+# Coverage report
+coverage/
