@@ -4,7 +4,9 @@ import {render} from "@testing-library/react-native";
 
 jest.mock('@react-native-community/geolocation', () => {
     return {
+        watchPosition: jest.fn(),
         getCurrentPosition: jest.fn(),
+        clearWatch: jest.fn(),
     };
 });
 jest.mock('react-native-snackbar', () => ({
