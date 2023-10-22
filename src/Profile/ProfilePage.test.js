@@ -13,9 +13,12 @@ jest.mock('react-native-image-picker', () => ({
     },
 }));
 
+const mockNavigate = jest.fn();
+const mockNavigation = { navigate: mockNavigate };
+
 describe('ProfilePage', () => {
     it('displays user name', () => {
-        const { getByTestId } = render(<ProfilePage />);
+        const { getByTestId } = render(<ProfilePage navigation={mockNavigation} />);;
         const userName = getByTestId('user-name');
         expect(userName).toBeTruthy();
         expect(userName.props.children).toBe('Louis AUTEF');
@@ -23,7 +26,7 @@ describe('ProfilePage', () => {
 
     it('clicks the left arrow button', () => {
         const consoleLogSpy = jest.spyOn(console, 'log');
-        const { getByTestId } = render(<ProfilePage />);
+        const { getByTestId } = render(<ProfilePage navigation={mockNavigation} />);;
         const leftArrowButton = getByTestId('button-left-arrow');
         fireEvent.press(leftArrowButton);
         expect(consoleLogSpy).toHaveBeenCalledWith('arrow left clicked !');
@@ -32,7 +35,7 @@ describe('ProfilePage', () => {
 
     it('clicks the disconnect button', () => {
         const consoleLogSpy = jest.spyOn(console, 'log');
-        const { getByTestId } = render(<ProfilePage />);
+        const { getByTestId } = render(<ProfilePage navigation={mockNavigation} />);;
         const disconnectButton = getByTestId('button-disconnect');
         fireEvent.press(disconnectButton);
         expect(consoleLogSpy).toHaveBeenCalledWith('disconnect button press !');
@@ -40,7 +43,7 @@ describe('ProfilePage', () => {
     });
 
     it('updates avatarSource when selectImage is called', () => {
-        const { getByTestId } = render(<ProfilePage />);
+        const { getByTestId } = render(<ProfilePage navigation={mockNavigation} />);;
         const selectImageButton = getByTestId('select-image-button');
 
         fireEvent.press(selectImageButton);
