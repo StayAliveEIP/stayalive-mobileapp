@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { colors } from '../Style/StayAliveStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

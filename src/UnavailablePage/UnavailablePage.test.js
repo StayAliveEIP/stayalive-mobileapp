@@ -2,6 +2,10 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import UnavailablePage from './UnavailablePage';
 import { colors } from '../Style/StayAliveStyle';
+import fetchMock from 'jest-fetch-mock';
+
+
+fetchMock.enableMocks();
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
@@ -13,6 +17,8 @@ const mockNavigate = jest.fn();
 const mockNavigation = { navigate: mockNavigate };
 
 describe('UnavailablePage', () => {
+  fetchMock.resetMocks();
+  jest.clearAllMocks();
   it('renders correctly', () => {
     const { getByTestId } = render(<UnavailablePage navigation={mockNavigation} />);
 

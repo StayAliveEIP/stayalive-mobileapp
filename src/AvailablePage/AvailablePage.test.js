@@ -1,7 +1,10 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import AvailablePage, { TextSlider } from './AvailablePage.js';
+import fetchMock from 'jest-fetch-mock';
 import { colors } from '../Style/StayAliveStyle';
+
+fetchMock.enableMocks();
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
     setItem: jest.fn(),
@@ -9,10 +12,16 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
     removeItem: jest.fn(),
 }));
 
+jest.mock('react-native/Libraries/Alert/Alert', () => ({
+    alert: jest.fn(),
+  }));
+
 const mockNavigate = jest.fn();
 const mockNavigation = { navigate: mockNavigate };
 
 describe('AvailablePage', () => {
+    fetchMock.resetMocks();
+    jest.clearAllMocks();
     it('renders correctly', () => {
         const { getByTestId } = render(<AvailablePage navigation={mockNavigation} />);
         const statusText = getByTestId('status-text');
