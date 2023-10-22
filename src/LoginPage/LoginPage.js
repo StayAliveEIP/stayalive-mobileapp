@@ -6,6 +6,7 @@ import { colors } from '../Style/StayAliveStyle'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {FadeInView} from '../Animations/Animations'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginPage({ navigation }) {
     const [email, onChangeEmail] = useState('');
@@ -14,7 +15,7 @@ export default function LoginPage({ navigation }) {
     const onClickLogin = () => {
         console.log(email.toLocaleLowerCase(), password);
 
-        const url = 'http://api.stayalive.fr:3000/auth/login';
+        const url = 'http://localhost:3000/auth/login';
         const body = JSON.stringify({
             email: email.toLocaleLowerCase(),
             password: password,
@@ -38,6 +39,9 @@ export default function LoginPage({ navigation }) {
         })
         .then((data) => {
             console.log('Response was OK:', data);
+            const token = data.accessToken.split(' ')[1];
+            AsyncStorage.setItem('userToken', token);
+            console.log('Token saved:', token);
             navigation.navigate('UnavailablePage');
         })
         .catch((error) => {
