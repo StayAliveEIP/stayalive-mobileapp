@@ -17,7 +17,7 @@ export default function App() {
     return (
         <UserProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName={'LoginPage'} screenOptions={{ headerShown: false }}>
+                <Stack.Navigator initialRouteName={'IntroductionPage'} screenOptions={{ headerShown: false }}>
                     <Stack.Screen name="LoginPage" component={LoginPage} />
                     <Stack.Screen name="RegistrationPage" component={RegistrationPage} />
                     <Stack.Screen name="ProfilePage" component={ProfilePage} />

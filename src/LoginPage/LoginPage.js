@@ -15,7 +15,7 @@ export default function LoginPage({ navigation }) {
     const onClickLogin = () => {
         console.log(email.toLocaleLowerCase(), password);
 
-        const url = 'http://localhost:3000/auth/login';
+        const url = 'http://api.stayalive.fr:3000/auth/login';
         const body = JSON.stringify({
             email: email.toLocaleLowerCase(),
             password: password,

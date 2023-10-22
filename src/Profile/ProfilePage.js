@@ -29,6 +29,11 @@ export default function ProfilePage({ navigation }) {
         });
     };
 
+    const onClickDisconnect = () => {
+        console.log("disconnect button press !");
+        navigation.navigate('SendDocumentPage');
+    };
+
 
 
     return (
@@ -135,7 +140,7 @@ export default function ProfilePage({ navigation }) {
                         paddingVertical: 10,
                         backgroundColor: 'white',
                     }}
-                    onPress={() => console.log("disconnect button press !")}
+                    onPress = {onClickDisconnect}
                 >
                     <Text
                         style={{

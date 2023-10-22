@@ -64,7 +64,7 @@ export default function AvailablePage({ navigation }) {  // Added navigation pro
         console.log('Je me rends indisponible');
         const token = await AsyncStorage.getItem('userToken');
 
-        const url = 'http://localhost:3000/status';
+        const url = 'http://api.stayalive.fr:3000/status';
         const body = JSON.stringify({
             status: 'NOT_AVAILABLE',
         });
@@ -81,7 +81,6 @@ export default function AvailablePage({ navigation }) {  // Added navigation pro
             if (response.ok) {
                 return response.json();
             } else {
-                Alert.alert('Error', 'Failed to update status');
                 return Promise.reject('Failed to update status');
             }
         })
@@ -97,6 +96,7 @@ export default function AvailablePage({ navigation }) {  // Added navigation pro
 
     const onProfileBadgeClick = () => {
         console.log('Profile badge clicked');
+        navigation.navigate('Maps');
     };
 
     return (
