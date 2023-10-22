@@ -1,15 +1,47 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { colors } from '../Style/StayAliveStyle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function UnavailablePage() {
+export default function UnavailablePage({ navigation }) {
 
-    const onClickButton = () => {
+    const onClickButton = async () => {
         console.log('Je me rends Disponible');
+        const token = await AsyncStorage.getItem('userToken');
+
+        const url = 'http://api.stayalive.fr:3000/status';
+        const body = JSON.stringify({
+            status: 'AVAILABLE',
+        });
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: body,
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return Promise.reject('Failed to update status');
+            }
+        })
+        .then(data => {
+            console.log('Status updated:', data);
+            navigation.navigate('AvailablePage');
+        })
+        .catch(error => {
+            console.error('There was an issue with the fetch operation:', error);
+            Alert.alert('Error', 'We could not update your status');
+        });
     };
 
     const onProfileBadgeClick = () => {
         console.log('Profile badge clicked');
+        navigation.navigate('AvailablePage');
     };
 
     return (

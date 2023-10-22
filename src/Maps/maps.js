@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, View, Text, Dimensions, TouchableOpacity, Linking, Platform, ActionSheetIOS, Alert } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import { colors } from '../Style/StayAliveStyle'; // Import colors
+import { colors } from '../Style/StayAliveStyle';
 
 const { width, height } = Dimensions.get("window");
 const ASPECT_RATIO = width / height;
@@ -11,7 +11,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const address = '24 Rue Pasteur, 94270, France'; // Address variable
 
-export default function Maps() {
+export default function Maps({ navigation }) {
   const [region, setRegion] = useState(null);
 
   const pinLocation = {
@@ -71,6 +71,11 @@ export default function Maps() {
     Linking.openURL(url);
   };
 
+  const onClickEnd = () => {
+    navigation.navigate('ProfilePage');
+    console.log('End !');
+};
+
   return (
     <View style={styles.container}>
       {region ? (
@@ -99,7 +104,7 @@ export default function Maps() {
           <TouchableOpacity style={styles.redButton} onPress={showMapOptions}>
             <Text style={styles.buttonText}>Ouvrir dans maps</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.whiteButton}>
+          <TouchableOpacity style={styles.whiteButton} onPress={onClickEnd}>
             <Text style={styles.redText}>Fin de l'intervention</Text>
           </TouchableOpacity>
         </View>
