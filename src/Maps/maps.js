@@ -1,41 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, View, Text, Dimensions, TouchableOpacity, Linking, Platform, ActionSheetIOS, Alert } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
-import { colors } from '../Style/StayAliveStyle';
+import React, { useEffect, useState } from 'react'
+import {
+  Image,
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  Linking,
+  Platform,
+  ActionSheetIOS,
+  Alert,
+} from 'react-native'
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
+import Geolocation from '@react-native-community/geolocation'
+import { colors } from '../Style/StayAliveStyle'
+import PropTypes from 'prop-types'
 
-const { width, height } = Dimensions.get("window");
-const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.02;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const { width, height } = Dimensions.get('window')
+const ASPECT_RATIO = width / height
+const LATITUDE_DELTA = 0.02
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
-const address = '24 Rue Pasteur, 94270, France'; // Address variable
+const address = '24 Rue Pasteur, 94270, France' // Address variable
 
 export default function Maps({ navigation }) {
-  const [region, setRegion] = useState(null);
+  const [region, setRegion] = useState(null)
+
+  Maps.propTypes = {
+    navigation: PropTypes.object.isRequired,
+  }
 
   const pinLocation = {
     latitude: 48.815788,
-    longitude: 2.363280,
-  };
+    longitude: 2.36328,
+  }
 
   useEffect(() => {
     const watchId = Geolocation.watchPosition(
-      position => {
-        const { latitude, longitude } = position.coords;
+      (position) => {
+        const { latitude, longitude } = position.coords
         setRegion({
           latitude,
           longitude,
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
-        });
+        })
       },
-      error => console.log(error),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10 }
-    );
+      (error) => console.log(error),
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000,
+        distanceFilter: 10,
+      }
+    )
 
-    return () => Geolocation.clearWatch(watchId);
-  }, []);
+    return () => Geolocation.clearWatch(watchId)
+  }, [])
 
   const showMapOptions = () => {
     if (Platform.OS === 'ios') {
@@ -46,35 +67,37 @@ export default function Maps({ navigation }) {
         },
         (buttonIndex) => {
           if (buttonIndex === 1) {
-            openAppleMaps();
+            openAppleMaps()
           } else if (buttonIndex === 2) {
-            openGoogleMaps();
+            openGoogleMaps()
           }
         }
-      );
+      )
     } else {
       Alert.alert('Open in Maps', 'Choose a map application', [
         { text: 'Cancel', onPress: () => {}, style: 'cancel' },
         { text: 'Apple Maps', onPress: () => openAppleMaps() },
         { text: 'Google Maps', onPress: () => openGoogleMaps() },
-      ]);
+      ])
     }
-  };
+  }
 
   const openAppleMaps = () => {
-    const url = `http://maps.apple.com/?address=${encodeURIComponent(address)}`;
-    Linking.openURL(url);
-  };
+    const url = `http://maps.apple.com/?address=${encodeURIComponent(address)}`
+    Linking.openURL(url)
+  }
 
   const openGoogleMaps = () => {
-    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
-    Linking.openURL(url);
-  };
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      address
+    )}`
+    Linking.openURL(url)
+  }
 
   const onClickEnd = () => {
-    navigation.navigate('ProfilePage');
-    console.log('End !');
-};
+    navigation.navigate('ProfilePage')
+    console.log('End !')
+  }
 
   return (
     <View style={styles.container}>
@@ -83,7 +106,7 @@ export default function Maps({ navigation }) {
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           initialRegion={region}
-          showsUserLocation={true}
+          showsUserLocation
         >
           <Marker coordinate={pinLocation} />
         </MapView>
@@ -91,13 +114,16 @@ export default function Maps({ navigation }) {
 
       <View style={styles.floatingWindow}>
         <View style={styles.header}>
-          <Image source={require('../../assets/SaveLogo.png')} style={styles.image} />
+          <Image
+            source={require('../../assets/SaveLogo.png')}
+            style={styles.image}
+          />
           <Text style={styles.title}>Sauvetage en cours</Text>
         </View>
 
         <View style={styles.infoSection}>
-          <InfoItem icon={'📍'} name={'Destination'} detail={address} />
-          <InfoItem icon={'👤'} name={'Personne à secourir'} detail={'John Doe'} />
+          <InfoItem icon="📍" name="Destination" detail={address} />
+          <InfoItem icon="👤" name="Personne à secourir" detail="John Doe" />
         </View>
 
         <View style={styles.buttonSection}>
@@ -110,18 +136,25 @@ export default function Maps({ navigation }) {
         </View>
       </View>
     </View>
-  );
+  )
 }
 
-const InfoItem = ({ icon, name, detail }) => (
-  <View style={styles.infoItem}>
-    <Text style={styles.icon}>{icon}</Text>
-    <View>
-      <Text style={styles.infoName}>{name}</Text>
-      <Text style={styles.infoDetail}>{detail}</Text>
+function InfoItem({ icon, name, detail }) {
+  InfoItem.propTypes = {
+    icon: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    detail: PropTypes.string.isRequired,
+  }
+  return (
+    <View style={styles.infoItem}>
+      <Text style={styles.icon}>{icon}</Text>
+      <View>
+        <Text style={styles.infoName}>{name}</Text>
+        <Text style={styles.infoDetail}>{detail}</Text>
+      </View>
     </View>
-  </View>
-);
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -208,4 +241,4 @@ const styles = StyleSheet.create({
     color: colors.StayAliveRed,
     fontWeight: 'bold',
   },
-});
+})

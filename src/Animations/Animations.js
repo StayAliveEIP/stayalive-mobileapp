@@ -1,102 +1,126 @@
-import * as React from "react";
-import { Animated } from "react-native";
+import * as React from 'react'
+import { Animated } from 'react-native'
+import PropTypes from 'prop-types'
 
 const useFocusEffect = (effect) => {
-    const cleanup = () => {};
+  const cleanup = () => {}
 
-    effect();
+  effect()
 
-    return cleanup;
-};
+  return cleanup
+}
 
-export const FadeInView = (props) => {
-    const fadeAnim = React.useRef(new Animated.Value(0)).current;
+export function FadeInView(props) {
+  const fadeAnim = React.useRef(new Animated.Value(0)).current
 
-    useFocusEffect(() => {
-        Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: props.duration,
-            useNativeDriver: true,
-        }).start();
-    });
+  useFocusEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: props.duration,
+      useNativeDriver: true,
+    }).start()
+  })
 
-    return (
-        <Animated.View style={{ opacity: fadeAnim }} testID={props.testID}>
-            {props.children}
-        </Animated.View>
-    );
-};
+  return (
+    <Animated.View style={{ opacity: fadeAnim }} testID={props.testID}>
+      {props.children}
+    </Animated.View>
+  )
+}
 
-export const SlideInView = (props) => {
-    const slideAnim = React.useRef(new Animated.Value(props.value)).current;
+FadeInView.propTypes = {
+  duration: PropTypes.number.isRequired,
+  testID: PropTypes.string,
+  children: PropTypes.node,
+}
 
-    useFocusEffect(() => {
-        Animated.timing(slideAnim, {
-            toValue: 0,
-            duration: props.duration,
-            useNativeDriver: true,
-        }).start();
-    });
+export function SlideInView(props) {
+  const slideAnim = React.useRef(new Animated.Value(props.value)).current
 
-    return (
-        <Animated.View
-            style={{
-                transform: [{ translateX: slideAnim }],
-            }}
-            testID={props.testID}
-        >
-            {props.children}
-        </Animated.View>
-    );
-};
+  useFocusEffect(() => {
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: props.duration,
+      useNativeDriver: true,
+    }).start()
+  })
 
-export const ScaleInView = (props) => {
-    const scaleAnim = React.useRef(new Animated.Value(0.5)).current;
+  return (
+    <Animated.View
+      style={{
+        transform: [{ translateX: slideAnim }],
+      }}
+      testID={props.testID}
+    >
+      {props.children}
+    </Animated.View>
+  )
+}
 
-    useFocusEffect(() => {
-        Animated.spring(scaleAnim, {
-            toValue: 1,
-            friction: 5,
-            useNativeDriver: true,
-        }).start();
-    });
+SlideInView.propTypes = {
+  value: PropTypes.number.isRequired,
+  duration: PropTypes.number.isRequired,
+  testID: PropTypes.string,
+  children: PropTypes.node,
+}
 
-    return (
-        <Animated.View
-            style={{
-                transform: [{ scale: scaleAnim }],
-            }}
-            testID={props.testID}
-        >
-            {props.children}
-        </Animated.View>
-    );
-};
+export function ScaleInView(props) {
+  const scaleAnim = React.useRef(new Animated.Value(0.5)).current
 
-export const RotateInView = (props) => {
-    const rotateAnim = React.useRef(new Animated.Value(0)).current;
+  useFocusEffect(() => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      friction: 5,
+      useNativeDriver: true,
+    }).start()
+  })
 
-    useFocusEffect(() => {
-        Animated.timing(rotateAnim, {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true,
-        }).start();
-    });
+  return (
+    <Animated.View
+      style={{
+        transform: [{ scale: scaleAnim }],
+      }}
+      testID={props.testID}
+    >
+      {props.children}
+    </Animated.View>
+  )
+}
 
-    const interpolatedRotate = rotateAnim.interpolate({
-        inputRange: [0, 1],
-        outputRange: ["0deg", "360deg"],
-    });
+ScaleInView.propTypes = {
+  testID: PropTypes.string,
+  children: PropTypes.node,
+}
 
-    return (
-        <Animated.View
-            style={{
-                transform: [{ rotate: interpolatedRotate }],
-            }}
-            testID={props.testID}
-        >
-            {props.children}
-        </Animated.View>
-    );
-};
+export function RotateInView(props) {
+  const rotateAnim = React.useRef(new Animated.Value(0)).current
+
+  RotateInView.propTypes = {
+    testID: PropTypes.string,
+    children: PropTypes.node,
+  }
+
+  useFocusEffect(() => {
+    Animated.timing(rotateAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start()
+  })
+
+  const interpolatedRotate = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  })
+
+  return (
+    <Animated.View
+      style={{
+        transform: [{ rotate: interpolatedRotate }],
+      }}
+      testID={props.testID}
+    >
+      {props.children}
+    </Animated.View>
+  )
+}
