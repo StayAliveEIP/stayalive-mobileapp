@@ -74,7 +74,6 @@ export default function LoginPage({ navigation }) {
   }
 
   return (
-    <NavigationContainer>
       <FadeInView duration={200}>
         <ScrollView>
           <View
@@ -278,6 +277,5 @@ export default function LoginPage({ navigation }) {
           </View>
         </ScrollView>
       </FadeInView>
-    </NavigationContainer>
   )
 }
