@@ -17,5 +17,10 @@
   "plugins": ["react", "react-native"],
   "rules": {
     "react/no-unescaped-entities": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
