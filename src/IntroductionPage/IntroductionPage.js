@@ -127,6 +127,7 @@ export function IntroductionPage2({ navigation }) {
               source={require('../../assets/Introduction-logo3.png')}
             />
             <Text style={styles.description2}>
+              <Text> Une communauté </Text>
               <Text style={styles.redText}>'d'experts'</Text> dédiés et prêts à
               agir
             </Text>
