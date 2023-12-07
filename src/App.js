@@ -23,7 +23,10 @@ export default function App() {
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="LoginPage" component={LoginPage} />
-          <Stack.Screen name="ForgotPasswordPage" component={ForgotPasswordPage} />
+          <Stack.Screen
+            name="ForgotPasswordPage"
+            component={ForgotPasswordPage}
+          />
           <Stack.Screen name="RegistrationPage" component={RegistrationPage} />
           <Stack.Screen name="ProfilePage" component={ProfilePage} />
           <Stack.Screen name="AvailablePage" component={AvailablePage} />

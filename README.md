@@ -1,6 +1,7 @@
 [![codecov](https://codecov.io/github/StayAliveEIP/stayalive-mobileapp/branch/main/graph/badge.svg?token=6YAPJ9HYPQ)](https://codecov.io/github/StayAliveEIP/stayalive-mobileapp)
 [![Build Apk](https://github.com/StayAliveEIP/stayalive-mobileapp/actions/workflows/BuildApk.yml/badge.svg?branch=main)](https://github.com/StayAliveEIP/stayalive-mobileapp/actions/workflows/BuildApk.yml)
 [![Build Tests](https://github.com/StayAliveEIP/stayalive-mobileapp/actions/workflows/BuildTest.yml/badge.svg?branch=main)](https://github.com/StayAliveEIP/stayalive-mobileapp/actions/workflows/BuildTest.yml)
+
 <div id="top"></div>
 <br />
 <div align="center">
@@ -98,14 +99,14 @@ When working on something:
 # Our group
 
 | Name            | GitHub                 | Working on |
-| --------------- | ---------------------- |------------|
+| --------------- | ---------------------- | ---------- |
 | Martin LEBLANCS | [MartinLeblancs][GhML] | Mobile APP |
 | Noel VARGA      | [noelvarga25][GhNV]    | Mobile APP |
 | Matthieu QUERU  | [Matthieu33197][GhMQ]  | Web APP    |
 | Bastien CANTET  | [bastosbob][GhBC]      | API        |
 | Florian DAMIOT  | [florianepitech][GhFD] | API        |
 
-[//]: # "These are the links used above"
+[//]: # 'These are the links used above'
 [GhML]: https://github.com/MartinLeblancs
 [GhMQ]: https://github.com/Matthieu33197
 [GhNV]: https://github.com/noelvarga25

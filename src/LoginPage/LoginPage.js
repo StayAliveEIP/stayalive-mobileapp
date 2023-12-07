@@ -14,7 +14,6 @@ import { colors } from '../Style/StayAliveStyle'
 import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
 
-
 export default function LoginPage({ navigation }) {
   const [email, onChangeEmail] = useState('')
   const [password, onChangePassword] = useState('')
@@ -140,7 +139,7 @@ export default function LoginPage({ navigation }) {
             />
             <Text
               style={{
-                  marginTop: 14,
+                marginTop: 14,
                 fontSize: 22,
                 color: 'black',
                 fontWeight: 'bold',

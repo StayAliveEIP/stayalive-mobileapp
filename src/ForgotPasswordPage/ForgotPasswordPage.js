@@ -1,89 +1,96 @@
-import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { FadeInView } from '../Animations/Animations';
-import { colors } from '../Style/StayAliveStyle';
-import { TextInputStayAlive } from '../Utils/textInputStayAlive';
-import Snackbar from 'react-native-snackbar';
+import React, { useState } from 'react'
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
+import { FadeInView } from '../Animations/Animations'
+import { colors } from '../Style/StayAliveStyle'
+import { TextInputStayAlive } from '../Utils/textInputStayAlive'
+import Snackbar from 'react-native-snackbar'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import PropTypes from 'prop-types'
 
 export default function ForgotPasswordPage({ navigation }) {
-  const [email, onChangeEmail] = useState('');
-  const [token, onChangeToken] = useState('');
-  const [newPassword, onChangeNewPassword] = useState('');
-  const [confirmPassword, onChangeConfirmPassword] = useState('');
-  const [resetStep, setResetStep] = useState(0);
+  const [email, onChangeEmail] = useState('')
+  const [token, onChangeToken] = useState('')
+  const [newPassword, onChangeNewPassword] = useState('')
+  const [confirmPassword, onChangeConfirmPassword] = useState('')
+  const [resetStep, setResetStep] = useState(0)
+
+  ForgotPasswordPage.propTypes = {
+    navigation: PropTypes.object.isRequired,
+  }
 
   const resetPassword = async () => {
     try {
-      const url = `http://api.stayalive.fr:3000/account/forgot-password/link?email=${encodeURIComponent(email)}`;
+      const url = `http://api.stayalive.fr:3000/account/forgot-password/link?email=${encodeURIComponent(
+        email
+      )}`
 
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
       if (response.ok) {
-        setResetStep(1);
+        setResetStep(1)
       } else {
-        const message = data.message;
-        const code = response.status;
+        const message = data.message
+        const code = response.status
         Snackbar.show({
           text: message.toString(),
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: 'white',
           textColor: code === 200 || code === 201 ? 'green' : 'red',
-        });
+        })
       }
     } catch (error) {
-      console.error('Error during password reset link request:', error);
+      console.error('Error during password reset link request:', error)
     }
-  };
+  }
 
   const submitNewPassword = async () => {
     try {
       if (newPassword !== confirmPassword) {
         Snackbar.show({
-          text: "Les mots de passe ne correspondent pas.",
+          text: 'Les mots de passe ne correspondent pas.',
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: 'white',
           textColor: 'red',
-        });
-        return;
+        })
+        return
       }
 
-      const url = `http://api.stayalive.fr:3000/account/forgot-password/reset`;
+      const url = `http://api.stayalive.fr:3000/account/forgot-password/reset`
       const body = {
-        "token": token,
-        "password": newPassword,
-      };
+        token,
+        password: newPassword,
+      }
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
-      });
+      })
 
-      const responseData = await response.json();
+      const responseData = await response.json()
       if (response.ok) {
-        setResetStep(2);
+        setResetStep(2)
       } else {
-        const message = responseData.message;
-        const code = response.status;
+        const message = responseData.message
+        const code = response.status
         Snackbar.show({
           text: message.toString(),
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: 'white',
           textColor: code === 200 || code === 201 ? 'green' : 'red',
-        });
+        })
       }
     } catch (error) {
-      console.error('Error during password reset link request:', error);
+      console.error('Error during password reset link request:', error)
     }
-  };
+  }
 
   return (
     <FadeInView duration={200}>
@@ -121,7 +128,9 @@ export default function ForgotPasswordPage({ navigation }) {
               fontWeight: 'bold',
             }}
           >
-            {resetStep === 0 ? 'Mot de passe oublié ?' : 'Réinitialisation du mot de passe'}
+            {resetStep === 0
+              ? 'Mot de passe oublié ?'
+              : 'Réinitialisation du mot de passe'}
           </Text>
           <Text
             style={{
@@ -151,13 +160,13 @@ export default function ForgotPasswordPage({ navigation }) {
               }}
             >
               Pas de panique, entrez votre adresse email ci-dessous, et nous
-              vous enverrons un e-mail avec les instructions pour réinitialiser votre mot de passe !
+              vous enverrons un e-mail avec les instructions pour réinitialiser
+              votre mot de passe !
             </Text>
           </View>
 
           {resetStep === 0 ? (
             <>
-
               <TextInputStayAlive
                 valueTestID="forgotpass-email-input"
                 text="Votre adresse E-mail"
@@ -191,7 +200,7 @@ export default function ForgotPasswordPage({ navigation }) {
                 </Text>
               </TouchableOpacity>
             </>
-          ) : (resetStep === 1 ? (
+          ) : resetStep === 1 ? (
             <>
               <TextInputStayAlive
                 valueTestID="resetpass-token-input"
@@ -253,10 +262,9 @@ export default function ForgotPasswordPage({ navigation }) {
             >
               Mot de passe réinitialisé avec succès !
             </Text>
-          ))}
-
+          )}
         </View>
       </ScrollView>
     </FadeInView>
-  );
+  )
 }
