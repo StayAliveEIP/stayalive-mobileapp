@@ -8,6 +8,7 @@ import AvailablePage from './AvailablePage/AvailablePage'
 import IntroductionPage from './IntroductionPage/IntroductionPage'
 import UnavailablePage from './UnavailablePage/UnavailablePage'
 import SendDocumentPage from './SendDocumentPage/SendDocumentPage'
+import ForgotPasswordPage from './ForgotPasswordPage/ForgotPasswordPage'
 import Maps from './Maps/maps'
 import { UserProvider } from './Utils/UserContext'
 
@@ -18,10 +19,11 @@ export default function App() {
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="IntroductionPage"
+          initialRouteName="LoginPage"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="LoginPage" component={LoginPage} />
+          <Stack.Screen name="ForgotPasswordPage" component={ForgotPasswordPage} />
           <Stack.Screen name="RegistrationPage" component={RegistrationPage} />
           <Stack.Screen name="ProfilePage" component={ProfilePage} />
           <Stack.Screen name="AvailablePage" component={AvailablePage} />
