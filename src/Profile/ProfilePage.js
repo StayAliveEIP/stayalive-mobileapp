@@ -38,6 +38,10 @@ export default function ProfilePage({ navigation }) {
     navigation.navigate('SendDocumentPage')
   }
 
+  const goBack = () => {
+    navigation.goBack()
+  }
+
   return (
     <ScrollView style={{ flex: 1, position: 'absolute' }}>
       <View
@@ -121,13 +125,9 @@ export default function ProfilePage({ navigation }) {
             left: 30,
             zIndex: 1,
           }}
-          onPress={() => console.log('arrow left clicked !')}
+          onPress={goBack}
         >
-          <Icon
-            name="arrow-left"
-            size={30}
-            onPress={() => console.log('arrow left clicked !')}
-          />
+          <Icon name="arrow-left" size={30} onPress={goBack} />
         </TouchableOpacity>
         <Menu name="Mes Sauvetages" icon="help-buoy-outline" />
         <Menu name="Mon Compte" icon="person-outline" />

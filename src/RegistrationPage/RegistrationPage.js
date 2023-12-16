@@ -201,6 +201,7 @@ export default function RegistrationPage({ navigation }) {
               <Text> et nos </Text>
               <Text style={{ color: colors.StayAliveRed }}>CGV</Text>
             </View>
+
             <TouchableOpacity
               onPress={onClickJoinUs}
               style={{
