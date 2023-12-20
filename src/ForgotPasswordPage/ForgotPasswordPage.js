@@ -115,7 +115,6 @@ export default function ForgotPasswordPage({ navigation }) {
             style={{
               width: 200,
               height: 200,
-              marginTop: 60,
               resizeMode: 'contain',
             }}
             source={require('../../assets/ForgotPasswordLogo.png')}
@@ -207,7 +206,7 @@ export default function ForgotPasswordPage({ navigation }) {
                 text="Entrez le token"
                 field={token}
                 onChangeField={onChangeToken}
-                label="Token"
+                label="Token de validation"
               />
               <TextInputStayAlive
                 valueTestID="resetpass-newpassword-input"
