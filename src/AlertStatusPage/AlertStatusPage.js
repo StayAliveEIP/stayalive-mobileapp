@@ -85,7 +85,7 @@ export default function AlertStatusPage({ navigation }) {
               padding: 10,
             }}
           >
-            <Icon name="flag" size={30} color="red" />
+            <Icon name="flag-o" size={30} color="red" />
           </View>
         </View>
         <View
@@ -138,7 +138,7 @@ export default function AlertStatusPage({ navigation }) {
               alignItems: 'center',
             }}
           >
-            <Icon name="user" size={30} color="red" />
+            <Icon name="user-o" size={30} color="red" />
           </View>
         </View>
         <View
