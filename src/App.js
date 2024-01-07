@@ -9,6 +9,7 @@ import IntroductionPage from './IntroductionPage/IntroductionPage'
 import UnavailablePage from './UnavailablePage/UnavailablePage'
 import SendDocumentPage from './SendDocumentPage/SendDocumentPage'
 import Maps from './Maps/maps'
+import AlertStatusPage from './AlertStatusPage/AlertStatusPage'
 import { UserProvider } from './Utils/UserContext'
 
 const Stack = createNativeStackNavigator()
@@ -18,7 +19,7 @@ export default function App() {
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="IntroductionPage"
+          initialRouteName="UnavailablePage"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="LoginPage" component={LoginPage} />
@@ -29,6 +30,7 @@ export default function App() {
           <Stack.Screen name="IntroductionPage" component={IntroductionPage} />
           <Stack.Screen name="SendDocumentPage" component={SendDocumentPage} />
           <Stack.Screen name="Maps" component={Maps} />
+          <Stack.Screen name="AlertStatusPage" component={AlertStatusPage} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
