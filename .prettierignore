@@ -1,4 +1,8 @@
 node_modules/
 android/
+assets/
+coverage/
+ios/
+.github/
 coverage/
 assets/

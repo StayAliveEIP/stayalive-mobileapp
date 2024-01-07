@@ -11,7 +11,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { FadeInView } from '../Animations/Animations'
 import { colors } from '../Style/StayAliveStyle'
-import { TextInputStayAlive } from './textInputStayAlive'
+import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
 
 export default function LoginPage({ navigation }) {
@@ -70,6 +70,10 @@ export default function LoginPage({ navigation }) {
 
   const onClickLoginWithGoogle = () => {
     console.log('Google !')
+  }
+
+  const onClickForgotPassword = () => {
+    navigation.navigate('ForgotPasswordPage')
   }
 
   return (
@@ -160,7 +164,7 @@ export default function LoginPage({ navigation }) {
                 label="Mot de passe"
                 secureTextEntry
               />
-              <TouchableOpacity onPress={() => console.log('Forgot Password?')}>
+              <TouchableOpacity onPress={onClickForgotPassword}>
                 <Text
                   style={{
                     fontWeight: 'bold',
