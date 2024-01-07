@@ -14,7 +14,7 @@ export default function AlertStatusPage({ navigation }) {
   }
 
   const goProfilePage = () => {
-    console.log('Go Profile Page !');
+    console.log('Go Profile Page !')
     navigation.push('ProfilePage')
   }
 

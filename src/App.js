@@ -21,7 +21,6 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="LoginPage"
-          initialRouteName="UnavailablePage"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="LoginPage" component={LoginPage} />

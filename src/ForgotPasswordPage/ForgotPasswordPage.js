@@ -93,15 +93,15 @@ export default function ForgotPasswordPage({ navigation }) {
   }
 
   const goBack = () => {
-    console.log("Go back !");
-    navigation.goBack();
+    console.log('Go back !')
+    navigation.goBack()
   }
 
   return (
     <FadeInView duration={200}>
       <ScrollView>
         <TouchableOpacity
-          testID={"back-button"}
+          testID={'back-button'}
           style={{ flex: 1, zIndex: 1 }}
           onPress={() => goBack()}
         >
@@ -112,7 +112,6 @@ export default function ForgotPasswordPage({ navigation }) {
               marginTop: 20,
               marginLeft: 20,
             }}
-
           />
         </TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
