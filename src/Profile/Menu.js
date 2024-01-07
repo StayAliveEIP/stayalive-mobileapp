@@ -7,7 +7,9 @@ export function Menu(props) {
   Menu.propTypes = {
     icon: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-  }
+    goTo: PropTypes.string.isRequired,
+    navigation: PropTypes.object.isRequired,
+}
   return (
     <View
       testID="box-menu"
@@ -43,7 +45,7 @@ export function Menu(props) {
       <TouchableOpacity
         testID="button-right-arrow"
         style={{ flex: 1, zIndex: 1, position: 'absolute' }}
-        onPress={() => console.log(`Menu ${props.name}`)}
+        onPress={() => props.navigation.navigate(props.goTo)}
       >
         <Icon
           style={{ marginLeft: '90%' }}
