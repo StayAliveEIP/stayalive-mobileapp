@@ -103,7 +103,7 @@ export default function ForgotPasswordPage({ navigation }) {
         <TouchableOpacity
           testID={"back-button"}
           style={{ flex: 1, zIndex: 1 }}
-          onPress={goBack()}
+          onPress={() => goBack()}
         >
           <Icon
             name="arrow-left"
@@ -112,6 +112,7 @@ export default function ForgotPasswordPage({ navigation }) {
               marginTop: 20,
               marginLeft: 20,
             }}
+
           />
         </TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
