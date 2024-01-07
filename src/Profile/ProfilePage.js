@@ -13,6 +13,7 @@ export default function ProfilePage({ navigation }) {
   ProfilePage.propTypes = {
     navigation: PropTypes.object.isRequired,
   }
+
   const selectImage = async () => {
     const options = {
       mediaType: 'photo',
@@ -36,6 +37,11 @@ export default function ProfilePage({ navigation }) {
   const onClickDisconnect = () => {
     console.log('disconnect button press !')
     navigation.navigate('SendDocumentPage')
+  }
+
+  const goBack = () => {
+    console.log('arrow left clicked !')
+    navigation.goBack()
   }
 
   return (
@@ -121,13 +127,9 @@ export default function ProfilePage({ navigation }) {
             left: 30,
             zIndex: 1,
           }}
-          onPress={() => console.log('arrow left clicked !')}
+          onPress={goBack}
         >
-          <Icon
-            name="arrow-left"
-            size={30}
-            onPress={() => console.log('arrow left clicked !')}
-          />
+          <Icon name="arrow-left" size={30} onPress={goBack} />
         </TouchableOpacity>
         <Menu name="Mes Sauvetages" icon="help-buoy-outline" />
         <Menu name="Mon Compte" icon="person-outline" />

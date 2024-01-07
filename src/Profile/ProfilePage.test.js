@@ -14,7 +14,7 @@ jest.mock('react-native-image-picker', () => ({
 }))
 
 const mockNavigate = jest.fn()
-const mockNavigation = { navigate: mockNavigate }
+const mockNavigation = { navigate: mockNavigate, goBack: jest.fn() }
 
 describe('ProfilePage', () => {
   it('displays user name', () => {

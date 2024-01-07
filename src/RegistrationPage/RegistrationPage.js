@@ -36,7 +36,7 @@ export default function RegistrationPage({ navigation }) {
           phone,
         }
         const response = await fetch(
-          'http://api.stayalive.fr:3000/auth/register',
+          'http://api.stayalive.fr:3000/rescuer/auth/register',
           {
             method: 'POST',
             headers: {
@@ -201,6 +201,7 @@ export default function RegistrationPage({ navigation }) {
               <Text> et nos </Text>
               <Text style={{ color: colors.StayAliveRed }}>CGV</Text>
             </View>
+
             <TouchableOpacity
               onPress={onClickJoinUs}
               style={{

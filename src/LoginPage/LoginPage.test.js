@@ -63,7 +63,7 @@ describe('LoginPage', () => {
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        'http://api.stayalive.fr:3000/auth/login',
+        'http://api.stayalive.fr:3000/rescuer/auth/login',
         {
           method: 'POST',
           headers: {
@@ -92,7 +92,7 @@ describe('LoginPage', () => {
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        'http://api.stayalive.fr:3000/auth/login',
+        'http://api.stayalive.fr:3000/rescuer/auth/login',
         {
           method: 'POST',
           headers: {

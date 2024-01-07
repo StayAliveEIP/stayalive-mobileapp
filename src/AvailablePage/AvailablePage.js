@@ -89,7 +89,7 @@ export default function AvailablePage({ navigation }) {
     console.log('Je me rends indisponible')
     const token = await AsyncStorage.getItem('userToken')
 
-    const url = 'http://api.stayalive.fr:3000/status'
+    const url = 'http://api.stayalive.fr:3000/rescuer/status'
     const body = JSON.stringify({
       status: 'NOT_AVAILABLE',
     })
@@ -122,7 +122,7 @@ export default function AvailablePage({ navigation }) {
 
   const onProfileBadgeClick = () => {
     console.log('Profile badge clicked')
-    navigation.navigate('Maps')
+    navigation.navigate('ProfilePage')
   }
 
   return (
