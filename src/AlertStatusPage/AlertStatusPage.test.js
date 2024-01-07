@@ -1,56 +1,58 @@
-import React from 'react'
-import { render, fireEvent } from '@testing-library/react-native'
-import fetchMock from 'jest-fetch-mock'
-import AvailablePage from './AvailablePage.js'
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import fetchMock from 'jest-fetch-mock';
+import AlertStatusPage from './AlertStatusPage';
 
-fetchMock.enableMocks()
+fetchMock.enableMocks();
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
   getItem: jest.fn(),
   removeItem: jest.fn(),
-}))
+}));
 
 jest.mock('react-native/Libraries/Alert/Alert', () => ({
   alert: jest.fn(),
-}))
+}));
 
-const mockNavigate = jest.fn()
-const mockNavigation = { navigate: mockNavigate }
+const mockNavigate = jest.fn();
+const mockNavigation = { push: mockNavigate };
 
-describe('AvailablePage', () => {
-  fetchMock.resetMocks()
-  jest.clearAllMocks()
+describe('AlertStatusPage', () => {
+  fetchMock.resetMocks();
+  jest.clearAllMocks();
+
   it('renders correctly', () => {
     const { getByTestId } = render(
-      <AvailablePage navigation={mockNavigation} />
-    )
-    const statusText = getByTestId('status-text')
-    expect(statusText).toBeTruthy()
-    expect(statusText.props.children).toBe('Disponible')
-    const sliderContainer = getByTestId('slider-container')
-    expect(sliderContainer).toBeTruthy()
-  })
+      <AlertStatusPage navigation={mockNavigation} />
+    );
+    const statusText = getByTestId('status-text');
+    expect(statusText).toBeTruthy();
+    expect(statusText.props.children).toBe('En attente de réponse ...');
+  });
 
-  it('calls onClickButton when "Se rendre indisponible" button is clicked', () => {
-    const consoleLogSpy = jest.spyOn(console, 'log')
-    const { getByTestId } = render(
-      <AvailablePage navigation={mockNavigation} />
-    )
-    const button = getByTestId('indisponible-button')
-    fireEvent.press(button)
-    expect(consoleLogSpy).toHaveBeenCalledWith('Je me rends indisponible')
-    consoleLogSpy.mockRestore()
-  })
+  it('calls RefuseAlert when "Refuser l\'alerte" button is pressed', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log');
+    const { getByText } = render(<AlertStatusPage navigation={mockNavigation} />);
+    const refuseButton = getByText('Refuser l\'alerte');
+    fireEvent.press(refuseButton);
+    expect(consoleLogSpy).toHaveBeenCalledWith('You refuse the alert !');
+    consoleLogSpy.mockRestore();
+  });
 
-  it('calls onProfileBadgeClick when profile badge is clicked', () => {
-    const consoleLogSpy = jest.spyOn(console, 'log')
-    const { getByTestId } = render(
-      <AvailablePage navigation={mockNavigation} />
-    )
-    const profileBadge = getByTestId('profile-badge')
-    fireEvent.press(profileBadge)
-    expect(consoleLogSpy).toHaveBeenCalledWith('Profile badge clicked')
-    consoleLogSpy.mockRestore()
-  })
-})
+  it('calls AcceptAlert when "Accepter l\'alerte" button is pressed', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log');
+    const { getByText } = render(<AlertStatusPage navigation={mockNavigation} />);
+    const acceptButton = getByText('Accepter l\'alerte');
+    fireEvent.press(acceptButton);
+    expect(consoleLogSpy).toHaveBeenCalledWith('You accept the alert !');
+    consoleLogSpy.mockRestore();
+  });
+
+  it('navigates to ProfilePage when "ProfileBadge" is pressed', () => {
+    const { getByTestId } = render(<AlertStatusPage navigation={mockNavigation} />);
+    const profileBadge = getByTestId('profile-badge-image');
+    fireEvent.press(profileBadge);
+    expect(mockNavigate).toHaveBeenCalledWith('ProfilePage');
+  });
+});

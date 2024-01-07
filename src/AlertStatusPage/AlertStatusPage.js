@@ -14,6 +14,7 @@ export default function AlertStatusPage({ navigation }) {
   }
 
   const goProfilePage = () => {
+    console.log('Go Profile Page !');
     navigation.push('ProfilePage')
   }
 
@@ -42,14 +43,11 @@ export default function AlertStatusPage({ navigation }) {
         />
       </TouchableOpacity>
 
-      <Text
-        testID="status-text"
-        style={{ marginTop: 100, fontSize: 24, color: 'black' }}
-      >
+      <Text style={{ marginTop: 100, fontSize: 24, color: 'black' }}>
         Votre statut:
       </Text>
       <Text
-        testID="status-indisponible"
+        testID="status-text"
         style={{
           fontSize: 28,
           fontWeight: 'bold',

@@ -36,7 +36,7 @@ export default function RegistrationPage({ navigation }) {
           phone,
         }
         const response = await fetch(
-          'http://api.stayalive.fr:3000/auth/register',
+          'http://api.stayalive.fr:3000/rescuer/auth/register',
           {
             method: 'POST',
             headers: {

@@ -13,6 +13,7 @@ export default function ProfilePage({ navigation }) {
   ProfilePage.propTypes = {
     navigation: PropTypes.object.isRequired,
   }
+
   const selectImage = async () => {
     const options = {
       mediaType: 'photo',
@@ -39,6 +40,7 @@ export default function ProfilePage({ navigation }) {
   }
 
   const goBack = () => {
+    console.log('arrow left clicked !')
     navigation.goBack()
   }
 

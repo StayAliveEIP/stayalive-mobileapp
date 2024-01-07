@@ -19,7 +19,7 @@ export default function App() {
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="AlertStatusPage"
+          initialRouteName="UnavailablePage"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="LoginPage" component={LoginPage} />

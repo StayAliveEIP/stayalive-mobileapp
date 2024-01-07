@@ -12,7 +12,7 @@ export default function UnavailablePage({ navigation }) {
     console.log('Je me rends Disponible')
     const token = await AsyncStorage.getItem('userToken')
 
-    const url = 'http://api.stayalive.fr:3000/status'
+    const url = 'http://api.stayalive.fr:3000/rescuer/status'
     const body = JSON.stringify({
       status: 'AVAILABLE',
     })

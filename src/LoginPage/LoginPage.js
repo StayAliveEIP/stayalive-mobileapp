@@ -24,7 +24,7 @@ export default function LoginPage({ navigation }) {
   const onClickLogin = () => {
     console.log(email.toLowerCase(), password)
 
-    const url = 'http://api.stayalive.fr:3000/auth/login'
+    const url = 'http://api.stayalive.fr:3000/rescuer/auth/login'
     const body = JSON.stringify({
       email: email.toLowerCase(),
       password,
