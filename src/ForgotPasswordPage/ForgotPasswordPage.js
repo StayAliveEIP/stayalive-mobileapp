@@ -20,7 +20,7 @@ export default function ForgotPasswordPage({ navigation }) {
 
   const resetPassword = async () => {
     try {
-      const url = `http://api.stayalive.fr:3000/account/forgot-password/link?email=${encodeURIComponent(
+      const url = `http://api.stayalive.fr:3000/rescuer/forgot-password/link?email=${encodeURIComponent(
         email
       )}`
 
@@ -61,7 +61,7 @@ export default function ForgotPasswordPage({ navigation }) {
         return
       }
 
-      const url = `http://api.stayalive.fr:3000/account/forgot-password/reset`
+      const url = `http://api.stayalive.fr:3000/rescuer/forgot-password/reset`
       const body = {
         token,
         password: newPassword,
@@ -92,12 +92,18 @@ export default function ForgotPasswordPage({ navigation }) {
     }
   }
 
+  const goBack = () => {
+    console.log("Go back !");
+    navigation.goBack();
+  }
+
   return (
     <FadeInView duration={200}>
       <ScrollView>
         <TouchableOpacity
+          testID={"back-button"}
           style={{ flex: 1, zIndex: 1 }}
-          onPress={() => navigation.goBack()}
+          onPress={goBack()}
         >
           <Icon
             name="arrow-left"
@@ -106,7 +112,6 @@ export default function ForgotPasswordPage({ navigation }) {
               marginTop: 20,
               marginLeft: 20,
             }}
-            onPress={() => navigation.navigate('LoginPage')}
           />
         </TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center' }}>
@@ -168,6 +173,7 @@ export default function ForgotPasswordPage({ navigation }) {
             <>
               <TextInputStayAlive
                 valueTestID="forgotpass-email-input"
+                testID="forgotpass-email-input"
                 text="Votre adresse E-mail"
                 field={email}
                 onChangeField={onChangeEmail}
@@ -203,6 +209,7 @@ export default function ForgotPasswordPage({ navigation }) {
             <>
               <TextInputStayAlive
                 valueTestID="resetpass-token-input"
+                testID="resetpass-token-input"
                 text="Entrez le token"
                 field={token}
                 onChangeField={onChangeToken}
@@ -210,14 +217,17 @@ export default function ForgotPasswordPage({ navigation }) {
               />
               <TextInputStayAlive
                 valueTestID="resetpass-newpassword-input"
+                TestID="resetpass-newpassword-input"
                 text="Entrez le nouveau mot de passe"
                 field={newPassword}
                 onChangeField={onChangeNewPassword}
                 label="Nouveau mot de passe"
                 secureTextEntry
               />
+
               <TextInputStayAlive
                 valueTestID="resetpass-confirm-password-input"
+                testID="resetpass-confirm-password-input"
                 text="Confirmez le nouveau mot de passe"
                 field={confirmPassword}
                 onChangeField={onChangeConfirmPassword}
