@@ -15,6 +15,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
 import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
@@ -99,6 +100,11 @@ export default function Maps({ navigation }) {
     console.log('End !')
   }
 
+  const goBack = () => {
+    console.log('arrow left clicked !')
+    navigation.goBack()
+  }
+
   return (
     <View style={styles.container}>
       {region ? (
@@ -112,6 +118,18 @@ export default function Maps({ navigation }) {
         </MapView>
       ) : null}
 
+      <TouchableOpacity
+        testID="button-left-arrow"
+        style={{
+          position: 'absolute',
+          top: 30,
+          left: 30,
+          zIndex: 1,
+        }}
+        onPress={goBack}
+      >
+        <Icon name="arrow-left" size={30} onPress={goBack} />
+      </TouchableOpacity>
       <View style={styles.floatingWindow}>
         <View style={styles.header}>
           <Image
@@ -125,6 +143,7 @@ export default function Maps({ navigation }) {
           <InfoItem icon="📍" name="Destination" detail={address} />
           <InfoItem icon="👤" name="Personne à secourir" detail="John Doe" />
         </View>
+
 
         <View style={styles.buttonSection}>
           <TouchableOpacity style={styles.redButton} onPress={showMapOptions}>
