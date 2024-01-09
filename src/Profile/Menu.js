@@ -9,7 +9,7 @@ export function Menu(props) {
     name: PropTypes.string.isRequired,
     goTo: PropTypes.string.isRequired,
     navigation: PropTypes.object.isRequired,
-}
+  }
   return (
     <View
       testID="box-menu"

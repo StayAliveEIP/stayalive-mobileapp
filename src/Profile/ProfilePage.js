@@ -131,10 +131,30 @@ export default function ProfilePage({ navigation }) {
         >
           <Icon name="arrow-left" size={30} onPress={goBack} />
         </TouchableOpacity>
-        <Menu navigation={navigation} name="Mes Sauvetages" icon="help-buoy-outline" goTo="Maps"/>
-        <Menu navigation={navigation} name="Mon Compte" icon="person-outline" goTo="Maps"/>
-        <Menu navigation={navigation} name="Mes Documents" icon="document-text-outline" goTo="Maps"/>
-        <Menu navigation={navigation} name="Préférences" icon="settings-outline" goTo="Maps"/>
+        <Menu
+          navigation={navigation}
+          name="Mes Sauvetages"
+          icon="help-buoy-outline"
+          goTo="Maps"
+        />
+        <Menu
+          navigation={navigation}
+          name="Mon Compte"
+          icon="person-outline"
+          goTo="Maps"
+        />
+        <Menu
+          navigation={navigation}
+          name="Mes Documents"
+          icon="document-text-outline"
+          goTo="Maps"
+        />
+        <Menu
+          navigation={navigation}
+          name="Préférences"
+          icon="settings-outline"
+          goTo="Maps"
+        />
         <TouchableOpacity
           testID="button-disconnect"
           style={{

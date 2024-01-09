@@ -144,7 +144,6 @@ export default function Maps({ navigation }) {
           <InfoItem icon="👤" name="Personne à secourir" detail="John Doe" />
         </View>
 
-
         <View style={styles.buttonSection}>
           <TouchableOpacity style={styles.redButton} onPress={showMapOptions}>
             <Text style={styles.buttonText}>Ouvrir dans maps</Text>
