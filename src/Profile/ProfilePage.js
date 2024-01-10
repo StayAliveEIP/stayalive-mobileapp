@@ -1,18 +1,64 @@
-import React, { useState } from 'react'
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { Menu } from './Menu'
 import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function ProfilePage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [profileData, setProfileData] = useState(null)
 
   ProfilePage.propTypes = {
     navigation: PropTypes.object.isRequired,
   }
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        setLoading(true)
+
+        const token = await AsyncStorage.getItem('userToken')
+
+        const response = await fetch(
+          'http://api.stayalive.fr:3000/rescuer/account',
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+
+        const data = await response.json()
+        setProfileData(data)
+      } catch (error) {
+        console.error(
+          'Erreur lors de la récupération des données du profil',
+          error
+        )
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProfileData()
+  }, [])
 
   const selectImage = async () => {
     const options = {
@@ -35,8 +81,8 @@ export default function ProfilePage({ navigation }) {
   }
 
   const onClickDisconnect = () => {
-    console.log('disconnect button press !')
-    navigation.navigate('SendDocumentPage')
+    AsyncStorage.setItem('userToken', 'Empty')
+    navigation.navigate('LoginPage')
   }
 
   const goBack = () => {
@@ -63,6 +109,24 @@ export default function ProfilePage({ navigation }) {
           style={{ flex: 1 }}
         />
       </View>
+
+      {loading && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.StayAliveRed} />
+        </View>
+      )}
+
       <View style={{ flex: 1, alignItems: 'center' }}>
         <View style={{ position: 'absolute', alignItems: 'center' }}>
           <TouchableOpacity
@@ -116,7 +180,9 @@ export default function ProfilePage({ navigation }) {
             fontWeight: 'bold',
           }}
         >
-          Louis AUTEF
+          {profileData
+            ? `${profileData.firstname} ${profileData.lastname}`
+            : 'Chargement...'}
         </Text>
 
         <TouchableOpacity
@@ -141,7 +207,7 @@ export default function ProfilePage({ navigation }) {
           navigation={navigation}
           name="Mon Compte"
           icon="person-outline"
-          goTo="Maps"
+          goTo="AccountPage"
         />
         <Menu
           navigation={navigation}
