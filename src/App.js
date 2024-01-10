@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import RegistrationPage from './RegistrationPage/RegistrationPage'
 import LoginPage from './LoginPage/LoginPage'
 import ProfilePage from './Profile/ProfilePage'
+import AccountPage from './Profile/Account/AccountPage'
 import AvailablePage from './AvailablePage/AvailablePage'
 import IntroductionPage from './IntroductionPage/IntroductionPage'
 import UnavailablePage from './UnavailablePage/UnavailablePage'
@@ -36,6 +37,7 @@ export default function App() {
           <Stack.Screen name="SendDocumentPage" component={SendDocumentPage} />
           <Stack.Screen name="Maps" component={Maps} />
           <Stack.Screen name="AlertStatusPage" component={AlertStatusPage} />
+          <Stack.Screen name="AccountPage" component={AccountPage} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

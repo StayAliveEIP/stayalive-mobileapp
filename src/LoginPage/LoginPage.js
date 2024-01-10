@@ -15,8 +15,8 @@ import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
 
 export default function LoginPage({ navigation }) {
-  const [email, onChangeEmail] = useState('')
-  const [password, onChangePassword] = useState('')
+  const [email, onChangeEmail] = useState('martin.leblancs@epitech.eu')
+  const [password, onChangePassword] = useState('martin1234')
 
   LoginPage.propTypes = {
     navigation: PropTypes.object.isRequired,
