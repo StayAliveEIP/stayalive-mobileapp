@@ -13,7 +13,7 @@ import { launchImageLibrary } from 'react-native-image-picker'
 import { Menu } from './Menu'
 import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProfilePage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -47,6 +47,7 @@ export default function ProfilePage({ navigation }) {
 
         const data = await response.json()
         setProfileData(data)
+        console.log(data.firstname + " " + data.lastname);
       } catch (error) {
         console.error(
           'Erreur lors de la récupération des données du profil',
@@ -81,6 +82,7 @@ export default function ProfilePage({ navigation }) {
   }
 
   const onClickDisconnect = () => {
+    console.log("Disconnect button press !")
     AsyncStorage.setItem('userToken', 'Empty')
     navigation.navigate('LoginPage')
   }
@@ -199,6 +201,7 @@ export default function ProfilePage({ navigation }) {
         </TouchableOpacity>
         <Menu
           navigation={navigation}
+          goTo="Maps"
           name="Mes Sauvetages"
           icon="help-buoy-outline"
           goTo="Maps"

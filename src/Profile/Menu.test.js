@@ -2,7 +2,6 @@ import React from 'react'
 import { render, fireEvent } from '@testing-library/react-native'
 import '@testing-library/jest-native/extend-expect'
 import { Menu } from './Menu'
-
 jest.mock('react-native-vector-icons/Ionicons', () => 'Icon')
 
 describe('Menu', () => {
@@ -10,8 +9,13 @@ describe('Menu', () => {
   let getByTestId
 
   beforeEach(() => {
+    const navigation = {
+      navigate: jest.fn(),
+    };
     const renderResult = render(
       <Menu
+        navigation={navigation}
+        goTo="Maps"
         name="Mes Sauvetages"
         icon="help-buoy-outline"
         onClickMenu={onClickMenu}
@@ -21,11 +25,16 @@ describe('Menu', () => {
   })
 
   it('renders text with props.name', () => {
+    const navigation = {
+      navigate: jest.fn(),
+    };
     const { getByTestId } = render(
       <Menu
+        goTo="Maps"
         name="Mes Sauvetages"
         icon="help-buoy-outline"
         onClickMenu={onClickMenu}
+        navigation={navigation}
       />
     )
     const textMenu = getByTestId('text-menu')
@@ -40,8 +49,13 @@ describe('Menu', () => {
   })
 
   it('renders icon', () => {
+    const navigation = {
+      navigate: jest.fn(),
+    };
     const { getByTestId } = render(
       <Menu
+        navigation={navigation}
+        goTo="Maps"
         name="Mes Sauvetages"
         icon="help-buoy-outline"
         onClickMenu={() => {}}

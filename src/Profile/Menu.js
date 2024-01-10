@@ -10,6 +10,11 @@ export function Menu(props) {
     goTo: PropTypes.string.isRequired,
     navigation: PropTypes.object.isRequired,
   }
+
+  const onClickRightArrow = () => {
+    console.log("Menu " + props.name);
+    props.navigation.navigate(props.goTo)
+  }
   return (
     <View
       testID="box-menu"
@@ -45,7 +50,7 @@ export function Menu(props) {
       <TouchableOpacity
         testID="button-right-arrow"
         style={{ flex: 1, zIndex: 1, position: 'absolute' }}
-        onPress={() => props.navigation.navigate(props.goTo)}
+        onPress={onClickRightArrow}
       >
         <Icon
           style={{ marginLeft: '90%' }}
