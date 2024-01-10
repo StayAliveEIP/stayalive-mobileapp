@@ -66,23 +66,23 @@ export default function ProfilePage({ navigation }) {
       includeBase64: false,
       maxHeight: 2000,
       maxWidth: 2000,
-    };
+    }
 
     launchImageLibrary(options, (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        console.log('User cancelled image picker')
       } else if (response.error) {
-        console.log('Image picker error: ', response.error);
+        console.log('Image picker error: ', response.error)
       } else {
-        let imageUri = response.uri || response.assets?.[0]?.uri;
-        setAvatarSource(imageUri);
+        const imageUri = response.uri || response.assets?.[0]?.uri
+        setAvatarSource(imageUri)
       }
-    });
-  };
+    })
+  }
 
   const onClickDisconnect = () => {
-    AsyncStorage.setItem('userToken', 'Empty');
-    navigation.navigate('LoginPage');
+    AsyncStorage.setItem('userToken', 'Empty')
+    navigation.navigate('LoginPage')
   }
 
   const goBack = () => {

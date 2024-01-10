@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -6,32 +6,35 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { EditInfosMenu } from './EditInfos';
-import { colors } from '../../Style/StayAliveStyle';
-import PropTypes from 'prop-types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Snackbar from 'react-native-snackbar';
-import { requestUpdateEmail, requestUpdatePhone } from './RequestUpdateInfos/RequestsUpdateInfos';
+} from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { launchImageLibrary } from 'react-native-image-picker'
+import { EditInfosMenu } from './EditInfos'
+import { colors } from '../../Style/StayAliveStyle'
+import PropTypes from 'prop-types'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Snackbar from 'react-native-snackbar'
+import {
+  requestUpdateEmail,
+  requestUpdatePhone,
+} from './RequestUpdateInfos/RequestsUpdateInfos'
 
 export default function AccountPage({ navigation }) {
-  const [avatarSource, setAvatarSource] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [originalProfileData, setOriginalProfileData] = useState({});
-  const [profileData, setProfileData] = useState({});
+  const [avatarSource, setAvatarSource] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [originalProfileData, setOriginalProfileData] = useState({})
+  const [profileData, setProfileData] = useState({})
 
   AccountPage.propTypes = {
     navigation: PropTypes.object.isRequired,
-  };
+  }
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        setLoading(true);
-        const token = await AsyncStorage.getItem('userToken');
+        setLoading(true)
+        const token = await AsyncStorage.getItem('userToken')
         const response = await fetch(
           'http://api.stayalive.fr:3000/rescuer/account',
           {
@@ -40,24 +43,24 @@ export default function AccountPage({ navigation }) {
               Authorization: `Bearer ${token}`,
             },
           }
-        );
+        )
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          throw new Error(`HTTP error! Status: ${response.status}`)
         }
-        const data = await response.json();
-        setProfileData(data);
+        const data = await response.json()
+        setProfileData(data)
         setOriginalProfileData(data)
       } catch (error) {
         console.error(
           'Erreur lors de la récupération des données du profil',
           error
-        );
+        )
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
-    fetchProfileData();
-  }, []);
+    }
+    fetchProfileData()
+  }, [])
 
   const selectImage = async () => {
     const options = {
@@ -65,65 +68,60 @@ export default function AccountPage({ navigation }) {
       includeBase64: false,
       maxHeight: 2000,
       maxWidth: 2000,
-    };
+    }
 
     launchImageLibrary(options, (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        console.log('User cancelled image picker')
       } else if (response.error) {
-        console.log('Image picker error: ', response.error);
+        console.log('Image picker error: ', response.error)
       } else {
-        let imageUri = response.uri || response.assets?.[0]?.uri;
-        setAvatarSource(imageUri);
+        const imageUri = response.uri || response.assets?.[0]?.uri
+        setAvatarSource(imageUri)
       }
-    });
-  };
-
-  const onClickDisconnect = () => {
-    AsyncStorage.setItem('userToken', 'Empty');
-    navigation.navigate('LoginPage');
-  };
+    })
+  }
 
   const goBack = () => {
-    console.log('arrow left clicked !');
-    navigation.goBack();
-  };
+    console.log('arrow left clicked !')
+    navigation.goBack()
+  }
 
   const saveChanges = async () => {
     try {
       if (profileData !== originalProfileData) {
-        const token = await AsyncStorage.getItem('userToken');
+        const token = await AsyncStorage.getItem('userToken')
 
-        if (profileData["email"]["email"] !== originalProfileData["email"]["email"]) {
-          const success = await requestUpdateEmail(profileData, token);
+        if (profileData.email.email !== originalProfileData.email.email) {
+          const success = await requestUpdateEmail(profileData, token)
           if (success) {
-            setOriginalProfileData(profileData);
+            setOriginalProfileData(profileData)
             Snackbar.show({
               text: 'Changements sauvegardés avec succès.',
               duration: Snackbar.LENGTH_LONG,
               backgroundColor: 'white',
               textColor: 'green',
-            });
+            })
           }
         }
 
-        if (profileData["phone"]["phone"] !== originalProfileData["phone"]["phone"]) {
-          const success = await requestUpdatePhone(profileData, token);
+        if (profileData.phone.phone !== originalProfileData.phone.phone) {
+          const success = await requestUpdatePhone(profileData, token)
           if (success) {
-            setOriginalProfileData(profileData);
+            setOriginalProfileData(profileData)
             Snackbar.show({
               text: 'Changements sauvegardés avec succès.',
               duration: Snackbar.LENGTH_LONG,
               backgroundColor: 'white',
               textColor: 'green',
-            });
+            })
           }
         }
       }
     } catch (error) {
       // console.error('Erreur lors de la sauvegarde des modifications', error);
     }
-  };
+  }
 
   return (
     <ScrollView>
@@ -162,7 +160,7 @@ export default function AccountPage({ navigation }) {
         </View>
       )}
 
-      <View style={{ flex: 1, }}>
+      <View style={{ flex: 1 }}>
         <View style={{ alignItems: 'center' }}>
           <TouchableOpacity
             testID="select-image-button"
@@ -245,61 +243,85 @@ export default function AccountPage({ navigation }) {
           setVariable={setProfileData}
           edit={true}
         />
-        <View style={{ marginTop: -130}}>
-        <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-start', marginLeft: 20,}}>
-          <Text
-            testID="text-menu"
+        <View style={{ marginTop: -130 }}>
+          <View
             style={{
-              color: colors.StayAliveRed,
-              fontWeight: 'bold',
-              fontSize: 20,
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              marginLeft: 20,
             }}
           >
-            E-mail :
-          </Text>
-          {profileData.email !== null && !loading ? (
             <Text
               testID="text-menu"
               style={{
-                color: profileData.email.verified !== false ? colors.green : colors.StayAliveRed,
+                color: colors.StayAliveRed,
                 fontWeight: 'bold',
-                fontSize: 18,
-                marginLeft: 10,
-                marginTop: 0,
+                fontSize: 20,
               }}
             >
-              {profileData.email.verified === false ? 'unverified' : 'verified'}
+              E-mail :
             </Text>
-          ) : null}
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-start', marginLeft: 20, }}>
-          <Text
-            testID="text-menu"
+            {profileData.email !== null && !loading ? (
+              <Text
+                testID="text-menu"
+                style={{
+                  color:
+                    profileData.email.verified !== false
+                      ? colors.green
+                      : colors.StayAliveRed,
+                  fontWeight: 'bold',
+                  fontSize: 18,
+                  marginLeft: 10,
+                  marginTop: 0,
+                }}
+              >
+                {profileData.email.verified === false
+                  ? 'unverified'
+                  : 'verified'}
+              </Text>
+            ) : null}
+          </View>
+          <View
             style={{
-              color: colors.StayAliveRed,
-              fontWeight: 'bold',
-              fontSize: 20,
-              marginLeft: 0,
-              marginTop: 0,
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+              marginLeft: 20,
             }}
           >
-            Téléphone :
-          </Text>
-          {profileData.phone !== null && !loading ? (
             <Text
               testID="text-menu"
               style={{
-                color: profileData.phone.verified !== false ? colors.green : colors.StayAliveRed,
+                color: colors.StayAliveRed,
                 fontWeight: 'bold',
-                fontSize: 18,
-                marginLeft: 10,
+                fontSize: 20,
+                marginLeft: 0,
                 marginTop: 0,
               }}
             >
-              {profileData.phone.verified === false ? 'unverified' : 'verified'}
+              Téléphone :
             </Text>
-          ) : null}
-        </View>
+            {profileData.phone !== null && !loading ? (
+              <Text
+                testID="text-menu"
+                style={{
+                  color:
+                    profileData.phone.verified !== false
+                      ? colors.green
+                      : colors.StayAliveRed,
+                  fontWeight: 'bold',
+                  fontSize: 18,
+                  marginLeft: 10,
+                  marginTop: 0,
+                }}
+              >
+                {profileData.phone.verified === false
+                  ? 'unverified'
+                  : 'verified'}
+              </Text>
+            ) : null}
+          </View>
         </View>
       </View>
       <View style={{ alignItems: 'center' }}>
@@ -331,5 +353,5 @@ export default function AccountPage({ navigation }) {
         </TouchableOpacity>
       </View>
     </ScrollView>
-  );
+  )
 }
