@@ -2,9 +2,6 @@ import React from 'react';
 import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import AccountPage from './AccountPage';
 import { launchImageLibrary } from 'react-native-image-picker';
-import fetchMock from 'jest-fetch-mock'
-
-fetchMock.enableMocks()
 
 jest.mock('react-native-snackbar', () => ({
   show: jest.fn(),
