@@ -1,8 +1,7 @@
 import React from 'react'
 import { render, fireEvent, cleanup } from '@testing-library/react-native'
 import { wait } from '@testing-library/react-native/build/user-event/utils'
-
-import fetchMock from 'jest-fetch-mock' // Import jest-fetch-mock
+import fetchMock from 'jest-fetch-mock'
 import RegistrationPage from './RegistrationPage'
 import Snackbar from 'react-native-snackbar'
 
