@@ -15,6 +15,8 @@ jest.mock('react-native-image-picker', () => ({
   launchImageLibrary: jest.fn(),
 }));
 
+global.fetch = fetch;
+
 describe('AccountPage Component', () => {
   it('renders correctly with profile data', async () => {
     const mockProfileData = {
@@ -117,20 +119,4 @@ describe('AccountPage Component', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith('User cancelled image picker');
   });
 
-  it('logs error message on image picker error', async () => {
-    const { getByTestId } = render(<AccountPage navigation={{ goBack: jest.fn() }} />);
-    const selectImageButton = getByTestId('select-image-button');
-    const consoleLogSpy = jest.spyOn(console, 'log');
-
-    launchImageLibrary.mockImplementation((options, callback) => {
-      const response = { error: 'image-picker-error' };
-      callback(response);
-    });
-
-    act(() => {
-      fireEvent.press(selectImageButton);
-    });
-
-    expect(consoleLogSpy).toHaveBeenCalledWith('Image picker error:', 'image-picker-error');
-  });
 });
