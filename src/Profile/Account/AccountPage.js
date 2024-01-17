@@ -88,6 +88,7 @@ export default function AccountPage({ navigation }) {
   }
 
   const saveChanges = async () => {
+    console.log("Save Changes !")
     try {
       if (profileData !== originalProfileData) {
         const token = await AsyncStorage.getItem('userToken')
