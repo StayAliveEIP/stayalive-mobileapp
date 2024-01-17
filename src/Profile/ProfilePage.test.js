@@ -21,7 +21,7 @@ const mockNavigate = jest.fn()
 const mockNavigation = { navigate: mockNavigate, goBack: jest.fn() }
 
 describe('ProfilePage', () => {
-  
+
   it('clicks the left arrow button', () => {
     const consoleLogSpy = jest.spyOn(console, 'log')
     const { getByTestId } = render(<ProfilePage navigation={mockNavigation} />)
