@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import AccountPage from './AccountPage';
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -64,7 +64,7 @@ describe('AccountPage Component', () => {
 
   it('calls saveChanges when the save button is pressed', async () => {
     const { getByTestId } = render(<AccountPage navigation={{ goBack: jest.fn() }} />);
-    const saveButton = getByTestId('login-button');
+    const saveButton = getByTestId('save-button');
 
     const consoleLogSpy = jest.spyOn(console, 'log');
 
@@ -81,16 +81,15 @@ describe('AccountPage Component', () => {
     const { getByTestId } = render(<AccountPage navigation={{ goBack: jest.fn() }} />);
     const selectImageButton = getByTestId('select-image-button');
 
-    // Mocking a successful image selection
     launchImageLibrary.mockImplementation((options, callback) => {
       const response = { uri: 'selected-image-uri' };
       callback(response);
     });
 
-    // Triggering the image selection
-    fireEvent.press(selectImageButton);
+    act(() => {
+      fireEvent.press(selectImageButton);
+    });
 
-    // Checking if the avatar source is updated
     await waitFor(() => {
       expect(launchImageLibrary).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -106,16 +105,15 @@ describe('AccountPage Component', () => {
     const selectImageButton = getByTestId('select-image-button');
     const consoleLogSpy = jest.spyOn(console, 'log');
 
-    // Mocking image picker cancellation
     launchImageLibrary.mockImplementation((options, callback) => {
       const response = { didCancel: true };
       callback(response);
     });
 
-    // Triggering the image selection
-    fireEvent.press(selectImageButton);
+    act(() => {
+      fireEvent.press(selectImageButton);
+    });
 
-    // Checking if the cancellation message is logged
     expect(consoleLogSpy).toHaveBeenCalledWith('User cancelled image picker');
   });
 
@@ -124,16 +122,15 @@ describe('AccountPage Component', () => {
     const selectImageButton = getByTestId('select-image-button');
     const consoleLogSpy = jest.spyOn(console, 'log');
 
-    // Mocking image picker error
     launchImageLibrary.mockImplementation((options, callback) => {
       const response = { error: 'image-picker-error' };
       callback(response);
     });
 
-    // Triggering the image selection
-    fireEvent.press(selectImageButton);
+    act(() => {
+      fireEvent.press(selectImageButton);
+    });
 
-    // Checking if the error message is logged
-    expect(consoleLogSpy).toHaveBeenCalledWith('Image picker error: ', 'image-picker-error');
+    expect(consoleLogSpy).toHaveBeenCalledWith('Image picker error:', 'image-picker-error');
   });
 });
