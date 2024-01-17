@@ -15,8 +15,6 @@ jest.mock('react-native-image-picker', () => ({
   launchImageLibrary: jest.fn(),
 }));
 
-global.fetch = fetch;
-
 describe('AccountPage Component', () => {
   it('renders correctly with profile data', async () => {
     const mockProfileData = {
