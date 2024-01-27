@@ -13,6 +13,7 @@ import { FadeInView } from '../Animations/Animations'
 import { colors } from '../Style/StayAliveStyle'
 import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
+import { urlApi } from '../Utils/Api';
 
 export default function LoginPage({ navigation }) {
   const [email, onChangeEmail] = useState('martin.leblancs@epitech.eu')
@@ -21,10 +22,12 @@ export default function LoginPage({ navigation }) {
   LoginPage.propTypes = {
     navigation: PropTypes.object.isRequired,
   }
+
   const onClickLogin = () => {
     console.log(email.toLowerCase(), password)
 
-    const url = 'http://api.stayalive.fr:3000/rescuer/auth/login'
+    const url = `${urlApi}/rescuer/auth/login`
+    console.log("url zebi: " + url);
     const body = JSON.stringify({
       email: email.toLowerCase(),
       password,
@@ -38,7 +41,7 @@ export default function LoginPage({ navigation }) {
       body,
     })
       .then((response) => {
-        //! Check response
+        console.log(response);
         if (response.ok) {
           return response.json()
         }

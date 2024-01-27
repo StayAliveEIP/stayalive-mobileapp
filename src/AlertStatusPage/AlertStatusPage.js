@@ -3,15 +3,46 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { colors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { urlApi } from '../Utils/Api'
 
-export default function AlertStatusPage({ navigation }) {
+export default function AlertStatusPage({ navigation, route }) {
+  const { dataAlert } = route.params;
+
+  console.log(dataAlert.emergency);
   const RefuseAlert = () => {
     console.log('You refuse the alert !')
   }
 
-  const AcceptAlert = () => {
-    console.log('You accept the alert !')
-  }
+  const AcceptAlert = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const emergencyId = dataAlert?.emergency?.id;
+
+      console.log(emergencyId);
+      console.log(token);
+      if (emergencyId && token) {
+        const acceptUrl = `${urlApi}/rescuer/emergency/accept?id=${emergencyId}`;
+        console.log(acceptUrl);
+        const response = await fetch(acceptUrl, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response);
+        if (response.ok) {
+          console.log('Emergency accepted successfully');
+          navigation.navigate("Maps", {data : dataAlert})
+        } else {
+          console.error('Failed to accept emergency');
+        }
+      } else {
+        console.error('Emergency ID not found');
+      }
+    } catch (error) {
+      console.error('Error accepting emergency:', error);
+    }  }
 
   const goProfilePage = () => {
     console.log('Go Profile Page !')
@@ -162,7 +193,7 @@ export default function AlertStatusPage({ navigation }) {
               fontWeight: 'bold',
             }}
           >
-            150 Rue de Saint-Martin, 75003, Paris, France
+            {dataAlert?.emergency?.info}
           </Text>
         </View>
       </View>

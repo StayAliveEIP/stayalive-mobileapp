@@ -14,6 +14,7 @@ import { Menu } from './Menu'
 import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { urlApi } from '../Utils/Api';
 
 export default function ProfilePage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -32,7 +33,7 @@ export default function ProfilePage({ navigation }) {
         const token = await AsyncStorage.getItem('userToken')
 
         const response = await fetch(
-          'http://api.stayalive.fr:3000/rescuer/account',
+          `${urlApi}/rescuer/account`,
           {
             method: 'GET',
             headers: {

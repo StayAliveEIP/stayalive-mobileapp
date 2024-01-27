@@ -35,7 +35,7 @@ export default function AccountPage({ navigation }) {
       try {
         setLoading(true)
         const token = await AsyncStorage.getItem('userToken')
-        const data = await fetch(
+        const response = await fetch(
           'http://api.stayalive.fr:3000/rescuer/account',
           {
             method: 'GET',
@@ -44,6 +44,8 @@ export default function AccountPage({ navigation }) {
             },
           }
         )
+        const data = await response.json();
+        console.log(data);
         setProfileData(data)
         setOriginalProfileData(data)
       } catch (error) {
@@ -263,7 +265,7 @@ export default function AccountPage({ navigation }) {
                 testID="text-menu"
                 style={{
                   color:
-                    profileData.email.verified !== false
+                    profileData.email?.verified !== false
                       ? colors.green
                       : colors.StayAliveRed,
                   fontWeight: 'bold',
@@ -272,7 +274,7 @@ export default function AccountPage({ navigation }) {
                   marginTop: 0,
                 }}
               >
-                {profileData.email.verified === false
+                {profileData.email?.verified === false
                   ? 'unverified'
                   : 'verified'}
               </Text>
@@ -303,7 +305,7 @@ export default function AccountPage({ navigation }) {
                 testID="text-menu"
                 style={{
                   color:
-                    profileData.phone.verified !== false
+                    profileData.phone?.verified !== false
                       ? colors.green
                       : colors.StayAliveRed,
                   fontWeight: 'bold',
@@ -312,7 +314,7 @@ export default function AccountPage({ navigation }) {
                   marginTop: 0,
                 }}
               >
-                {profileData.phone.verified === false
+                {profileData.phone?.verified === false
                   ? 'unverified'
                   : 'verified'}
               </Text>

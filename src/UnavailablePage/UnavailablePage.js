@@ -3,16 +3,87 @@ import { View, Text, TouchableOpacity, Image, Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import PropTypes from 'prop-types'
 import { colors } from '../Style/StayAliveStyle'
+import { urlApi } from '../Utils/Api';
 
 export default function UnavailablePage({ navigation }) {
   UnavailablePage.propTypes = {
     navigation: PropTypes.object.isRequired,
   }
+
+
+  const getInfosAccount = async () => {
+    const token = await AsyncStorage.getItem('userToken')
+
+    const url = `${urlApi}/rescuer/position`
+    const body = JSON.stringify({
+      latitude: 48.81693942922621,
+      longitude: 2.3639688976151403,
+    })
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body,
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        }
+
+        return Promise.reject(new Error('Failed to send position'))
+      })
+      .then((data) => {
+        console.log('Position sended: ', data)
+
+      })
+      .catch((error) => {
+        console.error('There was an issue with the fetch operation:', error)
+        Alert.alert('Error', 'We could not send your position', [
+          { text: 'OK' },
+        ])
+      })
+  }
+
+  const sendPosition = async () => {
+    console.log('I send my position !')
+    const token = await AsyncStorage.getItem('userToken')
+
+    const url = `${urlApi}/rescuer/account`
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        }
+
+        return Promise.reject(new Error('Failed to send position'))
+      })
+      .then((data) => {
+        console.log('Account infos: ', data)
+      })
+      .catch((error) => {
+        console.error('There was an issue with the fetch operation:', error)
+        Alert.alert('Error', 'We could not send your position', [
+          { text: 'OK' },
+        ])
+      })
+  }
+
+
   const onClickButton = async () => {
     console.log('Je me rends Disponible')
     const token = await AsyncStorage.getItem('userToken')
 
-    const url = 'http://api.stayalive.fr:3000/rescuer/status'
+    const url = `${urlApi}/rescuer/status`
     const body = JSON.stringify({
       status: 'AVAILABLE',
     })
@@ -33,6 +104,8 @@ export default function UnavailablePage({ navigation }) {
       })
       .then((data) => {
         console.log('Status updated:', data)
+        sendPosition();
+        getInfosAccount();
         navigation.navigate('AvailablePage')
       })
       .catch((error) => {

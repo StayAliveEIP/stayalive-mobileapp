@@ -22,9 +22,10 @@ const ASPECT_RATIO = width / height
 const LATITUDE_DELTA = 0.02
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
-const address = '24 Rue Pasteur, 94270, France' // Address variable
+const address = '24 Rue Pasteur, 94270, France'
 
-export default function Maps({ navigation }) {
+export default function Maps({ navigation, route }) {
+  const data = route.params
   const [region, setRegion] = useState(null)
 
   Maps.propTypes = {

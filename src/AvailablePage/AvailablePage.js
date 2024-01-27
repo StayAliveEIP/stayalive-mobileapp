@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Alert } from 'react-native'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { colors } from '../Style/StayAliveStyle'
+import { io } from 'socket.io-client';
+import { urlApi } from '../Utils/Api';
+import { AlertStatusPage } from '../AlertStatusPage/AlertStatusPage';
 
 export function TextSlider() {
   const [currentPage, setCurrentPage] = useState(0)
@@ -85,11 +88,47 @@ AvailablePage.propTypes = {
 }
 
 export default function AvailablePage({ navigation }) {
+  const [isConnected, setIsConnected] = useState(false);
+  const [fooEvents, setFooEvents] = useState([]);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const initializeWebSocket = async () => {
+      try {
+        const token = await AsyncStorage.getItem('userToken');
+
+        const socket = io(`${urlApi}/rescuer/ws?token=${token}`);
+
+        socket.on('message', (data) => {
+            const jsonData = data?.data;
+            console.log(jsonData);
+            if (jsonData !== null && jsonData !== undefined)
+              navigation.navigate('AlertStatusPage', { dataAlert: jsonData});
+        });
+
+        setIsConnected(true);
+        setSocket(socket);
+      } catch (error) {
+        console.error('Error initializing WebSocket:', error);
+      }
+    };
+
+    initializeWebSocket();
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+      setIsConnected(false);
+      setSocket(null);
+    };
+  }, []);
+
   const onClickButton = async () => {
     console.log('Je me rends indisponible')
     const token = await AsyncStorage.getItem('userToken')
 
-    const url = 'http://api.stayalive.fr:3000/rescuer/status'
+    const url = `${urlApi}/rescuer/status`
     const body = JSON.stringify({
       status: 'NOT_AVAILABLE',
     })
