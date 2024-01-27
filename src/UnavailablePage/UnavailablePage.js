@@ -116,7 +116,7 @@ export default function UnavailablePage({ navigation }) {
 
   const onProfileBadgeClick = () => {
     console.log('Profile badge clicked')
-    navigation.navigate('AvailablePage')
+    navigation.navigate('ProfilePage')
   }
 
   return (

@@ -10,8 +10,36 @@ export default function AlertStatusPage({ navigation, route }) {
   const { dataAlert } = route.params;
 
   console.log(dataAlert.emergency);
-  const RefuseAlert = () => {
+  const RefuseAlert = async () => {
     console.log('You refuse the alert !')
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const emergencyId = dataAlert?.emergency?.id;
+
+      console.log(emergencyId);
+      console.log(token);
+      if (emergencyId && token) {
+        const acceptUrl = `${urlApi}/rescuer/emergency/refuse?id=${emergencyId}`;
+        console.log(acceptUrl);
+        const response = await fetch(acceptUrl, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response);
+        if (response.ok) {
+          console.log('Emergency refused successfully');
+          navigation.navigate("Maps", {data : dataAlert})
+        } else {
+          console.error('Failed to refuse emergency');
+        }
+      } else {
+        console.error('Emergency ID not found');
+      }
+    } catch (error) {
+      console.error('Error refusing emergency:', error);
+    }
   }
 
   const AcceptAlert = async () => {
@@ -42,7 +70,8 @@ export default function AlertStatusPage({ navigation, route }) {
       }
     } catch (error) {
       console.error('Error accepting emergency:', error);
-    }  }
+    }
+  }
 
   const goProfilePage = () => {
     console.log('Go Profile Page !')

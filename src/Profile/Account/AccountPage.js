@@ -19,6 +19,8 @@ import {
   requestUpdateEmail,
   requestUpdatePhone,
 } from './RequestUpdateInfos/RequestsUpdateInfos'
+import { urlApi } from "../../Utils/Api";
+
 
 export default function AccountPage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -36,7 +38,7 @@ export default function AccountPage({ navigation }) {
         setLoading(true)
         const token = await AsyncStorage.getItem('userToken')
         const response = await fetch(
-          'http://api.stayalive.fr:3000/rescuer/account',
+          `${urlApi}/rescuer/account`,
           {
             method: 'GET',
             headers: {
