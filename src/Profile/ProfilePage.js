@@ -15,6 +15,7 @@ import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { urlApi } from '../Utils/Api';
+import { io } from 'socket.io-client';
 
 export default function ProfilePage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -82,11 +83,22 @@ export default function ProfilePage({ navigation }) {
     })
   }
 
-  const onClickDisconnect = () => {
-    console.log("Disconnect button press !")
-    AsyncStorage.setItem('userToken', 'Empty')
-    navigation.navigate('LoginPage')
-  }
+  const onClickDisconnect = async () => {
+    console.log('Disconnect button press !');
+
+    const socketInfoString = await AsyncStorage.getItem('socketInfo');
+    if (socketInfoString) {
+      socketInfoString.off('message');
+      socketInfoString.disconnect();
+    }
+    await AsyncStorage.setItem('userToken', 'Empty');
+    await AsyncStorage.removeItem('socketInfo');
+
+    navigation.navigate('LoginPage');
+  };
+
+
+
 
   const goBack = () => {
     console.log('arrow left clicked !')

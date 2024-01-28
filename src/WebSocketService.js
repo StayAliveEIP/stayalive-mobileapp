@@ -1,31 +1,34 @@
-// WebSocketService.js
-import io from 'socket.io-client';
-import { urlApi } from 'Utils/Api';
+import { io } from 'socket.io-client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { urlApi } from '../src/Utils/Api';
 
-const SOCKET_URL = `${urlApi}/rescuer/ws`;
+let socket;
 
-class WebSocketService {
-  constructor() {
-    this.socket = null;
-  }
+export const initializeWebSocket = async (navigation) => {
+  try {
+    const token = await AsyncStorage.getItem('userToken');
+    if (token) {
+      const socketUrl = `${urlApi}/rescuer/ws?token=${token}`;
+      socket = io(socketUrl);
 
-  connect(token) {
-    this.socket = io(SOCKET_URL, {
-      query: { token: `Bearer ${token}` },
-    });
+      socket.on('message', (data) => {
+        const jsonData = data?.data;
+        if (jsonData !== null && jsonData !== undefined)
+          navigation.navigate('AlertStatusPage', { dataAlert: jsonData });
+      });
 
-    this.socket.on('message', (emergency) => {
-      console.log('Emergency Received:', emergency);
-
-    });
-  }
-
-  disconnect() {
-    if (this.socket) {
-      this.socket.disconnect();
+      await AsyncStorage.setItem('Websocket', socketUrl);
     }
+  } catch (error) {
+    console.error('Error initializing WebSocket:', error);
   }
-}
+};
 
-const webSocketService = new WebSocketService();
-export default webSocketService;
+export const disconnectWebSocket = () => {
+  if (socket && socket.connected) {
+    console.log('Disconnecting WebSocket...');
+    socket.disconnect();
+    socket.removeAllListeners();
+    socket = null;
+  }
+};

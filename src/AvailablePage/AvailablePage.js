@@ -6,6 +6,7 @@ import { colors } from '../Style/StayAliveStyle'
 import { io } from 'socket.io-client';
 import { urlApi } from '../Utils/Api';
 import { AlertStatusPage } from '../AlertStatusPage/AlertStatusPage';
+import { initializeWebSocket, disconnectWebSocket } from '../WebSocketService';
 
 export function TextSlider() {
   const [currentPage, setCurrentPage] = useState(0)
@@ -82,47 +83,18 @@ export function TextSlider() {
   )
 }
 
-// Ajout de PropTypes pour définir le type attendu de chaque prop
 AvailablePage.propTypes = {
   navigation: PropTypes.object.isRequired,
 }
 
 export default function AvailablePage({ navigation }) {
-  const [isConnected, setIsConnected] = useState(false);
-  const [fooEvents, setFooEvents] = useState([]);
-  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const initializeWebSocket = async () => {
-      try {
-        const token = await AsyncStorage.getItem('userToken');
-
-        const socket = io(`${urlApi}/rescuer/ws?token=${token}`);
-
-        socket.on('message', (data) => {
-            const jsonData = data?.data;
-            console.log(jsonData);
-            if (jsonData !== null && jsonData !== undefined)
-              navigation.navigate('AlertStatusPage', { dataAlert: jsonData});
-        });
-
-        setIsConnected(true);
-        setSocket(socket);
-      } catch (error) {
-        console.error('Error initializing WebSocket:', error);
-      }
-    };
-
-    initializeWebSocket();
-
+    initializeWebSocket(navigation);
     return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-      setIsConnected(false);
-      setSocket(null);
+      disconnectWebSocket();
     };
-  }, []);
+  }, [navigation]);
 
   const onClickButton = async () => {
     console.log('Je me rends indisponible')

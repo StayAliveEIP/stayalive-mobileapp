@@ -1,17 +1,17 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
-import { colors } from '../Style/StayAliveStyle'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { colors } from '../Style/StayAliveStyle';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { urlApi } from '../Utils/Api'
+import { urlApi } from '../Utils/Api';
 
 export default function AlertStatusPage({ navigation, route }) {
   const { dataAlert } = route.params;
 
   console.log(dataAlert.emergency);
   const RefuseAlert = async () => {
-    console.log('You refuse the alert !')
+    console.log('You refuse the alert !');
     try {
       const token = await AsyncStorage.getItem('userToken');
       const emergencyId = dataAlert?.emergency?.id;
@@ -30,7 +30,7 @@ export default function AlertStatusPage({ navigation, route }) {
         console.log(response);
         if (response.ok) {
           console.log('Emergency refused successfully');
-          navigation.navigate("Maps", {data : dataAlert})
+          navigation.navigate('Maps', { data: dataAlert });
         } else {
           console.error('Failed to refuse emergency');
         }
@@ -40,7 +40,7 @@ export default function AlertStatusPage({ navigation, route }) {
     } catch (error) {
       console.error('Error refusing emergency:', error);
     }
-  }
+  };
 
   const AcceptAlert = async () => {
     try {
@@ -61,7 +61,7 @@ export default function AlertStatusPage({ navigation, route }) {
         console.log(response);
         if (response.ok) {
           console.log('Emergency accepted successfully');
-          navigation.navigate("Maps", {data : dataAlert})
+          navigation.navigate('Maps', { data: dataAlert });
         } else {
           console.error('Failed to accept emergency');
         }
@@ -71,15 +71,15 @@ export default function AlertStatusPage({ navigation, route }) {
     } catch (error) {
       console.error('Error accepting emergency:', error);
     }
-  }
+  };
 
   const goProfilePage = () => {
-    console.log('Go Profile Page !')
-    navigation.push('ProfilePage')
-  }
+    console.log('Go Profile Page !');
+    navigation.push('ProfilePage');
+  };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1 }}>
       <TouchableOpacity
         onPress={goProfilePage}
         style={{
@@ -103,7 +103,8 @@ export default function AlertStatusPage({ navigation, route }) {
         />
       </TouchableOpacity>
 
-      <Text style={{ marginTop: 100, fontSize: 24, color: 'black' }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 150}}>
+      <Text style={{ fontSize: 24, color: 'black',  }}>
         Votre statut:
       </Text>
       <Text
@@ -123,34 +124,30 @@ export default function AlertStatusPage({ navigation, route }) {
         style={{ width: 150, height: 150, marginTop: 30 }}
         source={require('../../assets/WarningLogo.png')}
       />
-
+      </View>
       <View
         style={{
-          flexDirection: 'row',
+          flex: 1,
+          flexDirection: 'row', // Assure que les éléments sont disposés horizontalement
+          justifyContent: 'flex-start', // Aligne les éléments sur l'axe principal (horizontalement) à gauche
           alignItems: 'center',
-          marginTop: 50,
+          marginLeft: 0,
+          maxWidth: 300
         }}
       >
         <View
           style={{
             marginRight: 10,
+            backgroundColor: 'lightcoral',
+            borderRadius: 100,
+            padding: 10,
+            marginLeft: 20,
+
           }}
         >
-          <View
-            style={{
-              backgroundColor: 'lightcoral',
-              borderRadius: 100,
-              padding: 10,
-            }}
-          >
-            <Icon name="flag-o" size={30} color="red" />
-          </View>
+          <Icon name="flag-o" size={30} color="red" />
         </View>
-        <View
-          style={{
-            flexDirection: 'column',
-          }}
-        >
+        <View>
           <Text
             style={{
               textAlign: 'left',
@@ -169,7 +166,7 @@ export default function AlertStatusPage({ navigation, route }) {
               fontWeight: 'bold',
             }}
           >
-            150 Rue de Saint-Martin, 75003, Paris, France
+            {dataAlert?.emergency?.address}
           </Text>
         </View>
       </View>
@@ -177,8 +174,10 @@ export default function AlertStatusPage({ navigation, route }) {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginTop: 20,
           marginBottom: 70,
+          maxWidth: 350,
+          marginTop: -50
+
         }}
       >
         <View
@@ -194,6 +193,7 @@ export default function AlertStatusPage({ navigation, route }) {
               aspectRatio: 1,
               justifyContent: 'center',
               alignItems: 'center',
+              marginLeft: 20,
             }}
           >
             <Icon name="user-o" size={30} color="red" />
@@ -212,7 +212,7 @@ export default function AlertStatusPage({ navigation, route }) {
               fontWeight: 'bold',
             }}
           >
-            Personne a secourir
+            Personne à secourir
           </Text>
           <Text
             style={{
@@ -238,6 +238,8 @@ export default function AlertStatusPage({ navigation, route }) {
           paddingHorizontal: 50,
           paddingVertical: 10,
           backgroundColor: colors.StayAliveRed,
+          maxWidth: 500, // Ajoutez cette ligne pour définir une largeur maximale
+          alignSelf: 'center', // Ajoutez cette ligne pour centrer le bouton horizontalement
         }}
       >
         <Text
@@ -252,15 +254,19 @@ export default function AlertStatusPage({ navigation, route }) {
           Accepter l'alerte
         </Text>
       </TouchableOpacity>
+
       <TouchableOpacity
         onPress={RefuseAlert}
         style={{
+          marginBottom: 40,
           borderWidth: 3,
           borderRadius: 50,
           borderColor: colors.StayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 10,
           backgroundColor: 'white',
+          maxWidth: 500, // Ajoutez cette ligne pour définir une largeur maximale
+          alignSelf: 'center', // Ajoutez cette ligne pour centrer le bouton horizontalement
         }}
       >
         <Text
@@ -276,9 +282,9 @@ export default function AlertStatusPage({ navigation, route }) {
         </Text>
       </TouchableOpacity>
     </View>
-  )
+  );
 }
 
 AlertStatusPage.propTypes = {
   navigation: PropTypes.object.isRequired,
-}
+};
