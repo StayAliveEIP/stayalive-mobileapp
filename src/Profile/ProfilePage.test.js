@@ -4,7 +4,7 @@ import ProfilePage from './ProfilePage'
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
-);
+)
 
 jest.mock('react-native-image-picker', () => ({
   launchImageLibrary: (options, callback) => {
@@ -21,7 +21,6 @@ const mockNavigate = jest.fn()
 const mockNavigation = { navigate: mockNavigate, goBack: jest.fn() }
 
 describe('ProfilePage', () => {
-
   it('clicks the left arrow button', () => {
     const consoleLogSpy = jest.spyOn(console, 'log')
     const { getByTestId } = render(<ProfilePage navigation={mockNavigation} />)

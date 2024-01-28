@@ -12,7 +12,7 @@ export function Menu(props) {
   }
 
   const onClickRightArrow = () => {
-    console.log("Menu " + props.name);
+    console.log('Menu ' + props.name)
     props.navigation.navigate(props.goTo)
   }
   return (

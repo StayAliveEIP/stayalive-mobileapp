@@ -3,10 +3,8 @@ import { View, Text, TouchableOpacity, Image, Alert } from 'react-native'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { colors } from '../Style/StayAliveStyle'
-import { io } from 'socket.io-client';
-import { urlApi } from '../Utils/Api';
-import { AlertStatusPage } from '../AlertStatusPage/AlertStatusPage';
-import { initializeWebSocket, disconnectWebSocket } from '../WebSocketService';
+import { urlApi } from '../Utils/Api'
+import { initializeWebSocket, disconnectWebSocket } from '../WebSocketService'
 
 export function TextSlider() {
   const [currentPage, setCurrentPage] = useState(0)
@@ -88,13 +86,12 @@ AvailablePage.propTypes = {
 }
 
 export default function AvailablePage({ navigation }) {
-
   useEffect(() => {
-    initializeWebSocket(navigation);
+    initializeWebSocket(navigation)
     return () => {
-      disconnectWebSocket();
-    };
-  }, [navigation]);
+      disconnectWebSocket()
+    }
+  }, [navigation])
 
   const onClickButton = async () => {
     console.log('Je me rends indisponible')

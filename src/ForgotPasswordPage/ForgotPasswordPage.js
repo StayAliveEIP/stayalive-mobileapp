@@ -6,7 +6,7 @@ import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import Snackbar from 'react-native-snackbar'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
-import { urlApi } from '../Utils/Api';
+import { urlApi } from '../Utils/Api'
 
 export default function ForgotPasswordPage({ navigation }) {
   const [email, onChangeEmail] = useState('')

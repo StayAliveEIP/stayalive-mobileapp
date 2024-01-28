@@ -30,7 +30,9 @@ export default function Maps({ navigation, route }) {
 
   Maps.propTypes = {
     navigation: PropTypes.object.isRequired,
+    route: PropTypes.object.isRequired,
   }
+  console.log(data)
 
   const pinLocation = {
     latitude: 48.815788,

@@ -1,82 +1,104 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { colors } from '../Style/StayAliveStyle';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import PropTypes from 'prop-types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { urlApi } from '../Utils/Api';
+import React from 'react'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { colors } from '../Style/StayAliveStyle'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import PropTypes from 'prop-types'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { urlApi } from '../Utils/Api'
 
 export default function AlertStatusPage({ navigation, route }) {
-  const { dataAlert } = route.params;
+  const { dataAlert } = route.params
 
-  console.log(dataAlert.emergency);
+  AlertStatusPage.propTypes = {
+    navigation: PropTypes.object.isRequired,
+    route: PropTypes.shape({
+      params: PropTypes.shape({
+        dataAlert: PropTypes.shape({
+          emergency: PropTypes.shape({
+            id: PropTypes.number,
+            address: PropTypes.string,
+            info: PropTypes.string,
+          }),
+        }),
+      }),
+    }),
+  }
+
   const RefuseAlert = async () => {
-    console.log('You refuse the alert !');
+    console.log('You refuse the alert !')
     try {
-      const token = await AsyncStorage.getItem('userToken');
-      const emergencyId = dataAlert?.emergency?.id;
+      const token = await AsyncStorage.getItem('userToken')
+      const emergencyId = dataAlert?.emergency?.id
 
-      console.log(emergencyId);
-      console.log(token);
+      console.log(emergencyId)
+      console.log(token)
+
       if (emergencyId && token) {
-        const acceptUrl = `${urlApi}/rescuer/emergency/refuse?id=${emergencyId}`;
-        console.log(acceptUrl);
+        const acceptUrl = `${urlApi}/rescuer/emergency/refuse?id=${emergencyId}`
+        console.log(acceptUrl)
+
         const response = await fetch(acceptUrl, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-        console.log(response);
+        })
+
+        console.log(response)
+
         if (response.ok) {
-          console.log('Emergency refused successfully');
-          navigation.navigate('Maps', { data: dataAlert });
+          console.log('Emergency refused successfully')
+          navigation.navigate('Maps', { data: dataAlert })
         } else {
-          console.error('Failed to refuse emergency');
+          console.error('Failed to refuse emergency')
         }
       } else {
-        console.error('Emergency ID not found');
+        console.error('Emergency ID not found')
       }
     } catch (error) {
-      console.error('Error refusing emergency:', error);
+      console.error('Error refusing emergency:', error)
     }
-  };
+  }
 
   const AcceptAlert = async () => {
     try {
-      const token = await AsyncStorage.getItem('userToken');
-      const emergencyId = dataAlert?.emergency?.id;
+      const token = await AsyncStorage.getItem('userToken')
+      const emergencyId = dataAlert?.emergency?.id
 
-      console.log(emergencyId);
-      console.log(token);
+      console.log(emergencyId)
+      console.log(token)
+
       if (emergencyId && token) {
-        const acceptUrl = `${urlApi}/rescuer/emergency/accept?id=${emergencyId}`;
-        console.log(acceptUrl);
+        const acceptUrl = `${urlApi}/rescuer/emergency/accept?id=${emergencyId}`
+        console.log(acceptUrl)
+
         const response = await fetch(acceptUrl, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-        console.log(response);
+        })
+
+        console.log(response)
+
         if (response.ok) {
-          console.log('Emergency accepted successfully');
-          navigation.navigate('Maps', { data: dataAlert });
+          console.log('Emergency accepted successfully')
+          navigation.navigate('Maps', { data: dataAlert })
         } else {
-          console.error('Failed to accept emergency');
+          console.error('Failed to accept emergency')
         }
       } else {
-        console.error('Emergency ID not found');
+        console.error('Emergency ID not found')
       }
     } catch (error) {
-      console.error('Error accepting emergency:', error);
+      console.error('Error accepting emergency:', error)
     }
-  };
+  }
 
   const goProfilePage = () => {
-    console.log('Go Profile Page !');
-    navigation.push('ProfilePage');
-  };
+    console.log('Go Profile Page !')
+    navigation.push('ProfilePage')
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -103,27 +125,32 @@ export default function AlertStatusPage({ navigation, route }) {
         />
       </TouchableOpacity>
 
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 150}}>
-      <Text style={{ fontSize: 24, color: 'black',  }}>
-        Votre statut:
-      </Text>
-      <Text
-        testID="status-text"
+      <View
         style={{
-          fontSize: 28,
-          fontWeight: 'bold',
-          color: colors.StayAliveRed,
-          marginTop: 5,
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 150,
         }}
       >
-        En attente de réponse ...
-      </Text>
+        <Text style={{ fontSize: 24, color: 'black' }}>Votre statut:</Text>
+        <Text
+          testID="status-text"
+          style={{
+            fontSize: 28,
+            fontWeight: 'bold',
+            color: colors.StayAliveRed,
+            marginTop: 5,
+          }}
+        >
+          En attente de réponse ...
+        </Text>
 
-      <Image
-        testID="unavailable-logo"
-        style={{ width: 150, height: 150, marginTop: 30 }}
-        source={require('../../assets/WarningLogo.png')}
-      />
+        <Image
+          testID="unavailable-logo"
+          style={{ width: 150, height: 150, marginTop: 30 }}
+          source={require('../../assets/WarningLogo.png')}
+        />
       </View>
       <View
         style={{
@@ -132,7 +159,7 @@ export default function AlertStatusPage({ navigation, route }) {
           justifyContent: 'flex-start', // Aligne les éléments sur l'axe principal (horizontalement) à gauche
           alignItems: 'center',
           marginLeft: 0,
-          maxWidth: 300
+          maxWidth: 300,
         }}
       >
         <View
@@ -142,7 +169,6 @@ export default function AlertStatusPage({ navigation, route }) {
             borderRadius: 100,
             padding: 10,
             marginLeft: 20,
-
           }}
         >
           <Icon name="flag-o" size={30} color="red" />
@@ -176,8 +202,7 @@ export default function AlertStatusPage({ navigation, route }) {
           alignItems: 'center',
           marginBottom: 70,
           maxWidth: 350,
-          marginTop: -50
-
+          marginTop: -50,
         }}
       >
         <View
@@ -282,9 +307,9 @@ export default function AlertStatusPage({ navigation, route }) {
         </Text>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 AlertStatusPage.propTypes = {
   navigation: PropTypes.object.isRequired,
-};
+}

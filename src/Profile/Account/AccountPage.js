@@ -19,8 +19,7 @@ import {
   requestUpdateEmail,
   requestUpdatePhone,
 } from './RequestUpdateInfos/RequestsUpdateInfos'
-import { urlApi } from "../../Utils/Api";
-
+import { urlApi } from '../../Utils/Api'
 
 export default function AccountPage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -37,17 +36,14 @@ export default function AccountPage({ navigation }) {
       try {
         setLoading(true)
         const token = await AsyncStorage.getItem('userToken')
-        const response = await fetch(
-          `${urlApi}/rescuer/account`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        const data = await response.json();
-        console.log(data);
+        const response = await fetch(`${urlApi}/rescuer/account`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        const data = await response.json()
+        console.log(data)
         setProfileData(data)
         setOriginalProfileData(data)
       } catch (error) {

@@ -3,13 +3,12 @@ import { View, Text, TouchableOpacity, Image, Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import PropTypes from 'prop-types'
 import { colors } from '../Style/StayAliveStyle'
-import { urlApi } from '../Utils/Api';
+import { urlApi } from '../Utils/Api'
 
 export default function UnavailablePage({ navigation }) {
   UnavailablePage.propTypes = {
     navigation: PropTypes.object.isRequired,
   }
-
 
   const getInfosAccount = async () => {
     const token = await AsyncStorage.getItem('userToken')
@@ -37,7 +36,6 @@ export default function UnavailablePage({ navigation }) {
       })
       .then((data) => {
         console.log('Position sended: ', data)
-
       })
       .catch((error) => {
         console.error('There was an issue with the fetch operation:', error)
@@ -78,7 +76,6 @@ export default function UnavailablePage({ navigation }) {
       })
   }
 
-
   const onClickButton = async () => {
     console.log('Je me rends Disponible')
     const token = await AsyncStorage.getItem('userToken')
@@ -104,8 +101,8 @@ export default function UnavailablePage({ navigation }) {
       })
       .then((data) => {
         console.log('Status updated:', data)
-        sendPosition();
-        getInfosAccount();
+        sendPosition()
+        getInfosAccount()
         navigation.navigate('AvailablePage')
       })
       .catch((error) => {

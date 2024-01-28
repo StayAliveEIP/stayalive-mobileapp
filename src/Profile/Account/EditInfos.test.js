@@ -1,6 +1,6 @@
-import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
-import { EditInfosMenu } from './EditInfos';
+import React from 'react'
+import { render, fireEvent, waitFor } from '@testing-library/react-native'
+import { EditInfosMenu } from './EditInfos'
 
 describe('EditInfosMenu Component', () => {
   const mockVariable = {
@@ -11,7 +11,7 @@ describe('EditInfosMenu Component', () => {
     email: {
       email: 'john.doe@example.com',
     },
-  };
+  }
 
   it('renders correctly with required props', () => {
     const { getByTestId } = render(
@@ -22,14 +22,14 @@ describe('EditInfosMenu Component', () => {
         setVariable={() => {}}
         edit={false}
       />
-    );
+    )
 
-    const boxMenu = getByTestId('box-menu');
-    const textMenu = getByTestId('text-menu');
+    const boxMenu = getByTestId('box-menu')
+    const textMenu = getByTestId('text-menu')
 
-    expect(boxMenu).toBeTruthy();
-    expect(textMenu).toBeTruthy();
-  });
+    expect(boxMenu).toBeTruthy()
+    expect(textMenu).toBeTruthy()
+  })
 
   it('renders TextInput when in edit mode', () => {
     const { getByTestId } = render(
@@ -40,15 +40,15 @@ describe('EditInfosMenu Component', () => {
         setVariable={() => {}}
         edit={true}
       />
-    );
+    )
 
-    const textInput = getByTestId('text-input');
+    const textInput = getByTestId('text-input')
 
-    expect(textInput).toBeTruthy();
-  });
+    expect(textInput).toBeTruthy()
+  })
 
   it('calls setVariable with updated data when TextInput value changes', async () => {
-    const setVariableMock = jest.fn();
+    const setVariableMock = jest.fn()
 
     const { getByTestId } = render(
       <EditInfosMenu
@@ -58,19 +58,19 @@ describe('EditInfosMenu Component', () => {
         setVariable={setVariableMock}
         edit={true}
       />
-    );
+    )
 
-    const textInput = getByTestId('text-input');
+    const textInput = getByTestId('text-input')
 
-    fireEvent.changeText(textInput, 'New Name');
+    fireEvent.changeText(textInput, 'New Name')
 
     await waitFor(() => {
       expect(setVariableMock).toHaveBeenCalledWith({
         ...mockVariable,
         name: 'New Name',
-      });
-    });
-  });
+      })
+    })
+  })
 
   it('renders Text when not in edit mode', () => {
     const { getByTestId } = render(
@@ -81,10 +81,10 @@ describe('EditInfosMenu Component', () => {
         setVariable={() => {}}
         edit={false}
       />
-    );
+    )
 
-    const textElement = getByTestId('text-element');
+    const textElement = getByTestId('text-element')
 
-    expect(textElement).toBeTruthy();
-  });
-});
+    expect(textElement).toBeTruthy()
+  })
+})

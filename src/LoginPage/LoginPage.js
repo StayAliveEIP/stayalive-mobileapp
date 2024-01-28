@@ -13,7 +13,7 @@ import { FadeInView } from '../Animations/Animations'
 import { colors } from '../Style/StayAliveStyle'
 import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
-import { urlApi } from '../Utils/Api';
+import { urlApi } from '../Utils/Api'
 
 export default function LoginPage({ navigation }) {
   const [email, onChangeEmail] = useState('martin.leblancs@epitech.eu')
@@ -27,7 +27,7 @@ export default function LoginPage({ navigation }) {
     console.log(email.toLowerCase(), password)
 
     const url = `${urlApi}/rescuer/auth/login`
-    console.log("url zebi: " + url);
+    console.log('url zebi: ' + url)
     const body = JSON.stringify({
       email: email.toLowerCase(),
       password,
@@ -41,7 +41,7 @@ export default function LoginPage({ navigation }) {
       body,
     })
       .then((response) => {
-        console.log(response);
+        console.log(response)
         if (response.ok) {
           return response.json()
         }
