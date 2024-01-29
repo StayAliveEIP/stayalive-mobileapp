@@ -1,1 +1,1 @@
-export const urlApi = 'http://192.168.0.106:3000'
+export const urlApi = 'https://api.stayalive.fr'

@@ -27,7 +27,7 @@ export default function LoginPage({ navigation }) {
     console.log(email.toLowerCase(), password)
 
     const url = `${urlApi}/rescuer/auth/login`
-    console.log('url zebi: ' + url)
+    console.log("'" + url + "'")
     const body = JSON.stringify({
       email: email.toLowerCase(),
       password,
@@ -36,6 +36,7 @@ export default function LoginPage({ navigation }) {
     fetch(url, {
       method: 'POST',
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body,

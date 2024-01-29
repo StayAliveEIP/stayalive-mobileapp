@@ -87,7 +87,6 @@ export default function AccountPage({ navigation }) {
     try {
       if (profileData !== originalProfileData) {
         const token = await AsyncStorage.getItem('userToken')
-
         if (profileData.email.email !== originalProfileData.email.email) {
           const success = await requestUpdateEmail(profileData, token)
           if (success) {
