@@ -24,7 +24,10 @@ describe('AlertStatusPage', () => {
 
   it('renders correctly', () => {
     const { getByTestId } = render(
-      <AlertStatusPage navigation={mockNavigation} route={{ params: { dataAlert: {} } }} />
+      <AlertStatusPage
+        navigation={mockNavigation}
+        route={{ params: { dataAlert: {} } }}
+      />
     )
     const statusText = getByTestId('status-text')
     expect(statusText).toBeTruthy()
@@ -34,7 +37,10 @@ describe('AlertStatusPage', () => {
   it('calls RefuseAlert when "Refuser l\'alerte" button is pressed', () => {
     const consoleLogSpy = jest.spyOn(console, 'log')
     const { getByText } = render(
-      <AlertStatusPage navigation={mockNavigation} route={{ params: { dataAlert: {} } }} />
+      <AlertStatusPage
+        navigation={mockNavigation}
+        route={{ params: { dataAlert: {} } }}
+      />
     )
     const refuseButton = getByText("Refuser l'alerte")
     fireEvent.press(refuseButton)
@@ -45,7 +51,10 @@ describe('AlertStatusPage', () => {
   it('calls AcceptAlert when "Accepter l\'alerte" button is pressed', () => {
     const consoleLogSpy = jest.spyOn(console, 'log')
     const { getByText } = render(
-      <AlertStatusPage navigation={mockNavigation} route={{ params: { dataAlert: {} } }} />
+      <AlertStatusPage
+        navigation={mockNavigation}
+        route={{ params: { dataAlert: {} } }}
+      />
     )
     const acceptButton = getByText("Accepter l'alerte")
     fireEvent.press(acceptButton)
@@ -55,7 +64,10 @@ describe('AlertStatusPage', () => {
 
   it('navigates to ProfilePage when "ProfileBadge" is pressed', () => {
     const { getByTestId } = render(
-      <AlertStatusPage navigation={mockNavigation} route={{ params: { dataAlert: {} } }} />
+      <AlertStatusPage
+        navigation={mockNavigation}
+        route={{ params: { dataAlert: {} } }}
+      />
     )
     const profileBadge = getByTestId('profile-badge-image')
     fireEvent.press(profileBadge)
