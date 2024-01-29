@@ -76,6 +76,7 @@ export default function UnavailablePage({ navigation }) {
   }
 
   const onClickButton = async () => {
+    console.log('Je me rends Disponible')
     const token = await AsyncStorage.getItem('userToken')
 
     const url = `${urlApi}/rescuer/status`
@@ -110,6 +111,7 @@ export default function UnavailablePage({ navigation }) {
   }
 
   const onProfileBadgeClick = () => {
+    console.log('Profile badge clicked')
     navigation.navigate('ProfilePage')
   }
 

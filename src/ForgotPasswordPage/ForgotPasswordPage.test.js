@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, fireEvent, waitFor } from '@testing-library/react-native'
 import ForgotPasswordPage from './ForgotPasswordPage'
+import { urlApi } from '../Utils/Api'
 
 jest.mock('react-native-snackbar', () => ({
   show: jest.fn(),
@@ -73,7 +74,7 @@ describe('ForgotPasswordPage', () => {
     fireEvent.press(getByTestId('login-button'))
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        'http://api.stayalive.fr:3000/rescuer/forgot-password/link?email=test%40example.com',
+        `${urlApi}/rescuer/forgot-password/link?email=test%40example.com`,
         {
           method: 'GET',
           headers: {

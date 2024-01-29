@@ -36,7 +36,6 @@ export default function LoginPage({ navigation }) {
     fetch(url, {
       method: 'POST',
       headers: {
-        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body,

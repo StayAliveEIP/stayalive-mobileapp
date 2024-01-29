@@ -25,6 +25,7 @@ export default function AlertStatusPage({ navigation, route }) {
   }
 
   const RefuseAlert = async () => {
+    console.log('You refuse the alert !')
     try {
       const token = await AsyncStorage.getItem('userToken')
       const emergencyId = dataAlert?.emergency?.id
@@ -53,6 +54,7 @@ export default function AlertStatusPage({ navigation, route }) {
   }
 
   const AcceptAlert = async () => {
+    console.log('You accept the alert !')
     try {
       const token = await AsyncStorage.getItem('userToken')
       const emergencyId = dataAlert?.emergency?.id

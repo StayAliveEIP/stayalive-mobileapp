@@ -3,6 +3,8 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native'
 import fetchMock from 'jest-fetch-mock'
 import { Alert } from 'react-native'
 import LoginPage from './LoginPage'
+import { urlApi } from '../Utils/Api'
+import * as url from 'url'
 
 fetchMock.enableMocks()
 
@@ -63,7 +65,7 @@ describe('LoginPage', () => {
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        'http://api.stayalive.fr:3000/rescuer/auth/login',
+        `${urlApi}/rescuer/auth/login`,
         {
           method: 'POST',
           headers: {
@@ -92,7 +94,7 @@ describe('LoginPage', () => {
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        'http://api.stayalive.fr:3000/rescuer/auth/login',
+        `${urlApi}/rescuer/auth/login`,
         {
           method: 'POST',
           headers: {
