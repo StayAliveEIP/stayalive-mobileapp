@@ -11,7 +11,7 @@ describe('Menu', () => {
   beforeEach(() => {
     const navigation = {
       navigate: jest.fn(),
-    };
+    }
     const renderResult = render(
       <Menu
         navigation={navigation}
@@ -27,7 +27,7 @@ describe('Menu', () => {
   it('renders text with props.name', () => {
     const navigation = {
       navigate: jest.fn(),
-    };
+    }
     const { getByTestId } = render(
       <Menu
         goTo="Maps"
@@ -51,7 +51,7 @@ describe('Menu', () => {
   it('renders icon', () => {
     const navigation = {
       navigate: jest.fn(),
-    };
+    }
     const { getByTestId } = render(
       <Menu
         navigation={navigation}

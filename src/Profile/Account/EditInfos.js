@@ -17,8 +17,7 @@ export function EditInfosMenu(props) {
   if (!props.variable && loaded === false) {
     setLoaded(true)
     return (
-      <View
-        style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+      <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
         <ActivityIndicator size="small" color={colors.StayAliveRed} />
       </View>
     )
@@ -68,7 +67,7 @@ export function EditInfosMenu(props) {
       </Text>
       {props.edit === true ? (
         <TextInput
-          testID="text-input"  // Ajout du testID pour le TextInput
+          testID="text-input" // Ajout du testID pour le TextInput
           style={{
             marginLeft: 30,
             textAlign: 'left',
@@ -78,7 +77,7 @@ export function EditInfosMenu(props) {
           }}
           value={textValue}
           onChangeText={(newText) => {
-            let updatedProfileData;
+            let updatedProfileData
 
             if (
               props.indexVariable === 'phone' ||
@@ -90,20 +89,20 @@ export function EditInfosMenu(props) {
                   ...props.variable[props.indexVariable],
                   [props.indexVariable]: newText,
                 },
-              };
+              }
             } else {
               updatedProfileData = {
                 ...props.variable,
                 [props.indexVariable]: newText,
-              };
+              }
             }
 
-            props.setVariable(updatedProfileData);
+            props.setVariable(updatedProfileData)
           }}
         />
       ) : (
         <Text
-          testID="text-element"  // Ajout du testID pour le Text
+          testID="text-element" // Ajout du testID pour le Text
           style={{
             marginLeft: 30,
             textAlign: 'left',

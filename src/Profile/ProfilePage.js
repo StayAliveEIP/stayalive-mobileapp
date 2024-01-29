@@ -13,7 +13,8 @@ import { launchImageLibrary } from 'react-native-image-picker'
 import { Menu } from './Menu'
 import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { urlApi } from '../Utils/Api'
 
 export default function ProfilePage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -31,15 +32,12 @@ export default function ProfilePage({ navigation }) {
 
         const token = await AsyncStorage.getItem('userToken')
 
-        const response = await fetch(
-          'http://api.stayalive.fr:3000/rescuer/account',
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
+        const response = await fetch(`${urlApi}/rescuer/account`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`)
@@ -47,7 +45,7 @@ export default function ProfilePage({ navigation }) {
 
         const data = await response.json()
         setProfileData(data)
-        console.log(data.firstname + " " + data.lastname);
+        console.log(data.firstname + ' ' + data.lastname)
       } catch (error) {
         console.error(
           'Erreur lors de la récupération des données du profil',
@@ -81,9 +79,17 @@ export default function ProfilePage({ navigation }) {
     })
   }
 
-  const onClickDisconnect = () => {
-    console.log("Disconnect button press !")
-    AsyncStorage.setItem('userToken', 'Empty')
+  const onClickDisconnect = async () => {
+    console.log('Disconnect button press !')
+
+    const socketInfoString = await AsyncStorage.getItem('socketInfo')
+    if (socketInfoString) {
+      socketInfoString.off('message')
+      socketInfoString.disconnect()
+    }
+    await AsyncStorage.setItem('userToken', 'Empty')
+    await AsyncStorage.removeItem('socketInfo')
+
     navigation.navigate('LoginPage')
   }
 
@@ -204,7 +210,6 @@ export default function ProfilePage({ navigation }) {
           goTo="Maps"
           name="Mes Sauvetages"
           icon="help-buoy-outline"
-          goTo="Maps"
         />
         <Menu
           navigation={navigation}
@@ -216,7 +221,7 @@ export default function ProfilePage({ navigation }) {
           navigation={navigation}
           name="Mes Documents"
           icon="document-text-outline"
-          goTo="Maps"
+          goTo="SendDocumentPage"
         />
         <Menu
           navigation={navigation}

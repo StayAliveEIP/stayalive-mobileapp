@@ -6,6 +6,7 @@ import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import Snackbar from 'react-native-snackbar'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
+import { urlApi } from '../Utils/Api'
 
 export default function ForgotPasswordPage({ navigation }) {
   const [email, onChangeEmail] = useState('')
@@ -20,7 +21,7 @@ export default function ForgotPasswordPage({ navigation }) {
 
   const resetPassword = async () => {
     try {
-      const url = `http://api.stayalive.fr:3000/rescuer/forgot-password/link?email=${encodeURIComponent(
+      const url = `${urlApi}/rescuer/forgot-password/link?email=${encodeURIComponent(
         email
       )}`
 
@@ -61,7 +62,7 @@ export default function ForgotPasswordPage({ navigation }) {
         return
       }
 
-      const url = `http://api.stayalive.fr:3000/rescuer/forgot-password/reset`
+      const url = `${urlApi}/rescuer/forgot-password/reset`
       const body = {
         token,
         password: newPassword,

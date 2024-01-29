@@ -19,6 +19,7 @@ import {
   requestUpdateEmail,
   requestUpdatePhone,
 } from './RequestUpdateInfos/RequestsUpdateInfos'
+import { urlApi } from '../../Utils/Api'
 
 export default function AccountPage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -35,15 +36,14 @@ export default function AccountPage({ navigation }) {
       try {
         setLoading(true)
         const token = await AsyncStorage.getItem('userToken')
-        const data = await fetch(
-          'http://api.stayalive.fr:3000/rescuer/account',
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
+        const response = await fetch(`${urlApi}/rescuer/account`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        const data = await response.json()
+        console.log(data)
         setProfileData(data)
         setOriginalProfileData(data)
       } catch (error) {
@@ -87,7 +87,6 @@ export default function AccountPage({ navigation }) {
     try {
       if (profileData !== originalProfileData) {
         const token = await AsyncStorage.getItem('userToken')
-
         if (profileData.email.email !== originalProfileData.email.email) {
           const success = await requestUpdateEmail(profileData, token)
           if (success) {
@@ -263,7 +262,7 @@ export default function AccountPage({ navigation }) {
                 testID="text-menu"
                 style={{
                   color:
-                    profileData.email.verified !== false
+                    profileData.email?.verified !== false
                       ? colors.green
                       : colors.StayAliveRed,
                   fontWeight: 'bold',
@@ -272,7 +271,7 @@ export default function AccountPage({ navigation }) {
                   marginTop: 0,
                 }}
               >
-                {profileData.email.verified === false
+                {profileData.email?.verified === false
                   ? 'unverified'
                   : 'verified'}
               </Text>
@@ -303,7 +302,7 @@ export default function AccountPage({ navigation }) {
                 testID="text-menu"
                 style={{
                   color:
-                    profileData.phone.verified !== false
+                    profileData.phone?.verified !== false
                       ? colors.green
                       : colors.StayAliveRed,
                   fontWeight: 'bold',
@@ -312,7 +311,7 @@ export default function AccountPage({ navigation }) {
                   marginTop: 0,
                 }}
               >
-                {profileData.phone.verified === false
+                {profileData.phone?.verified === false
                   ? 'unverified'
                   : 'verified'}
               </Text>
