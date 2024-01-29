@@ -46,7 +46,6 @@ export default function UnavailablePage({ navigation }) {
   }
 
   const sendPosition = async () => {
-    console.log('I send my position !')
     const token = await AsyncStorage.getItem('userToken')
 
     const url = `${urlApi}/rescuer/account`
@@ -77,7 +76,6 @@ export default function UnavailablePage({ navigation }) {
   }
 
   const onClickButton = async () => {
-    console.log('Je me rends Disponible')
     const token = await AsyncStorage.getItem('userToken')
 
     const url = `${urlApi}/rescuer/status`
@@ -112,7 +110,6 @@ export default function UnavailablePage({ navigation }) {
   }
 
   const onProfileBadgeClick = () => {
-    console.log('Profile badge clicked')
     navigation.navigate('ProfilePage')
   }
 

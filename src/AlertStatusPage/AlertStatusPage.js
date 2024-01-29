@@ -15,7 +15,7 @@ export default function AlertStatusPage({ navigation, route }) {
       params: PropTypes.shape({
         dataAlert: PropTypes.shape({
           emergency: PropTypes.shape({
-            id: PropTypes.number,
+            id: PropTypes.string.isRequired,
             address: PropTypes.string,
             info: PropTypes.string,
           }),
@@ -25,18 +25,12 @@ export default function AlertStatusPage({ navigation, route }) {
   }
 
   const RefuseAlert = async () => {
-    console.log('You refuse the alert !')
     try {
       const token = await AsyncStorage.getItem('userToken')
       const emergencyId = dataAlert?.emergency?.id
 
-      console.log(emergencyId)
-      console.log(token)
-
       if (emergencyId && token) {
         const acceptUrl = `${urlApi}/rescuer/emergency/refuse?id=${emergencyId}`
-        console.log(acceptUrl)
-
         const response = await fetch(acceptUrl, {
           method: 'GET',
           headers: {
@@ -44,11 +38,9 @@ export default function AlertStatusPage({ navigation, route }) {
           },
         })
 
-        console.log(response)
-
         if (response.ok) {
           console.log('Emergency refused successfully')
-          navigation.navigate('Maps', { data: dataAlert })
+          navigation.navigate('AvailablePage')
         } else {
           console.error('Failed to refuse emergency')
         }
@@ -65,21 +57,14 @@ export default function AlertStatusPage({ navigation, route }) {
       const token = await AsyncStorage.getItem('userToken')
       const emergencyId = dataAlert?.emergency?.id
 
-      console.log(emergencyId)
-      console.log(token)
-
       if (emergencyId && token) {
         const acceptUrl = `${urlApi}/rescuer/emergency/accept?id=${emergencyId}`
-        console.log(acceptUrl)
-
         const response = await fetch(acceptUrl, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
-
-        console.log(response)
 
         if (response.ok) {
           console.log('Emergency accepted successfully')
@@ -96,7 +81,6 @@ export default function AlertStatusPage({ navigation, route }) {
   }
 
   const goProfilePage = () => {
-    console.log('Go Profile Page !')
     navigation.push('ProfilePage')
   }
 

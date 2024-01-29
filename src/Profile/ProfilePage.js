@@ -221,7 +221,7 @@ export default function ProfilePage({ navigation }) {
           navigation={navigation}
           name="Mes Documents"
           icon="document-text-outline"
-          goTo="Maps"
+          goTo="SendDocumentPage"
         />
         <Menu
           navigation={navigation}
