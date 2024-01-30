@@ -8,6 +8,7 @@ import { TextInputStayAlive } from './textInputStayAlive'
 import { colors } from '../Style/StayAliveStyle'
 import { SlideInView } from '../Animations/Animations'
 import PropTypes from 'prop-types'
+import { urlApi } from '../Utils/Api'
 
 export default function RegistrationPage({ navigation }) {
   const [names, onChangeNames] = useState('')
@@ -22,6 +23,8 @@ export default function RegistrationPage({ navigation }) {
 
   useEffect(() => {}, [])
   const onClickJoinUs = async () => {
+    console.log(`${urlApi}/rescuer/auth/register`)
+
     let message = ''
     let code = 0
     const namesSplited = names.split(' ')
@@ -35,17 +38,13 @@ export default function RegistrationPage({ navigation }) {
           password,
           phone,
         }
-        const response = await fetch(
-          'http://api.stayalive.fr:3000/auth/register',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
-          }
-        )
-
+        const response = await fetch(`${urlApi}/rescuer/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        })
         const responseData = await response.json()
         message = responseData.message
         code = response.status
@@ -201,6 +200,7 @@ export default function RegistrationPage({ navigation }) {
               <Text> et nos </Text>
               <Text style={{ color: colors.StayAliveRed }}>CGV</Text>
             </View>
+
             <TouchableOpacity
               onPress={onClickJoinUs}
               style={{

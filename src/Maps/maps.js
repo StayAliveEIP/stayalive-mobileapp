@@ -15,19 +15,23 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
 import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { urlApi } from '../Utils/Api'
 
 const { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
 const LATITUDE_DELTA = 0.02
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
-const address = '24 Rue Pasteur, 94270, France' // Address variable
+const address = '24 Rue Pasteur, 94270, France'
 
-export default function Maps({ navigation }) {
+export default function Maps({ navigation, route }) {
+  const dataAlert = route.params
   const [region, setRegion] = useState(null)
 
   Maps.propTypes = {
     navigation: PropTypes.object.isRequired,
+    route: PropTypes.object.isRequired,
   }
 
   const pinLocation = {
@@ -94,9 +98,33 @@ export default function Maps({ navigation }) {
     Linking.openURL(url)
   }
 
-  const onClickEnd = () => {
-    navigation.navigate('ProfilePage')
-    console.log('End !')
+  const onClickEnd = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken')
+      const emergencyId = dataAlert?.data?.emergency?.id
+
+      if (emergencyId && token) {
+        const terminateUrl = `${urlApi}/rescuer/emergency/terminate?id=${emergencyId}`
+
+        const response = await fetch(terminateUrl, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        console.log(response)
+        if (response.ok) {
+          console.log('Emergency terminated successfully')
+          navigation.navigate('AvailablePage')
+        } else {
+          console.error('Failed to terminate emergency')
+        }
+      } else {
+        console.error('Emergency ID not found')
+      }
+    } catch (error) {
+      console.error('Error terminating emergency:', error)
+    }
   }
 
   return (
@@ -122,8 +150,16 @@ export default function Maps({ navigation }) {
         </View>
 
         <View style={styles.infoSection}>
-          <InfoItem icon="📍" name="Destination" detail={address} />
-          <InfoItem icon="👤" name="Personne à secourir" detail="John Doe" />
+          <InfoItem
+            icon="📍"
+            name="Destination"
+            detail={dataAlert?.data?.emergency?.address}
+          />
+          <InfoItem
+            icon="👤"
+            name="Personne à secourir"
+            detail={dataAlert?.data?.emergency?.info}
+          />
         </View>
 
         <View style={styles.buttonSection}>
@@ -193,6 +229,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+    maxWidth: 250,
   },
   icon: {
     marginRight: 10,
@@ -200,10 +237,10 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   infoName: {
-    fontSize: 16,
+    fontSize: 18,
   },
   infoDetail: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   buttonSection: {

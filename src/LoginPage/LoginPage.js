@@ -11,8 +11,9 @@ import LinearGradient from 'react-native-linear-gradient'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { FadeInView } from '../Animations/Animations'
 import { colors } from '../Style/StayAliveStyle'
-import { TextInputStayAlive } from './textInputStayAlive'
+import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
+import { urlApi } from '../Utils/Api'
 
 export default function LoginPage({ navigation }) {
   const [email, onChangeEmail] = useState('')
@@ -21,10 +22,12 @@ export default function LoginPage({ navigation }) {
   LoginPage.propTypes = {
     navigation: PropTypes.object.isRequired,
   }
+
   const onClickLogin = () => {
     console.log(email.toLowerCase(), password)
 
-    const url = 'http://api.stayalive.fr:3000/auth/login'
+    const url = `${urlApi}/rescuer/auth/login`
+    console.log("'" + url + "'")
     const body = JSON.stringify({
       email: email.toLowerCase(),
       password,
@@ -38,7 +41,7 @@ export default function LoginPage({ navigation }) {
       body,
     })
       .then((response) => {
-        //! Check response
+        console.log(response)
         if (response.ok) {
           return response.json()
         }
@@ -70,6 +73,10 @@ export default function LoginPage({ navigation }) {
 
   const onClickLoginWithGoogle = () => {
     console.log('Google !')
+  }
+
+  const onClickForgotPassword = () => {
+    navigation.navigate('ForgotPasswordPage')
   }
 
   return (
@@ -160,7 +167,7 @@ export default function LoginPage({ navigation }) {
                 label="Mot de passe"
                 secureTextEntry
               />
-              <TouchableOpacity onPress={() => console.log('Forgot Password?')}>
+              <TouchableOpacity onPress={onClickForgotPassword}>
                 <Text
                   style={{
                     fontWeight: 'bold',

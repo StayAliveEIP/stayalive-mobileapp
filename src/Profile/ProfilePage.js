@@ -1,18 +1,64 @@
-import React, { useState } from 'react'
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { Menu } from './Menu'
 import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { urlApi } from '../Utils/Api'
 
 export default function ProfilePage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [profileData, setProfileData] = useState(null)
 
   ProfilePage.propTypes = {
     navigation: PropTypes.object.isRequired,
   }
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        setLoading(true)
+
+        const token = await AsyncStorage.getItem('userToken')
+
+        const response = await fetch(`${urlApi}/rescuer/account`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+
+        const data = await response.json()
+        setProfileData(data)
+        console.log(data.firstname + ' ' + data.lastname)
+      } catch (error) {
+        console.error(
+          'Erreur lors de la récupération des données du profil',
+          error
+        )
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProfileData()
+  }, [])
+
   const selectImage = async () => {
     const options = {
       mediaType: 'photo',
@@ -33,9 +79,23 @@ export default function ProfilePage({ navigation }) {
     })
   }
 
-  const onClickDisconnect = () => {
-    console.log('disconnect button press !')
-    navigation.navigate('SendDocumentPage')
+  const onClickDisconnect = async () => {
+    console.log('Disconnect button press !')
+
+    const socketInfoString = await AsyncStorage.getItem('socketInfo')
+    if (socketInfoString) {
+      socketInfoString.off('message')
+      socketInfoString.disconnect()
+    }
+    await AsyncStorage.setItem('userToken', 'Empty')
+    await AsyncStorage.removeItem('socketInfo')
+
+    navigation.navigate('LoginPage')
+  }
+
+  const goBack = () => {
+    console.log('arrow left clicked !')
+    navigation.goBack()
   }
 
   return (
@@ -57,6 +117,24 @@ export default function ProfilePage({ navigation }) {
           style={{ flex: 1 }}
         />
       </View>
+
+      {loading && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.StayAliveRed} />
+        </View>
+      )}
+
       <View style={{ flex: 1, alignItems: 'center' }}>
         <View style={{ position: 'absolute', alignItems: 'center' }}>
           <TouchableOpacity
@@ -110,7 +188,9 @@ export default function ProfilePage({ navigation }) {
             fontWeight: 'bold',
           }}
         >
-          Louis AUTEF
+          {profileData
+            ? `${profileData.firstname} ${profileData.lastname}`
+            : 'Chargement...'}
         </Text>
 
         <TouchableOpacity
@@ -121,18 +201,34 @@ export default function ProfilePage({ navigation }) {
             left: 30,
             zIndex: 1,
           }}
-          onPress={() => console.log('arrow left clicked !')}
+          onPress={goBack}
         >
-          <Icon
-            name="arrow-left"
-            size={30}
-            onPress={() => console.log('arrow left clicked !')}
-          />
+          <Icon name="arrow-left" size={30} onPress={goBack} />
         </TouchableOpacity>
-        <Menu name="Mes Sauvetages" icon="help-buoy-outline" />
-        <Menu name="Mon Compte" icon="person-outline" />
-        <Menu name="Mes Documents" icon="document-text-outline" />
-        <Menu name="Préférences" icon="settings-outline" />
+        <Menu
+          navigation={navigation}
+          goTo="Maps"
+          name="Mes Sauvetages"
+          icon="help-buoy-outline"
+        />
+        <Menu
+          navigation={navigation}
+          name="Mon Compte"
+          icon="person-outline"
+          goTo="AccountPage"
+        />
+        <Menu
+          navigation={navigation}
+          name="Mes Documents"
+          icon="document-text-outline"
+          goTo="SendDocumentPage"
+        />
+        <Menu
+          navigation={navigation}
+          name="Préférences"
+          icon="settings-outline"
+          goTo="Maps"
+        />
         <TouchableOpacity
           testID="button-disconnect"
           style={{

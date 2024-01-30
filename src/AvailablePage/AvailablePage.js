@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Alert } from 'react-native'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { colors } from '../Style/StayAliveStyle'
+import { urlApi } from '../Utils/Api'
+import { initializeWebSocket, disconnectWebSocket } from '../WebSocketService'
 
 export function TextSlider() {
   const [currentPage, setCurrentPage] = useState(0)
@@ -79,17 +81,23 @@ export function TextSlider() {
   )
 }
 
-// Ajout de PropTypes pour définir le type attendu de chaque prop
 AvailablePage.propTypes = {
   navigation: PropTypes.object.isRequired,
 }
 
 export default function AvailablePage({ navigation }) {
+  useEffect(() => {
+    initializeWebSocket(navigation)
+    return () => {
+      disconnectWebSocket()
+    }
+  }, [navigation])
+
   const onClickButton = async () => {
     console.log('Je me rends indisponible')
     const token = await AsyncStorage.getItem('userToken')
 
-    const url = 'http://api.stayalive.fr:3000/status'
+    const url = `${urlApi}/rescuer/status`
     const body = JSON.stringify({
       status: 'NOT_AVAILABLE',
     })
@@ -122,7 +130,7 @@ export default function AvailablePage({ navigation }) {
 
   const onProfileBadgeClick = () => {
     console.log('Profile badge clicked')
-    navigation.navigate('Maps')
+    navigation.navigate('ProfilePage')
   }
 
   return (

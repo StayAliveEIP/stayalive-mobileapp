@@ -3,6 +3,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native'
 import fetchMock from 'jest-fetch-mock'
 import { Alert } from 'react-native'
 import LoginPage from './LoginPage'
+import { urlApi } from '../Utils/Api'
 
 fetchMock.enableMocks()
 
@@ -62,19 +63,16 @@ describe('LoginPage', () => {
     fireEvent.press(loginButton)
 
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        'http://api.stayalive.fr:3000/auth/login',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: 'spam.noelvarga25@gmail.com',
-            password: 'nono2504',
-          }),
-        }
-      )
+      expect(fetch).toHaveBeenCalledWith(`${urlApi}/rescuer/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'spam.noelvarga25@gmail.com',
+          password: 'nono2504',
+        }),
+      })
     })
   })
 
@@ -91,19 +89,16 @@ describe('LoginPage', () => {
     fireEvent.press(loginButton)
 
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        'http://api.stayalive.fr:3000/auth/login',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: 'spam.noelvarga25@gmail.com',
-            password: 'wrong_password',
-          }),
-        }
-      )
+      expect(fetch).toHaveBeenCalledWith(`${urlApi}/rescuer/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'spam.noelvarga25@gmail.com',
+          password: 'wrong_password',
+        }),
+      })
       expect(Alert.alert).toHaveBeenCalledWith(
         'Error',
         'Nous ne parvenons pas à contacter nos serveurs'
