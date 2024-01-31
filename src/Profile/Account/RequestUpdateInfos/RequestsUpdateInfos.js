@@ -32,7 +32,7 @@ export const requestUpdatePhone = async (profileData, token) => {
     },
     body,
   })
-  console.log(response);
+  console.log(response)
   if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`)
   if (response.status === 200 || response.status === 201) return true
   else return false

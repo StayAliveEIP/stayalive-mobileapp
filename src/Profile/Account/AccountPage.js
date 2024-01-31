@@ -101,7 +101,7 @@ export default function AccountPage({ navigation }) {
         }
 
         if (profileData.phone.phone !== originalProfileData.phone.phone) {
-            console.log("change phone !!!!");
+          console.log('change phone !!!!')
           const success = await requestUpdatePhone(profileData, token)
           if (success) {
             setOriginalProfileData(profileData)
