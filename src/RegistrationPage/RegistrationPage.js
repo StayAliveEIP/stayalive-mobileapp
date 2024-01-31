@@ -31,6 +31,11 @@ export default function RegistrationPage({ navigation }) {
 
     if (selectCGUV !== false) {
       try {
+          console.log(email);
+          console.log(namesSplited[1]);
+          console.log(namesSplited[0]);
+          console.log(phone);
+          console.log(password);
         const requestBody = {
           email,
           firstname: namesSplited[1],
