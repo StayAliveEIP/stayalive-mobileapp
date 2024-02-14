@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     },
     infos: {
         color: colors.black,
+        maxWidth: 265,
     },
     separator: {
         borderBottomColor: '#ddd',

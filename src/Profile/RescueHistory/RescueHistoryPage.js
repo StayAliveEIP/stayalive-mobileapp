@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ActivityIndicator, FlatList, TextInput } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { launchImageLibrary } from 'react-native-image-picker'
@@ -15,6 +15,10 @@ export default function RescueHistoryPage({ navigation }) {
     const [avatarSource, setAvatarSource] = useState(null)
     const [loading, setLoading] = useState(true)
     const [profileData, setProfileData] = useState(null)
+    const [rescueData, setRescueData] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredData, setFilteredData] = useState([]);
+    const [rescueNumber, setRescueNumber] = useState(0);
 
     RescueHistoryPage.propTypes = {
         navigation: PropTypes.object.isRequired,
@@ -46,6 +50,42 @@ export default function RescueHistoryPage({ navigation }) {
                 const data = await response.json()
                 setProfileData(data)
                 console.log(data.firstname + ' ' + data.lastname)
+
+                // Une fois fetchProfileData est terminé, appeler getHistoryRescue
+                getHistoryRescue(token);
+            } catch (error) {
+                console.error(
+                    'Erreur lors de la récupération des données du profil',
+                    error
+                )
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        // Fonction pour récupérer l'historique des sauvetages
+        const getHistoryRescue = async (token) => {
+            try {
+                setLoading(true)
+
+                const response = await fetch(`${urlApi}/rescuer/emergency/history`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`)
+                }
+
+                const data = await response.json()
+
+                console.log(data);
+                setRescueData(data);
+                setFilteredData(data);
+                setRescueNumber(data.length);
+                console.log(data.firstname + ' ' + data.lastname)
             } catch (error) {
                 console.error(
                     'Erreur lors de la récupération des données du profil',
@@ -58,26 +98,39 @@ export default function RescueHistoryPage({ navigation }) {
 
         fetchProfileData()
     }, [])
+
     // Fonction pour rendre une carte de sauvetage
     const renderRescueCard = (item) => (
-        <View style={{alignItems: 'center' }}>
-        <CardRescue
-            number={item.number}
-            id={item.id}
-            info={item.info}
-            address={item.address}
-            status={item.status}
-        />
+        <View style={{ alignItems: 'center' }}>
+            <CardRescue
+                number={item.number}
+                id={item.id}
+                info={item.info}
+                address={item.address}
+                status={item.status}
+            />
         </View>
     );
 
-    // Données de test pour la liste de cartes de sauvetage
-    const rescueData = [
-        { number: '1', id: '5f7a6d3e6f6d7a6d3e6f7a6d', info: 'Une mamie est dans le coma', address: '17 rue des Lilas, Paris', status: 'ASSIGNED' },
-        { number: '2', id: '5f7a6d3e6f6d7a6d3e6f7a6d', info: 'Une mamie est dans le coma', address: '17 rue des Lilas, Paris', status: 'ASSIGNED' },
-        { number: '3', id: '5f7a6d3e6f6d7a6d3e6f7a6d', info: 'Une mamie est dans le coma', address: '17 rue des Lilas, Paris', status: 'ASSIGNED' },
-        { number: '4', id: '5f7a6d3e6f6d7a6d3e6f7a6d', info: 'Une mamie est dans le coma', address: '17 rue des Lilas, Paris', status: 'ASSIGNED' },
-    ];
+    // Fonction pour filtrer les données en fonction du terme de recherche
+    const filterData = () => {
+        if (!searchTerm.trim()) {
+            setFilteredData(rescueData);
+        } else {
+            const filtered = rescueData.filter(item => {
+                // Vérifiez si le terme de recherche est inclus dans n'importe quelle propriété de l'élément
+                return Object.values(item).some(value =>
+                    value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            });
+            setFilteredData(filtered);
+        }
+    };
+
+    // Effectuer le filtrage initial et à chaque changement du terme de recherche
+    useEffect(() => {
+        filterData();
+    }, [searchTerm]);
 
     return (
         <View style={{ flex: 1 }}>
@@ -175,14 +228,43 @@ export default function RescueHistoryPage({ navigation }) {
                     <Icon name="arrow-left" size={30} onPress={goBack} />
                 </TouchableOpacity>
 
-                <FlatList
-                    style={{width: "100%",}}
-                    data={rescueData}
-                    renderItem={({ item }) => renderRescueCard(item)}
-                    keyExtractor={item => item.number}
-                />
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, marginTop: -30, }}>
+                        <Text style={{ fontSize: 18, color: colors.black }}>Nombre de sauvetages :</Text>
+                        <View style={{ marginLeft: 10, width: 30, height: 30, borderRadius: 15, backgroundColor: colors.StayAliveRed, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ color: 'white', fontSize: 16 }}>{rescueNumber}</Text>
+                        </View>
+                    </View>
+                {rescueNumber >= 2 ? (
 
+                <TextInput
+                    style={{
+                        height: 40,
+                        width: '90%',
+                        borderColor: 'gray',
+                        borderWidth: 1,
+                        borderRadius: 10,
+                        marginBottom: 20,
+                        padding: 10
+                    }}
+                    onChangeText={text => setSearchTerm(text)}
+                    value={searchTerm}
+                    placeholder="Rechercher une information d'un sauvetage..."
+                />) : null}
+
+                {rescueNumber === 0 ? (
+                    <Text style={{ fontSize: 18, color: colors.black, marginBottom: 20, marginTop: 130, maxWidth: 200 }}>
+                        Oupss, vous n'avez pas encore de sauvetages...
+                    </Text>
+                ) : (
+                <FlatList
+                    style={{ width: "100%" }}
+                    data={filteredData.map((item, index) => ({ ...item, number: index + 1 }))}
+                    renderItem={({ item }) => renderRescueCard(item)}
+                    keyExtractor={item => item.id}
+                />)
+                }
             </View>
         </View>
     )
+
 }
