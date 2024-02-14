@@ -137,14 +137,12 @@ export default function ProfilePage({ navigation }) {
 
       <View style={{ flex: 1, alignItems: 'center' }}>
         <View style={{ position: 'absolute', alignItems: 'center' }}>
-          <TouchableOpacity
-            testID="select-image-button"
+          <View
             style={{
               position: 'absolute',
               justifyContent: 'center',
               top: -360,
             }}
-            onPress={selectImage}
           >
             <Image
               testID="user-avatar"
@@ -161,20 +159,8 @@ export default function ProfilePage({ navigation }) {
                   : require('../../assets/StayAlive-logo.png')
               }
             />
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                right: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                padding: 8,
-                borderRadius: 20,
-              }}
-              onPress={selectImage}
-            >
-              <Icon name="camera" size={20} color="white" />
-            </TouchableOpacity>
-          </TouchableOpacity>
+
+          </View>
         </View>
 
         <Text
@@ -207,7 +193,7 @@ export default function ProfilePage({ navigation }) {
         </TouchableOpacity>
         <Menu
           navigation={navigation}
-          goTo="Maps"
+          goTo="RescueHistoryPage"
           name="Mes Sauvetages"
           icon="help-buoy-outline"
         />
