@@ -59,26 +59,6 @@ export default function ProfilePage({ navigation }) {
     fetchProfileData()
   }, [])
 
-  const selectImage = async () => {
-    const options = {
-      mediaType: 'photo',
-      includeBase64: false,
-      maxHeight: 2000,
-      maxWidth: 2000,
-    }
-
-    launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker')
-      } else if (response.error) {
-        console.log('Image picker error: ', response.error)
-      } else {
-        const imageUri = response.uri || response.assets?.[0]?.uri
-        setAvatarSource(imageUri)
-      }
-    })
-  }
-
   const onClickDisconnect = async () => {
     console.log('Disconnect button press !')
 

@@ -3,7 +3,6 @@ import { View, Text, Image, TouchableOpacity, ActivityIndicator, FlatList, TextI
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { launchImageLibrary } from 'react-native-image-picker'
-import { EditInfosMenu } from './EditInfos'
 import { colors } from '../../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
