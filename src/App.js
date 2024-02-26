@@ -39,7 +39,10 @@ export default function App() {
           <Stack.Screen name="Maps" component={Maps} />
           <Stack.Screen name="AlertStatusPage" component={AlertStatusPage} />
           <Stack.Screen name="AccountPage" component={AccountPage} />
-          <Stack.Screen name="RescueHistoryPage" component={RescueHistoryPage} />
+          <Stack.Screen
+            name="RescueHistoryPage"
+            component={RescueHistoryPage}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

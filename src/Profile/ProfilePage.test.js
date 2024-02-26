@@ -38,5 +38,4 @@ describe('ProfilePage', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith('Disconnect button press !')
     consoleLogSpy.mockRestore()
   })
-  
 })

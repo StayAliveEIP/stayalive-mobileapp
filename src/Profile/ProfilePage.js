@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { launchImageLibrary } from 'react-native-image-picker'
 import { Menu } from './Menu'
 import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
@@ -45,6 +44,7 @@ export default function ProfilePage({ navigation }) {
 
         const data = await response.json()
         setProfileData(data)
+        setAvatarSource(null)
         console.log(data.firstname + ' ' + data.lastname)
       } catch (error) {
         console.error(
@@ -139,7 +139,6 @@ export default function ProfilePage({ navigation }) {
                   : require('../../assets/StayAlive-logo.png')
               }
             />
-
           </View>
         </View>
 
