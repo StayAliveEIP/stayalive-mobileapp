@@ -23,7 +23,7 @@ export const CardRescue = ({ number, id, info, address, status }) => {
     <TouchableOpacity
       style={{ width: '100%', alignItems: 'center' }}
       onPress={handleToggleExpansion}
-      testID={`rescue-card-${number}`}
+      testID={`rescue-card-${id}`}
     >
       <View style={styles.card}>
         <View style={styles.header}>
