@@ -120,12 +120,12 @@ export default function SendDocumentPage({ navigation }) {
     }
   }
 
-    const goBack = () => {
-        console.log('arrow left clicked !')
-        navigation.goBack()
-    }
+  const goBack = () => {
+    console.log('arrow left clicked !')
+    navigation.goBack()
+  }
 
-    return (
+  return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <TouchableOpacity
         testID="button-left-arrow"
