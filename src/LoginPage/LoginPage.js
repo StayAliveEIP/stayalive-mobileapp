@@ -29,7 +29,7 @@ export default function LoginPage({ navigation }) {
     const url = `${urlApi}/rescuer/auth/login`
     console.log("'" + url + "'")
     const body = JSON.stringify({
-      email: email.toLowerCase(),
+      email,
       password,
     })
 

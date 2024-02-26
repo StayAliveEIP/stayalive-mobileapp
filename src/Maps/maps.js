@@ -118,12 +118,15 @@ export default function Maps({ navigation, route }) {
           navigation.navigate('AvailablePage')
         } else {
           console.error('Failed to terminate emergency')
+          navigation.navigate('AvailablePage')
         }
       } else {
         console.error('Emergency ID not found')
+        navigation.navigate('AvailablePage')
       }
     } catch (error) {
       console.error('Error terminating emergency:', error)
+      navigation.navigate('AvailablePage')
     }
   }
 
