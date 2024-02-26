@@ -119,7 +119,13 @@ export default function SendDocumentPage({ navigation }) {
       )
     }
   }
-  return (
+
+    const goBack = () => {
+        console.log('arrow left clicked !')
+        navigation.goBack()
+    }
+
+    return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <TouchableOpacity
         testID="button-left-arrow"
@@ -129,7 +135,7 @@ export default function SendDocumentPage({ navigation }) {
           left: 20,
           zIndex: 1,
         }}
-        onPress={() => console.log('arrow left clicked !')}
+        onPress={() => goBack()}
       >
         <Icon testID="document-logo" name="arrow-left" size={30} />
       </TouchableOpacity>
