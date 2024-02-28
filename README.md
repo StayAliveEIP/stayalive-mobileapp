@@ -105,6 +105,7 @@ When working on something:
 | Matthieu QUERU  | [Matthieu33197][GhMQ]  | Web APP    |
 | Bastien CANTET  | [bastosbob][GhBC]      | API        |
 | Florian DAMIOT  | [florianepitech][GhFD] | API        |
+| Felix BUISSON   | [felixbuisson][GhFB]    | Web Admin  |
 
 [//]: # 'These are the links used above'
 [GhML]: https://github.com/MartinLeblancs
@@ -112,5 +113,6 @@ When working on something:
 [GhNV]: https://github.com/noelvarga25
 [GhBC]: https://github.com/bastosbob
 [GhFD]: https://github.com/florianepitech
+[GhFB]: https://github.com/FelixBuisson
 
 <p align="right">(<a href="#top">back to top</a>)</p>
