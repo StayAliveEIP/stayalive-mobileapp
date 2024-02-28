@@ -13,6 +13,7 @@ import SendDocumentPage from './SendDocumentPage/SendDocumentPage'
 import ForgotPasswordPage from './ForgotPasswordPage/ForgotPasswordPage'
 import Maps from './Maps/maps'
 import AlertStatusPage from './AlertStatusPage/AlertStatusPage'
+import ChatEmergency from './ChatEmergency/ChatEmergency'
 import { UserProvider } from './Utils/UserContext'
 
 const Stack = createNativeStackNavigator()
@@ -30,6 +31,7 @@ export default function App() {
             name="ForgotPasswordPage"
             component={ForgotPasswordPage}
           />
+          <Stack.Screen name="ChatEmergency" component={ChatEmergency} />
           <Stack.Screen name="RegistrationPage" component={RegistrationPage} />
           <Stack.Screen name="ProfilePage" component={ProfilePage} />
           <Stack.Screen name="AvailablePage" component={AvailablePage} />
