@@ -20,9 +20,9 @@ const ChatEmergency = ({ navigation }) => {
   const [message, setMessage] = useState('')
   const [chatHistory, setChatHistory] = useState([])
 
-    ChatEmergency.propTypes = {
-        navigation: PropTypes.object.isRequired,
-    }
+  ChatEmergency.propTypes = {
+    navigation: PropTypes.object.isRequired,
+  }
 
   const initializeWebSocket = async () => {
     try {
