@@ -105,7 +105,7 @@ When working on something:
 | Matthieu QUERU  | [Matthieu33197][GhMQ]  | Web APP    |
 | Bastien CANTET  | [bastosbob][GhBC]      | API        |
 | Florian DAMIOT  | [florianepitech][GhFD] | API        |
-| Felix BUISSON   | [felixbuisson][GhFB]    | Web Admin  |
+| Felix BUISSON   | [felixbuisson][GhFB]   | Web Admin  |
 
 [//]: # 'These are the links used above'
 [GhML]: https://github.com/MartinLeblancs
