@@ -17,6 +17,7 @@ import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
@@ -143,6 +144,19 @@ export default function Maps({ navigation, route }) {
         </MapView>
       ) : null}
 
+      <TouchableOpacity
+        style={styles.chatButton}
+        onPress={() => navigation.navigate('ChatEmergency')}
+      >
+        <Icon
+          name="chatbox-ellipses-outline"
+          size={30}
+          style={styles.iconChatEmergency}
+          onPress={() => navigation.navigate('ChatEmergency')}
+          color={colors.StayAliveRed}
+        />
+      </TouchableOpacity>
+
       <View style={styles.floatingWindow}>
         <View style={styles.header}>
           <Image
@@ -237,7 +251,11 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
     fontSize: 24,
-    color: 'grey',
+    color: 'white',
+  },
+  iconChatEmergency: {
+    fontSize: 30,
+    color: 'white',
   },
   infoName: {
     fontSize: 18,
@@ -280,5 +298,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: colors.StayAliveRed,
     fontWeight: 'bold',
+  },
+  chatButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    borderRadius: 50,
+    backgroundColor: colors.StayAliveRed,
+    padding: 12,
   },
 })
