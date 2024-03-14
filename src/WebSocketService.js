@@ -11,15 +11,15 @@ async function onDisplayNotification(navigation, dataAlert, token) {
   const batteryOptimizationEnabled = await notifee.isBatteryOptimizationEnabled();
   if (batteryOptimizationEnabled) {
     Alert.alert(
-        'Restrictions Detected',
-        'To ensure notifications are delivered, please disable battery optimization for the app.',
+        'Restrictions détectées',
+        'Pour garantir l\'envoi des notifications, veuillez désactiver l\'optimisation de la batterie pour l\'application.',
         [
           {
-            text: 'OK, open settings',
+            text: 'OK, ouvrir les paramètres',
             onPress: async () => await notifee.openBatteryOptimizationSettings(),
           },
           {
-            text: "Cancel",
+            text: "Annuler",
             onPress: () => console.log("Cancel Pressed"),
             style: "cancel"
           },
@@ -30,15 +30,15 @@ async function onDisplayNotification(navigation, dataAlert, token) {
   const powerManagerInfo = await notifee.getPowerManagerInfo();
   if (powerManagerInfo.activity) {
     Alert.alert(
-        'Restrictions Detected',
-        'To ensure notifications are delivered, please adjust your settings to prevent the app from being killed',
+        'Restrictions détectées',
+        'Pour garantir la réception des notifications, veuillez ajuster vos paramètres pour éviter que l\'application ne soit arretée.',
         [
           {
-            text: 'OK, open settings',
+            text: 'OK, ouvrir les paramètres',
             onPress: async () => await notifee.openPowerManagerSettings(),
           },
           {
-            text: "Cancel",
+            text: "Annuler",
             onPress: () => console.log("Cancel Pressed"),
             style: "cancel"
           },
