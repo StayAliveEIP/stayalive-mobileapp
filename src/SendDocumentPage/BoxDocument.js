@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as PropTypes from "prop-types";
 import DocumentPicker from "react-native-document-picker";
-import { Image, Text, TouchableOpacity, View, Platform, PermissionsAndroid } from "react-native";
+import { ActivityIndicator, Image, Text, TouchableOpacity, View, Platform, PermissionsAndroid } from "react-native";
 import { colors } from "../Style/StayAliveStyle";
 import { urlApi } from "../Utils/Api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,6 +16,8 @@ const imagePaths = {
 export function BoxDocument(props) {
     const { id, onFileSelect } = props;
     const [filename, setFilename] = useState(null);
+    const [loadingDownload, setLoadingDownload] = useState(false);
+    const [loadingDelete, setLoadingDelete] = useState(false);
 
     const handleDocumentPick = async () => {
         try {
@@ -38,6 +40,7 @@ export function BoxDocument(props) {
     };
 
     const handleDeleteDocument = async () => {
+        setLoadingDelete(true);
         try {
             const apiUrl = `${urlApi}/rescuer/document?type=${props.type}`;
             const token = await AsyncStorage.getItem('userToken');
@@ -67,10 +70,14 @@ export function BoxDocument(props) {
             });
             props.setData(null);
             console.error('Erreur lors de la tentative de suppression d\'un document : ', error);
+        } finally {
+            setLoadingDelete(false);
         }
     };
 
     const handleDownloadDocument = async () => {
+        setLoadingDownload(true);
+
         try {
             const apiUrl = `${urlApi}/rescuer/document/download?type=${props.type}`;
             const token = await AsyncStorage.getItem('userToken');
@@ -88,7 +95,21 @@ export function BoxDocument(props) {
                 .fetch('GET', apiUrl, {
                     Authorization: `Bearer ${token}`,
                 })
+                .then(() => {
+                    setLoadingDownload(false);
+                })
+                .catch((error) => {
+                    setLoadingDownload(false);
+                    console.error('Erreur lors du téléchargement du document : ', error);
+                    Snackbar.show({
+                        text: 'Une erreur est survenue lors du téléchargement du document',
+                        duration: Snackbar.LENGTH_LONG,
+                        backgroundColor: 'white',
+                        textColor: 'red',
+                    });
+                });
         } catch (error) {
+            setLoadingDownload(false);
             console.error('Erreur lors du téléchargement du document : ', error);
             Snackbar.show({
                 text: 'Une erreur est survenue lors du téléchargement du document',
@@ -172,21 +193,25 @@ export function BoxDocument(props) {
                         backgroundColor: colors.StayAliveRed,
                     }}
                 >
-                    <Text
-                        style={{
-                            textAlign: 'center',
-                            fontSize: 12,
-                            color: 'white',
-                            fontWeight: 'bold',
-                        }}
-                        testID={`selectDocument-button-${id}`}
-                    >
-                        {filename
-                            ? filename.length > 20
-                                ? `${filename.slice(0, 20)}...`
-                                : filename
-                            : 'Supprimer ce document'}
-                    </Text>
+                    {loadingDelete ? (
+                        <ActivityIndicator size="small" color="white" />
+                    ) : (
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                fontSize: 12,
+                                color: 'white',
+                                fontWeight: 'bold',
+                            }}
+                            testID={`selectDocument-button-${id}`}
+                        >
+                            {filename
+                                ? filename.length > 20
+                                    ? `${filename.slice(0, 20)}...`
+                                    : filename
+                                : 'Supprimer ce document'}
+                        </Text>
+                    )}
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={handleDownloadDocument}
@@ -199,21 +224,25 @@ export function BoxDocument(props) {
                         backgroundColor: colors.StayAliveRed,
                     }}
                 >
-                    <Text
-                        style={{
-                            textAlign: 'center',
-                            fontSize: 12,
-                            color: 'white',
-                            fontWeight: 'bold',
-                        }}
-                        testID={`selectDocument-button-${id}`}
-                    >
-                        {filename
-                            ? filename.length > 20
-                                ? `${filename.slice(0, 20)}...`
-                                : filename
-                            : 'Télécharger ce document'}
-                    </Text>
+                    {loadingDownload ? (
+                        <ActivityIndicator size="small" color="white" />
+                    ) : (
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                fontSize: 12,
+                                color: 'white',
+                                fontWeight: 'bold',
+                            }}
+                            testID={`selectDocument-button-${id}`}
+                        >
+                            {filename
+                                ? filename.length > 20
+                                    ? `${filename.slice(0, 20)}...`
+                                    : filename
+                                : 'Télécharger ce document'}
+                        </Text>
+                    )}
                 </TouchableOpacity>
             </View>
         </View>

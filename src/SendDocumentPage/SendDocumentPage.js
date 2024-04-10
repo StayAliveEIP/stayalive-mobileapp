@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { colors } from '../Style/StayAliveStyle'
 import {BoxUploadDocument} from './BoxUploadDocument'
@@ -16,7 +16,8 @@ export default function SendDocumentPage({ navigation }) {
     })
     const [documentID, setDocumentID] = useState(null);
     const [documentRescuer, setDocumentRescuer] = useState(null);
-
+    const [loadingDocuments, setLoadingDocuments] = useState(true);
+    const [loadingSendDocuments, setLoadingSendDocuments] = useState(false);
 
     const onFileSelect = (id, filename) => {
         setSelectedFiles((prevSelectedFiles) => ({
@@ -26,16 +27,16 @@ export default function SendDocumentPage({ navigation }) {
     }
 
     const onPressSendDocuments = async (type) => {
+        setLoadingSendDocuments(true);
+
         try {
-            console.log("starting send documents");
             const apiUrl = `${urlApi}/rescuer/document/upload?type=${type}`;
-            console.log(apiUrl);
 
             const token = await AsyncStorage.getItem('userToken');
 
             const formData = new FormData();
             formData.append('file', selectedFiles[type]);
-            console.log(formData)
+
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
@@ -44,14 +45,14 @@ export default function SendDocumentPage({ navigation }) {
                 },
                 body: formData,
             });
-            console.log(response);
+
             if (response.status === 201)
                 Snackbar.show({
-                text: 'Les documents on été envoyés avec succès',
-                duration: Snackbar.LENGTH_LONG,
-                backgroundColor: 'white',
-                textColor: 'green',
-            })
+                    text: 'Les documents on été envoyés avec succès',
+                    duration: Snackbar.LENGTH_LONG,
+                    backgroundColor: 'white',
+                    textColor: 'green',
+                })
             if (documentID === null)
                 setDocumentID(selectedFiles["ID_CARD"])
             if (documentRescuer === null)
@@ -64,6 +65,8 @@ export default function SendDocumentPage({ navigation }) {
                 textColor: 'green',
             })
             console.error('Erreur lors de l\'envoi des documents : ', error);
+        } finally {
+            setLoadingSendDocuments(false);
         }
     };
 
@@ -74,6 +77,8 @@ export default function SendDocumentPage({ navigation }) {
     }
 
     const getDocuments = async () => {
+        setLoadingDocuments(true);
+
         try {
             const apiUrl = `${urlApi}/rescuer/document/all`;
             const token = await AsyncStorage.getItem('userToken')
@@ -87,8 +92,6 @@ export default function SendDocumentPage({ navigation }) {
 
 
             const responseData = await response.json();
-            console.log("get document ")
-            console.log(responseData)
 
             const dataOfIdCard = responseData.find(item => item.type === "ID_CARD");
             const dataOfRescuerCertificate = responseData.find(item => item.type === "RESCUER_CERTIFICATE");
@@ -104,6 +107,8 @@ export default function SendDocumentPage({ navigation }) {
                 textColor: 'green',
             })
             console.error('Erreur lors de la récupération des documents : ', error);
+        } finally {
+            setLoadingDocuments(false);
         }
     };
 
@@ -144,68 +149,77 @@ export default function SendDocumentPage({ navigation }) {
                         Envoyer mes documents
                     </Text>
                 </View>
-                {documentID === null ? (
-                        <BoxUploadDocument
-                            onFileSelect={onFileSelect}
-                            id="ID_CARD"
-                            title="Pièce d'identité"
-                            description="Nous avons besoin de ce document afin de vous identifier auprès des services de secours et en cas de besoin, pour vous contacter."
-                        />) :
-                    (<BoxDocument
-                            id="documentID"
-                            type={"ID_CARD"}
-                            title={"Pièce d'identité"}
-                            data={documentID}
-                            setData={setDocumentID}
-                        />
-                    )}
-                {documentRescuer === null ? (
-                        <BoxUploadDocument
-                            onFileSelect={onFileSelect}
-                            id="RESCUER_CERTIFICATE"
-                            title="Certificat de secourisme"
-                            description="Nous avons besoin de ce document afin de vous identifier auprès des services de secours et en cas de besoin, pour vous contacter."
-                        />) :
-                    (<BoxDocument
-                        id="documentSauveteur"
-                        type="RESCUER_CERTIFICATE"
-                        title="Certificat de secourisme"
-                        data={documentRescuer}
-                        setData={setDocumentRescuer}/>)}
-                {documentID !== null && documentRescuer !== null ? null : (
-                <TouchableOpacity
-                    onPress={() => {
-                        console.log(selectedFiles);
-                        if (selectedFiles["ID_CARD"] !== null) {
-                            onPressSendDocuments("ID_CARD");
-                        }
-                        if (selectedFiles["RESCUER_CERTIFICATE"] !== null) {
-                            onPressSendDocuments("RESCUER_CERTIFICATE");
-                        }
-                    }}
-                    style={{
-                        marginTop: 20,
-                        borderWidth: 3,
-                        borderRadius: 50,
-                        borderColor: colors.StayAliveRed,
-                        paddingHorizontal: 50,
-                        paddingVertical: 10,
-                        backgroundColor: 'white',
-                    }}
-                    testID="sendDocument-button"
-                >
-                    <Text
-                        style={{
-                            textAlign: 'center',
-                            fontSize: 18,
-                            color: colors.StayAliveRed,
-                            fontWeight: 'bold',
-                        }}
-                    >
-                        Envoyer vos documents
-                    </Text>
-                </TouchableOpacity>)}
-
+                {loadingDocuments ? (
+                    <ActivityIndicator size="large" color={colors.StayAliveRed} />
+                ) : (
+                    <>
+                        {documentID === null ? (
+                                <BoxUploadDocument
+                                    onFileSelect={onFileSelect}
+                                    id="ID_CARD"
+                                    title="Pièce d'identité"
+                                    description="Nous avons besoin de ce document afin de vous identifier auprès des services de secours et en cas de besoin, pour vous contacter."
+                                />) :
+                            (<BoxDocument
+                                    id="documentID"
+                                    type={"ID_CARD"}
+                                    title={"Pièce d'identité"}
+                                    data={documentID}
+                                    setData={setDocumentID}
+                                />
+                            )}
+                        {documentRescuer === null ? (
+                                <BoxUploadDocument
+                                    onFileSelect={onFileSelect}
+                                    id="RESCUER_CERTIFICATE"
+                                    title="Certificat de secourisme"
+                                    description="Nous avons besoin de ce document afin de vous identifier auprès des services de secours et en cas de besoin, pour vous contacter."
+                                />) :
+                            (<BoxDocument
+                                id="documentSauveteur"
+                                type="RESCUER_CERTIFICATE"
+                                title="Certificat de secourisme"
+                                data={documentRescuer}
+                                setData={setDocumentRescuer}/>)}
+                        {documentID !== null && documentRescuer !== null ? null : (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    console.log(selectedFiles);
+                                    if (selectedFiles["ID_CARD"] !== null) {
+                                        onPressSendDocuments("ID_CARD");
+                                    }
+                                    if (selectedFiles["RESCUER_CERTIFICATE"] !== null) {
+                                        onPressSendDocuments("RESCUER_CERTIFICATE");
+                                    }
+                                }}
+                                style={{
+                                    marginTop: 20,
+                                    borderWidth: 3,
+                                    borderRadius: 50,
+                                    borderColor: colors.StayAliveRed,
+                                    paddingHorizontal: 50,
+                                    paddingVertical: 10,
+                                    backgroundColor: 'white',
+                                }}
+                                testID="sendDocument-button"
+                            >
+                                {loadingSendDocuments ? (
+                                    <ActivityIndicator size="small" color={colors.StayAliveRed} />
+                                ) : (
+                                    <Text
+                                        style={{
+                                            textAlign: 'center',
+                                            fontSize: 18,
+                                            color: colors.StayAliveRed,
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        Envoyer vos documents
+                                    </Text>
+                                )}
+                            </TouchableOpacity>)}
+                    </>
+                )}
             </View>
         </View>
     )
