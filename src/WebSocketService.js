@@ -1,62 +1,60 @@
-import { Alert } from 'react-native';
+import { Alert } from 'react-native'
 import { io } from 'socket.io-client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../src/Utils/Api'
-import notifee from '@notifee/react-native';
-import PropTypes from 'prop-types'
+import notifee from '@notifee/react-native'
 import { colors } from '../src/Style/StayAliveStyle'
 let socket
 
 async function onDisplayNotification(navigation, dataAlert, token) {
-  const batteryOptimizationEnabled = await notifee.isBatteryOptimizationEnabled();
+  const batteryOptimizationEnabled =
+    await notifee.isBatteryOptimizationEnabled()
   if (batteryOptimizationEnabled) {
     Alert.alert(
-        'Restrictions détectées',
-        'Pour garantir l\'envoi des notifications, veuillez désactiver l\'optimisation de la batterie pour l\'application.',
-        [
-          {
-            text: 'OK, ouvrir les paramètres',
-            onPress: async () => await notifee.openBatteryOptimizationSettings(),
-          },
-          {
-            text: "Annuler",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
-          },
-        ],
-        { cancelable: false }
-    );
-  };
-  const powerManagerInfo = await notifee.getPowerManagerInfo();
+      'Restrictions détectées',
+      "Pour garantir l'envoi des notifications, veuillez désactiver l'optimisation de la batterie pour l'application.",
+      [
+        {
+          text: 'OK, ouvrir les paramètres',
+          onPress: async () => await notifee.openBatteryOptimizationSettings(),
+        },
+        {
+          text: 'Annuler',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }
+    )
+  }
+  const powerManagerInfo = await notifee.getPowerManagerInfo()
   if (powerManagerInfo.activity) {
     Alert.alert(
-        'Restrictions détectées',
-        'Pour garantir la réception des notifications, veuillez ajuster vos paramètres pour éviter que l\'application ne soit arretée.',
-        [
-          {
-            text: 'OK, ouvrir les paramètres',
-            onPress: async () => await notifee.openPowerManagerSettings(),
-          },
-          {
-            text: "Annuler",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
-          },
-        ],
-        { cancelable: false }
-    );
-  };
-  if (!dataAlert || !dataAlert.emergency || !dataAlert.emergency.info) {
-    console.error("Invalid dataAlert object.");
-    return;
+      'Restrictions détectées',
+      "Pour garantir la réception des notifications, veuillez ajuster vos paramètres pour éviter que l'application ne soit arretée.",
+      [
+        {
+          text: 'OK, ouvrir les paramètres',
+          onPress: async () => await notifee.openPowerManagerSettings(),
+        },
+        {
+          text: 'Annuler',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }
+    )
   }
-  const logoUri = require('../assets/StayAlive-logo.png');
-
-  const { info } = dataAlert.emergency;
+  if (!dataAlert || !dataAlert.emergency || !dataAlert.emergency.info) {
+    console.error('Invalid dataAlert object.')
+    return
+  }
+  const { info } = dataAlert.emergency
   const channelId = await notifee.createChannel({
     id: 'default',
     name: 'Emergency Channel',
-  });
+  })
 
   await notifee.displayNotification({
     title: '<b><font color="#E33A26">Vous avez une urgence</font></b>',
@@ -69,9 +67,8 @@ async function onDisplayNotification(navigation, dataAlert, token) {
         id: 'default',
       },
     },
-  });
+  })
 }
-
 
 export const initializeWebSocket = async (navigation) => {
   try {
@@ -83,8 +80,8 @@ export const initializeWebSocket = async (navigation) => {
       socket.on('message', (data) => {
         const jsonData = data?.data
         if (jsonData !== null && jsonData !== undefined)
-          onDisplayNotification(navigation, jsonData, token);
-          navigation.navigate('AlertStatusPage', { dataAlert: jsonData })
+          onDisplayNotification(navigation, jsonData, token)
+        navigation.navigate('AlertStatusPage', { dataAlert: jsonData })
       })
 
       await AsyncStorage.setItem('Websocket', socketUrl)
