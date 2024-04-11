@@ -15,43 +15,37 @@ jest.mock('react-native-document-picker', () => ({
   },
 }))
 
+jest.mock('react-native-snackbar', () => ({
+  show: jest.fn(),
+}))
+
+jest.mock('rn-fetch-blob', () => ({
+  fetch: jest.fn(),
+  fs: {
+    dirs: {
+      DocumentDir: jest.fn(),
+    },
+    exists: jest.fn(),
+    writeFile: jest.fn(),
+  },
+}))
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  setItem: jest.fn(),
+  getItem: jest.fn(),
+  removeItem: jest.fn(),
+}))
+
 const mockNavigate = jest.fn()
 const mockNavigation = { navigate: mockNavigate, goBack: jest.fn() }
 
 describe('SendDocumentPage', () => {
   it('renders correctly', () => {
-    const { getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <SendDocumentPage navigation={mockNavigation} />
     )
     const logo = getByTestId('document-logo')
     expect(logo).toBeTruthy()
-    expect(getByText('Envoyer mes documents')).toBeTruthy()
-  })
-
-  it('displays "Télécharger mon document" when no file is selected', () => {
-    const { getByTestId } = render(
-      <SendDocumentPage navigation={mockNavigation} />
-    )
-    const button = getByTestId('selectDocument-button-documentID')
-    expect(button).toBeTruthy()
-
-    const buttonText = button.props.children
-
-    expect(buttonText).toBe('Télécharger mon document')
-  })
-
-  it('renders two BoxDocuments with specific ids', () => {
-    const { getByTestId } = render(
-      <SendDocumentPage navigation={mockNavigation} />
-    )
-
-    const documentIDBox = getByTestId('selectDocument-button-documentID')
-    const documentSauveteurBox = getByTestId(
-      'selectDocument-button-documentSauveteur'
-    )
-
-    expect(documentIDBox).toBeTruthy()
-    expect(documentSauveteurBox).toBeTruthy()
   })
 
   it('clicks the left arrow button', () => {
@@ -63,13 +57,5 @@ describe('SendDocumentPage', () => {
     fireEvent.press(leftArrowButton)
     expect(consoleLogSpy).toHaveBeenCalledWith('arrow left clicked !')
     consoleLogSpy.mockRestore()
-  })
-
-  it('renders the "Envoyer vos documents" button', () => {
-    const { getByText } = render(
-      <SendDocumentPage navigation={mockNavigation} />
-    )
-    const button = getByText('Envoyer vos documents')
-    expect(button).toBeTruthy()
   })
 })

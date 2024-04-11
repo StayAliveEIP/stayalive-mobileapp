@@ -163,6 +163,7 @@ export default function SendDocumentPage({ navigation }) {
           <>
             {documentID === null ? (
               <BoxUploadDocument
+                testID="selectDocument-button-documentID"
                 onFileSelect={onFileSelect}
                 id="ID_CARD"
                 title="Pièce d'identité"
@@ -179,6 +180,7 @@ export default function SendDocumentPage({ navigation }) {
             )}
             {documentRescuer === null ? (
               <BoxUploadDocument
+                testID="selectDocument-button-documentID"
                 onFileSelect={onFileSelect}
                 id="RESCUER_CERTIFICATE"
                 title="Certificat de secourisme"
