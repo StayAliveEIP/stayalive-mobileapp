@@ -74,9 +74,7 @@ export default function UnavailablePage({ navigation }) {
         ])
       })
   }
-
   const onClickButton = async () => {
-    console.log('Je me rends Disponible')
     const token = await AsyncStorage.getItem('userToken')
 
     const url = `${urlApi}/rescuer/status`
@@ -84,30 +82,28 @@ export default function UnavailablePage({ navigation }) {
       status: 'AVAILABLE',
     })
 
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body,
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        }
-        return Promise.reject(new Error('Failed to update status'))
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body,
       })
-      .then((data) => {
-        console.log('Status updated:', data)
-        sendPosition()
-        getInfosAccount()
-        navigation.navigate('AvailablePage')
-      })
-      .catch((error) => {
-        console.error('There was an issue with the fetch operation:', error)
-        Alert.alert('Error', 'We could not update your status')
-      })
+
+      if (!response.ok) {
+        throw new Error('Failed to update status')
+      }
+
+      console.log('Status updated !')
+      sendPosition()
+      getInfosAccount()
+      navigation.navigate('AvailablePage')
+    } catch (error) {
+      console.error('There was an issue with the fetch operation:', error)
+      Alert.alert('Error', 'We could not update your status')
+    }
   }
 
   const onProfileBadgeClick = () => {
