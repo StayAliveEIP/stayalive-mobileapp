@@ -35,7 +35,6 @@ jest.mock('react-native-document-picker', () => ({
   isCancel: jest.fn(),
 }))
 
-
 describe('RegistrationPage', () => {
   it('renders without crashing', () => {
     render(<App />)

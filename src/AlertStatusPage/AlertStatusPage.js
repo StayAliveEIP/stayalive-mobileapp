@@ -69,7 +69,7 @@ export default function AlertStatusPage({ navigation, route }) {
         })
 
         if (response.ok) {
-          console.log('Emergency accepted successfully');
+          console.log('Emergency accepted successfully')
 
           navigation.navigate('Maps', { data: dataAlert })
         } else {

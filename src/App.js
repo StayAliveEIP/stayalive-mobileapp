@@ -1,42 +1,41 @@
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import RegistrationPage from './RegistrationPage/RegistrationPage';
-import LoginPage from './LoginPage/LoginPage';
-import ProfilePage from './Profile/ProfilePage';
-import AccountPage from './Profile/Account/AccountPage';
-import RescueHistoryPage from './Profile/RescueHistory/RescueHistoryPage';
-import AvailablePage from './AvailablePage/AvailablePage';
-import IntroductionPage from './IntroductionPage/IntroductionPage';
-import UnavailablePage from './UnavailablePage/UnavailablePage';
-import SendDocumentPage from './SendDocumentPage/SendDocumentPage';
-import ForgotPasswordPage from './ForgotPasswordPage/ForgotPasswordPage';
-import Maps from './Maps/maps';
-import AlertStatusPage from './AlertStatusPage/AlertStatusPage';
-import ChatEmergency from './ChatEmergency/ChatEmergency';
-import { UserProvider } from './Utils/UserContext';
-import notifee, { EventType } from '@notifee/react-native';
-import { Alert } from 'react-native';
+import * as React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import RegistrationPage from './RegistrationPage/RegistrationPage'
+import LoginPage from './LoginPage/LoginPage'
+import ProfilePage from './Profile/ProfilePage'
+import AccountPage from './Profile/Account/AccountPage'
+import RescueHistoryPage from './Profile/RescueHistory/RescueHistoryPage'
+import AvailablePage from './AvailablePage/AvailablePage'
+import IntroductionPage from './IntroductionPage/IntroductionPage'
+import UnavailablePage from './UnavailablePage/UnavailablePage'
+import SendDocumentPage from './SendDocumentPage/SendDocumentPage'
+import ForgotPasswordPage from './ForgotPasswordPage/ForgotPasswordPage'
+import Maps from './Maps/maps'
+import AlertStatusPage from './AlertStatusPage/AlertStatusPage'
+import ChatEmergency from './ChatEmergency/ChatEmergency'
+import { UserProvider } from './Utils/UserContext'
+import notifee, { EventType } from '@notifee/react-native'
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
 notifee.onBackgroundEvent(async ({ type, detail }) => {
-  const { notification, pressAction } = detail;
+  const { notification, pressAction } = detail
 
   if (type === EventType.PRESS && pressAction.id === 'default') {
-    console.log('the default button was pressed');
-    await notifee.cancelNotification(notification.id);
+    console.log('the default button was pressed')
+    await notifee.cancelNotification(notification.id)
   }
-});
+})
 
 async function requestNotificationPermission() {
-  await notifee.requestPermission();
+  await notifee.requestPermission()
 }
 
 export default function App() {
   React.useEffect(() => {
-    requestNotificationPermission();
-  }, []);
+    requestNotificationPermission()
+  }, [])
 
   return (
     <UserProvider>
