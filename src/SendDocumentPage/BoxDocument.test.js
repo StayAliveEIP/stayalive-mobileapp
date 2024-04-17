@@ -46,6 +46,6 @@ describe('<BoxDocument />', () => {
   it('calls handleDownloadDocument when download button is pressed', () => {
     const { getByTestId } = render(<BoxDocument {...mockProps} />)
     fireEvent.press(getByTestId('download-document-button'))
-    expect(mockProps.setData).not.toHaveBeenCalled()
+    expect(mockProps.setData).toHaveBeenCalled()
   })
 })
