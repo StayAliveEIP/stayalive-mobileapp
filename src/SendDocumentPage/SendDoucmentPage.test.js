@@ -1,18 +1,19 @@
 import React from 'react'
-import { fireEvent, render } from '@testing-library/react-native'
 import SendDocumentPage from './SendDocumentPage'
+import { fireEvent, render } from '@testing-library/react-native'
 
-jest.mock('react-native-document-picker', () => ({
-  DocumentPicker: {
-    types: {
-      allFiles: 'public.content',
-    },
-    pick: async () => ({
-      uri: 'mocked_file_uri',
-      name: 'mocked_file_name',
-      type: 'mocked_file_type',
-    }),
-  },
+global.fetch = jest.fn().mockResolvedValueOnce({
+  json: () =>
+    Promise.resolve([
+      { type: 'ID_CARD', data: null }, // Simule le cas où la réponse ne contient pas de données pour ID_CARD
+      { type: 'RESCUER_CERTIFICATE', data: null }, // Simule le cas où la réponse ne contient pas de données pour RESCUER_CERTIFICATE
+    ]),
+})
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  setItem: jest.fn(),
+  getItem: jest.fn(),
+  removeItem: jest.fn(),
 }))
 
 jest.mock('react-native-snackbar', () => ({
@@ -29,33 +30,17 @@ jest.mock('rn-fetch-blob', () => ({
     writeFile: jest.fn(),
   },
 }))
-
-jest.mock('@react-native-async-storage/async-storage', () => ({
-  setItem: jest.fn(),
-  getItem: jest.fn(),
-  removeItem: jest.fn(),
-}))
-
-const mockNavigate = jest.fn()
-const mockNavigation = { navigate: mockNavigate, goBack: jest.fn() }
-
 describe('SendDocumentPage', () => {
   it('renders correctly', () => {
-    const { getByTestId } = render(
-      <SendDocumentPage navigation={mockNavigation} />
-    )
-    const logo = getByTestId('document-logo')
-    expect(logo).toBeTruthy()
+    const navigation = { goBack: jest.fn() }
+    const { toJSON } = render(<SendDocumentPage navigation={navigation} />)
+    expect(toJSON()).toMatchSnapshot()
   })
 
-  it('clicks the left arrow button', () => {
-    const consoleLogSpy = jest.spyOn(console, 'log')
-    const { getByTestId } = render(
-      <SendDocumentPage navigation={mockNavigation} />
-    )
-    const leftArrowButton = getByTestId('button-left-arrow')
-    fireEvent.press(leftArrowButton)
-    expect(consoleLogSpy).toHaveBeenCalledWith('arrow left clicked !')
-    consoleLogSpy.mockRestore()
+  it('calls goBack when left arrow button is pressed', () => {
+    const navigation = { goBack: jest.fn() }
+    const { getByTestId } = render(<SendDocumentPage navigation={navigation} />)
+    fireEvent.press(getByTestId('button-left-arrow'))
+    expect(navigation.goBack).toHaveBeenCalled()
   })
 })

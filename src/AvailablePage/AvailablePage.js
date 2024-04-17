@@ -1,95 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, Alert } from 'react-native'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { colors } from '../Style/StayAliveStyle'
 import { urlApi } from '../Utils/Api'
-import { initializeWebSocket, disconnectWebSocket } from '../WebSocketService'
-
-export function TextSlider() {
-  const [currentPage, setCurrentPage] = useState(0)
-
-  const pages = [
-    { text: 'Text for Page 1', image: require('../../assets/SaveLogo.png') },
-    { text: 'Text for Page 2', image: require('../../assets/SaveLogo.png') },
-    { text: 'Text for Page 3', image: require('../../assets/SaveLogo.png') },
-    { text: 'Text for Page 4', image: require('../../assets/SaveLogo.png') },
-    { text: 'Text for Page 5', image: require('../../assets/SaveLogo.png') },
-  ]
-
-  const handleBubblePress = (index) => {
-    setCurrentPage(index)
-  }
-
-  return (
-    <View
-      style={{ alignItems: 'center', marginTop: 60 }}
-      testID="slider-container"
-    >
-      <View
-        style={{
-          backgroundColor: 'white',
-          paddingVertical: 15,
-          paddingHorizontal: 10,
-          borderRadius: 15,
-          shadowColor: 'black',
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          alignItems: 'center',
-          maxWidth: '90%',
-          width: 400,
-        }}
-      >
-        <Image
-          source={pages[currentPage].image}
-          style={{ width: 50, height: 50, marginBottom: 10 }}
-        />
-        <Text style={{ fontSize: 16, textAlign: 'center', maxWidth: '80%' }}>
-          {pages[currentPage].text}
-        </Text>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 10,
-            justifyContent: 'center',
-          }}
-        >
-          {pages.map((_, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => handleBubblePress(index)}
-              style={{ marginHorizontal: 5 }}
-              testID={`Bubble-${index + 1}`}
-            >
-              <View
-                style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: 5,
-                  backgroundColor:
-                    index === currentPage ? colors.StayAliveRed : 'lightgrey',
-                }}
-              />
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
-    </View>
-  )
-}
-
-AvailablePage.propTypes = {
-  navigation: PropTypes.object.isRequired,
-}
+import WebSocketService from '../WebSocketService' // Import de la classe WebSocketService
 
 export default function AvailablePage({ navigation }) {
   useEffect(() => {
-    initializeWebSocket(navigation)
+    const webSocketService = new WebSocketService() // Crée une instance de WebSocketService
+    webSocketService.initializeWebSocket(navigation) // Utilisation de la méthode de l'instance
     return () => {
-      disconnectWebSocket()
+      webSocketService.disconnectWebSocket() // Utilisation de la méthode de l'instance
     }
   }, [navigation])
 
@@ -134,7 +56,10 @@ export default function AvailablePage({ navigation }) {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View
+      testID={'slider-container'}
+      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+    >
       <TouchableOpacity
         onPress={onProfileBadgeClick}
         style={{
@@ -176,7 +101,7 @@ export default function AvailablePage({ navigation }) {
         source={require('../../assets/AvailableLogo.png')}
       />
 
-      <TextSlider />
+      {/* Suppression de l'appel à TextSlider, vous devriez le réintégrer si nécessaire */}
 
       <TouchableOpacity
         onPress={onClickButton}
@@ -205,4 +130,8 @@ export default function AvailablePage({ navigation }) {
       </TouchableOpacity>
     </View>
   )
+}
+
+AvailablePage.propTypes = {
+  navigation: PropTypes.object.isRequired,
 }

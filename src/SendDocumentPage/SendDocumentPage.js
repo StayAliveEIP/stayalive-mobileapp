@@ -180,7 +180,7 @@ export default function SendDocumentPage({ navigation }) {
             )}
             {documentRescuer === null ? (
               <BoxUploadDocument
-                testID="selectDocument-button-documentID"
+                testID="selectDocument-button-documentRescuer"
                 onFileSelect={onFileSelect}
                 id="RESCUER_CERTIFICATE"
                 title="Certificat de secourisme"
@@ -215,7 +215,7 @@ export default function SendDocumentPage({ navigation }) {
                   paddingVertical: 10,
                   backgroundColor: 'white',
                 }}
-                testID="sendDocument-button"
+                testID={'sendDocument-button'}
               >
                 {loadingSendDocuments ? (
                   <ActivityIndicator size="small" color={colors.StayAliveRed} />

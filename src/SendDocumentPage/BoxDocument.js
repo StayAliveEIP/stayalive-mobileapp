@@ -182,6 +182,7 @@ export function BoxDocument(props) {
       >
         <TouchableOpacity
           onPress={handleDeleteDocument}
+          testID={'delete-document-button'}
           style={{
             borderWidth: 3,
             borderRadius: 50,
@@ -192,7 +193,11 @@ export function BoxDocument(props) {
           }}
         >
           {loadingDelete ? (
-            <ActivityIndicator size="small" color="white" />
+            <ActivityIndicator
+              testID={'delete-document-loading-indicator'}
+              size="small"
+              color="white"
+            />
           ) : (
             <Text
               style={{
@@ -208,6 +213,7 @@ export function BoxDocument(props) {
           )}
         </TouchableOpacity>
         <TouchableOpacity
+          testID={'download-document-button'}
           onPress={handleDownloadDocument}
           style={{
             marginTop: 14,
@@ -219,7 +225,11 @@ export function BoxDocument(props) {
           }}
         >
           {loadingDownload ? (
-            <ActivityIndicator size="small" color="white" />
+            <ActivityIndicator
+              testID={'download-document-loading-indicator'}
+              size="small"
+              color="white"
+            />
           ) : (
             <Text
               style={{
