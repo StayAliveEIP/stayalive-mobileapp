@@ -2,6 +2,13 @@ import React from 'react'
 import App from './App'
 import { render } from '@testing-library/react-native'
 
+jest.mock('@notifee/react-native', () => ({
+  requestPermission: jest.fn(),
+  createChannel: jest.fn(),
+  displayNotification: jest.fn(),
+  onBackgroundEvent: jest.fn(),
+}))
+
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
   getItem: jest.fn(),
@@ -27,6 +34,8 @@ jest.mock('react-native-document-picker', () => ({
   ],
   isCancel: jest.fn(),
 }))
+
+
 describe('RegistrationPage', () => {
   it('renders without crashing', () => {
     render(<App />)

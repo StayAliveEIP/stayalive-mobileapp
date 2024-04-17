@@ -116,6 +116,9 @@ export default function Maps({ navigation, route }) {
         console.log(response)
         if (response.ok) {
           console.log('Emergency terminated successfully')
+          await AsyncStorage.removeItem('chatHistory');
+          console.log('Chat history removed')
+
           navigation.navigate('AvailablePage')
         } else {
           console.error('Failed to terminate emergency')
@@ -145,15 +148,16 @@ export default function Maps({ navigation, route }) {
       ) : null}
 
       <TouchableOpacity
-        style={styles.chatButton}
-        onPress={() => navigation.navigate('ChatEmergency')}
+          style={styles.chatButton}
+          onPress={() => navigation.navigate('ChatEmergency', {
+            conversationId: dataAlert?.data?.emergency?.conversationId
+          })}
       >
         <Icon
-          name="chatbox-ellipses-outline"
-          size={30}
-          style={styles.iconChatEmergency}
-          onPress={() => navigation.navigate('ChatEmergency')}
-          color={colors.StayAliveRed}
+            name="chatbox-ellipses-outline"
+            size={30}
+            style={styles.iconChatEmergency}
+            color={colors.StayAliveRed}
         />
       </TouchableOpacity>
 
