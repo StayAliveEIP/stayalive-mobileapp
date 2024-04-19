@@ -18,6 +18,7 @@ import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
 import Icon from 'react-native-vector-icons/Ionicons'
+import Snackbar from "react-native-snackbar";
 
 const { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
@@ -116,6 +117,7 @@ export default function Maps({ navigation, route }) {
         console.log(response)
         if (response.ok) {
           console.log('Emergency terminated successfully')
+          await AsyncStorage.setItem('chatHistory', 'Empty')
           await AsyncStorage.removeItem('chatHistory')
           console.log('Chat history removed')
 
@@ -149,11 +151,23 @@ export default function Maps({ navigation, route }) {
 
       <TouchableOpacity
         style={styles.chatButton}
-        onPress={() =>
+        onPress={() => {
+          console.log("data");
+          console.log(dataAlert?.data);
+            const callCenterId = dataAlert?.data?.callCenter?.id
+          const rescuerId = dataAlert
+          if (!callCenterId)
+            Snackbar.show({
+              text: 'Impossible de trouver l\'ID du call-center émetteur',
+              duration: Snackbar.LENGTH_LONG,
+              backgroundColor: 'white',
+              textColor: 'red',
+            })
           navigation.navigate('ChatEmergency', {
-            conversationId: dataAlert?.data?.emergency?.conversationId,
+            callCenterId: callCenterId,
           })
         }
+      }
       >
         <Icon
           name="chatbox-ellipses-outline"

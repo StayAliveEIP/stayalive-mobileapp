@@ -6,6 +6,7 @@ import {
   FlatList,
   StyleSheet,
   Image,
+  ActivityIndicator,
 } from 'react-native'
 import { io } from 'socket.io-client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -13,18 +14,15 @@ import { urlApi } from '../Utils/Api'
 import { colors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Appbar } from 'react-native-paper'
-import PropTypes from 'prop-types'
 
 const ChatEmergency = ({ navigation, route }) => {
   const [socket, setSocket] = useState(null)
   const [message, setMessage] = useState('')
   const [chatHistory, setChatHistory] = useState([])
-  // const { conversationId } = route?.params;
-
-  ChatEmergency.propTypes = {
-    navigation: PropTypes.object.isRequired,
-    route: PropTypes.object.isRequired,
-  }
+  const [chatConversationId, setChatConversationId] = useState("")
+  const [rescuerId, setRescuerId] = useState("");
+  const [loading, setLoading] = useState(true);
+  const { callCenterId } = route?.params;
 
   const initializeWebSocket = async () => {
     try {
@@ -38,12 +36,10 @@ const ChatEmergency = ({ navigation, route }) => {
         })
 
         newSocket.on('messageCallCenter', (data) => {
-          if (!chatHistory.find((msg) => msg.text === data.message)) {
-            setChatHistory((prevChat) => [
-              ...prevChat,
-              { text: data.message, sender: 'callCenter' },
-            ])
-          }
+          setChatHistory((prevChat) => [
+            ...prevChat,
+            { text: data?.message, sender: 'callCenter' },
+          ])
         })
 
         setSocket(newSocket)
@@ -55,62 +51,117 @@ const ChatEmergency = ({ navigation, route }) => {
     }
   }
 
+  const getConversationId = async () => {
+    try {
+      const url = `${urlApi}/rescuer/chat/conversations`;
+      const token = await AsyncStorage.getItem('userToken')
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        let lastId = "";
+        let lastRescuerId = "";
+        for (let i = data.length - 1; i >= 0; i--) {
+          if (data[i].callCenterId === callCenterId) {
+            lastId = data[i]._id;
+            lastRescuerId = data[i].rescuerId;
+            break;
+          }
+        }
+        setChatConversationId(lastId)
+        setRescuerId(lastRescuerId)
+        setLoading(false);
+      } else {
+        throw new Error('Invalid credentials');
+      }
+    } catch (error) {
+      if (error?.message !== 'Invalid credentials') {
+        console.error(
+            'There has been an issue with the fetch operation:',
+            error
+        );
+        Alert?.alert('Error', 'Nous ne parvenons pas à contacter nos serveurs');
+      }
+    }
+  }
+
   const sendMessage = () => {
-    if (socket && message.trim() !== '') {
+    if (socket && message?.trim() !== '') {
       socket.emit('messageRescuer', {
-        conversationId: '661be68b6c652f93a36f9ea1',
+        conversationId: chatConversationId,
         message: message,
       })
       setChatHistory((prevChat) => [
         ...prevChat,
-        { text: message, sender: 'user' },
+        { text: message, sender: rescuerId },
       ])
       setMessage('')
     }
   }
 
-  useEffect(() => {
-    initializeWebSocket()
+  const loadChatHistory = async () => {
+    try {
+      const url = `${urlApi}/rescuer/chat/messages?id=${chatConversationId}`;
+      const token = await AsyncStorage.getItem('userToken')
 
-    return () => {
-      if (socket) {
-        socket.disconnect()
-        setSocket(null)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    const loadChatHistory = async () => {
-      try {
-        const savedChatHistory = await AsyncStorage.getItem('chatHistory')
-        if (savedChatHistory !== null) {
-          setChatHistory(JSON.parse(savedChatHistory))
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data) {
+          const formattedMessages = data.map(message => ({
+            text: message?.content,
+            sender: message?.senderId
+          }));
+          setChatHistory(formattedMessages);
+          setLoading(false);
         }
-      } catch (error) {
-        console.error('Error loading chat history:', error)
+      } else {
+        throw new Error('Invalid credentials');
       }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des messages :", error);
     }
-    loadChatHistory()
-  }, [])
+  }
+
+  useEffect(() => {
+    initializeWebSocket();
+    getConversationId();
+  }, []);
+
+  useEffect(() => {
+    if (chatConversationId) {
+      loadChatHistory();
+    }
+  }, [chatConversationId]);
 
   const renderMessageBubble = ({ item }) => {
     const bubbleStyle =
-      item.sender === 'user' ? styles.userBubble : styles.callCenterBubble
+        item?.sender === rescuerId ? styles.userBubble : styles.callCenterBubble
     const textStyle =
-      item.sender === 'user' ? styles.userText : styles.callCenterText
+        item?.sender === rescuerId ? styles.userText : styles.callCenterText
 
     return (
-      <View style={[styles.messageBubble, bubbleStyle]}>
-        <Text style={textStyle}>{item.text}</Text>
-      </View>
+        <View style={[styles.messageBubble, bubbleStyle]}>
+          <Text style={textStyle}>{item.text}</Text>
+        </View>
     )
   }
 
   const goBack = async () => {
     console.log('arrow left clicked !')
     if (socket) {
-      socket.disconnect()
+      socket?.disconnect()
       setSocket(null)
     }
     await AsyncStorage.setItem('chatHistory', JSON.stringify(chatHistory))
@@ -118,46 +169,52 @@ const ChatEmergency = ({ navigation, route }) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <Appbar.Header style={styles.appBar}>
-        <Icon
-          style={styles.iconBack}
-          name="arrow-left"
-          size={27}
-          onPress={goBack}
-        />
-        <Appbar.Content title="Centre d'appel" titleStyle={styles.title} />
-      </Appbar.Header>
-
-      <Image
-        source={require('./../../assets/ChatEmergency.png')}
-        style={styles.image}
-      />
-      <View style={styles.container}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={chatHistory.slice().reverse()}
-          renderItem={renderMessageBubble}
-          keyExtractor={(item, index) => index.toString()}
-          inverted
-        />
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Type your message..."
-            value={message}
-            onChangeText={(text) => setMessage(text)}
-          />
+      <View style={{ flex: 1 }}>
+        <Appbar.Header style={styles.appBar}>
           <Icon
-            name="send"
-            size={30}
-            style={styles.icon}
-            onPress={sendMessage}
-            color={colors.StayAliveRed}
+              style={styles.iconBack}
+              name="arrow-left"
+              size={27}
+              onPress={goBack}
           />
-        </View>
+          <Appbar.Content title="Centre d'appel" titleStyle={styles.title} />
+        </Appbar.Header>
+
+        <Image
+            source={require('./../../assets/ChatEmergency.png')}
+            style={styles.image}
+        />
+        {loading ? (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator size="large" color={colors.StayAliveRed} />
+            </View>
+        ) : (
+            <View style={styles.container}>
+              <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={chatHistory?.slice()?.reverse()}
+                  renderItem={renderMessageBubble}
+                  keyExtractor={(item, index) => index?.toString()}
+                  inverted
+              />
+              <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Type your message..."
+                    value={message}
+                    onChangeText={(text) => setMessage(text)}
+                />
+                <Icon
+                    name="send"
+                    size={30}
+                    style={styles.icon}
+                    onPress={sendMessage}
+                    color={colors.StayAliveRed}
+                />
+              </View>
+            </View>
+        )}
       </View>
-    </View>
   )
 }
 
@@ -228,6 +285,11 @@ const styles = StyleSheet.create({
     resizeMode: 'center',
     opacity: 0.7,
     marginBottom: 20,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 
