@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  Alert,
 } from 'react-native'
 import { io } from 'socket.io-client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -14,14 +15,25 @@ import { urlApi } from '../Utils/Api'
 import { colors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Appbar } from 'react-native-paper'
+import PropTypes from 'prop-types';
 
 const ChatEmergency = ({ navigation, route }) => {
   const [socket, setSocket] = useState(null)
   const [message, setMessage] = useState('')
   const [chatHistory, setChatHistory] = useState([])
-  const [chatConversationId, setChatConversationId] = useState("")
-  const [loading, setLoading] = useState(true);
-  const { callCenterId, rescuerId } = route?.params;
+  const [chatConversationId, setChatConversationId] = useState('')
+  const [loading, setLoading] = useState(true)
+  const { callCenterId, rescuerId } = route.params
+
+  ChatEmergency.propTypes = {
+    navigation: PropTypes.object.isRequired,
+    route: PropTypes.shape({
+      params: PropTypes.shape({
+        callCenterId: PropTypes.string.isRequired,
+        rescuerId: PropTypes.string.isRequired,
+      }),
+    }).isRequired,
+  };
 
   const initializeWebSocket = async () => {
     try {
@@ -35,10 +47,15 @@ const ChatEmergency = ({ navigation, route }) => {
         })
 
         newSocket.on('messageCallCenter', (data) => {
+          console.log(data?.conversationId)
+          console.log(chatConversationId)
+          if (data?.conversationId === chatConversationId) {
           setChatHistory((prevChat) => [
             ...prevChat,
-            { text: data?.message, sender: 'callCenter' },
-          ])
+            { text: data.message, sender: 'callCenter' },
+          ]
+          )
+        }
         })
 
         setSocket(newSocket)
@@ -52,7 +69,7 @@ const ChatEmergency = ({ navigation, route }) => {
 
   const getConversationId = async () => {
     try {
-      const url = `${urlApi}/rescuer/chat/conversations`;
+      const url = `${urlApi}/rescuer/chat/conversations`
       const token = await AsyncStorage.getItem('userToken')
       const response = await fetch(url, {
         method: 'GET',
@@ -60,37 +77,40 @@ const ChatEmergency = ({ navigation, route }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
       if (response.ok) {
-        const data = await response.json();
-        let lastId = "";
+        const data = await response.json()
+        let lastId = ''
         for (let i = data.length - 1; i >= 0; i--) {
-          if (data[i].callCenterId === callCenterId && data[i].rescuerId === rescuerId) {
-            lastId = data[i]._id;
-            break;
+          if (
+              data[i].callCenterId === callCenterId &&
+              data[i].rescuerId === rescuerId
+          ) {
+            lastId = data[i]._id
+            break
           }
         }
         setChatConversationId(lastId)
-        setLoading(false);
+        setLoading(false)
       } else {
-        throw new Error('Invalid credentials');
+        throw new Error('Invalid credentials')
       }
     } catch (error) {
       if (error?.message !== 'Invalid credentials') {
         console.error(
             'There has been an issue with the fetch operation:',
             error
-        );
-        Alert?.alert('Error', 'Nous ne parvenons pas à contacter nos serveurs');
+        )
+        Alert.alert('Error', 'Nous ne parvenons pas à contacter nos serveurs')
       }
     }
   }
 
   const sendMessage = () => {
-    if (socket && message?.trim() !== '') {
+    if (socket && message.trim() !== '') {
       socket.emit('messageRescuer', {
         conversationId: chatConversationId,
-        message: message,
+        message,
       })
       setChatHistory((prevChat) => [
         ...prevChat,
@@ -102,50 +122,47 @@ const ChatEmergency = ({ navigation, route }) => {
 
   const loadChatHistory = async () => {
     try {
-      const url = `${urlApi}/rescuer/chat/messages?id=${chatConversationId}`;
+      const url = `${urlApi}/rescuer/chat/messages?id=${chatConversationId}`
       const token = await AsyncStorage.getItem('userToken')
 
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-      });
+      })
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
         if (data) {
-          const formattedMessages = data.map(message => ({
-            text: message?.content,
-            sender: message?.senderId
-          }));
-          setChatHistory(formattedMessages);
-          setLoading(false);
+          const formattedMessages = data.map((message) => ({
+            text: message.content,
+            sender: message.senderId,
+          }))
+          setChatHistory(formattedMessages)
+          setLoading(false)
         }
       } else {
-        throw new Error('Invalid credentials');
+        throw new Error('Invalid credentials')
       }
     } catch (error) {
-      console.error("Erreur lors de la récupération des messages :", error);
+      console.error('Erreur lors de la récupération des messages :', error)
     }
   }
 
   useEffect(() => {
-    initializeWebSocket();
-    getConversationId();
-  }, []);
-
-  useEffect(() => {
+    getConversationId()
     if (chatConversationId) {
-      loadChatHistory();
+      initializeWebSocket()
+      loadChatHistory()
     }
-  }, [chatConversationId]);
+  }, [chatConversationId])
 
   const renderMessageBubble = ({ item }) => {
     const bubbleStyle =
-        item?.sender === rescuerId ? styles.userBubble : styles.callCenterBubble
+        item.sender === rescuerId ? styles.userBubble : styles.callCenterBubble
     const textStyle =
-        item?.sender === rescuerId ? styles.userText : styles.callCenterText
+        item.sender === rescuerId ? styles.userText : styles.callCenterText
 
     return (
         <View style={[styles.messageBubble, bubbleStyle]}>
@@ -157,7 +174,7 @@ const ChatEmergency = ({ navigation, route }) => {
   const goBack = async () => {
     console.log('arrow left clicked !')
     if (socket) {
-      socket?.disconnect()
+      socket.disconnect()
       setSocket(null)
     }
     await AsyncStorage.setItem('chatHistory', JSON.stringify(chatHistory))
@@ -188,9 +205,9 @@ const ChatEmergency = ({ navigation, route }) => {
             <View style={styles.container}>
               <FlatList
                   showsVerticalScrollIndicator={false}
-                  data={chatHistory?.slice()?.reverse()}
+                  data={chatHistory.slice().reverse()}
                   renderItem={renderMessageBubble}
-                  keyExtractor={(item, index) => index?.toString()}
+                  keyExtractor={(item, index) => index.toString()}
                   inverted
               />
               <View style={styles.inputContainer}>
@@ -288,5 +305,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
+
 
 export default ChatEmergency
