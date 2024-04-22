@@ -23,14 +23,14 @@ const ChatEmergency = ({ navigation, route }) => {
   const [chatHistory, setChatHistory] = useState([])
   const [chatConversationId, setChatConversationId] = useState('')
   const [loading, setLoading] = useState(true)
-  const { callCenterId, rescuerId } = route.params
+  const { rescuerId, emergencyId } = route.params
 
   ChatEmergency.propTypes = {
     navigation: PropTypes.object.isRequired,
     route: PropTypes.shape({
       params: PropTypes.shape({
-        callCenterId: PropTypes.string.isRequired,
         rescuerId: PropTypes.string.isRequired,
+        emergencyId: PropTypes.string.isRequired,
       }),
     }).isRequired,
   };
@@ -47,8 +47,7 @@ const ChatEmergency = ({ navigation, route }) => {
         })
 
         newSocket.on('messageCallCenter', (data) => {
-          console.log(data?.conversationId)
-          console.log(chatConversationId)
+          console.log(data);
           if (data?.conversationId === chatConversationId) {
           setChatHistory((prevChat) => [
             ...prevChat,
@@ -71,7 +70,7 @@ const ChatEmergency = ({ navigation, route }) => {
     try {
       const url = `${urlApi}/rescuer/chat/conversations`
       const token = await AsyncStorage.getItem('userToken')
-      const response = await fetch(url, {
+      const response   = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -80,17 +79,9 @@ const ChatEmergency = ({ navigation, route }) => {
       })
       if (response.ok) {
         const data = await response.json()
-        let lastId = ''
-        for (let i = data.length - 1; i >= 0; i--) {
-          if (
-              data[i].callCenterId === callCenterId &&
-              data[i].rescuerId === rescuerId
-          ) {
-            lastId = data[i]._id
-            break
-          }
-        }
-        setChatConversationId(lastId)
+        console.log(data)
+        let emergencyObj = data.find(obj => obj.emergencyId === emergencyId);
+        setChatConversationId(emergencyObj._id)
         setLoading(false)
       } else {
         throw new Error('Invalid credentials')
@@ -153,8 +144,8 @@ const ChatEmergency = ({ navigation, route }) => {
   useEffect(() => {
     getConversationId()
     if (chatConversationId) {
-      initializeWebSocket()
       loadChatHistory()
+      initializeWebSocket()
     }
   }, [chatConversationId])
 

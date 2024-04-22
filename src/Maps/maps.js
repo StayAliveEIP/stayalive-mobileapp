@@ -154,18 +154,18 @@ export default function Maps({ navigation, route }) {
         onPress={async () => {
           console.log("data");
           console.log(dataAlert?.data);
-          const callCenterId = dataAlert?.data?.callCenter?.id
+          const emergencyId = dataAlert?.data?.emergency?.id
           const rescuerId = await AsyncStorage.getItem('userId');
-          if (!callCenterId)
+          if (!emergencyId)
             Snackbar.show({
-              text: 'Impossible de trouver l\'ID du call-center émetteur',
+              text: 'Impossible de trouver l\'ID de l\'urgence émetteur',
               duration: Snackbar.LENGTH_LONG,
               backgroundColor: 'white',
               textColor: 'red',
             })
           navigation.navigate('ChatEmergency', {
-            callCenterId: callCenterId,
-            rescuerId: rescuerId
+            rescuerId: rescuerId,
+            emergencyId: emergencyId
           })
         }
       }
