@@ -151,11 +151,11 @@ export default function Maps({ navigation, route }) {
 
       <TouchableOpacity
         style={styles.chatButton}
-        onPress={() => {
+        onPress={async () => {
           console.log("data");
           console.log(dataAlert?.data);
-            const callCenterId = dataAlert?.data?.callCenter?.id
-          const rescuerId = dataAlert
+          const callCenterId = dataAlert?.data?.callCenter?.id
+          const rescuerId = await AsyncStorage.getItem('userId');
           if (!callCenterId)
             Snackbar.show({
               text: 'Impossible de trouver l\'ID du call-center émetteur',
@@ -165,6 +165,7 @@ export default function Maps({ navigation, route }) {
             })
           navigation.navigate('ChatEmergency', {
             callCenterId: callCenterId,
+            rescuerId: rescuerId
           })
         }
       }

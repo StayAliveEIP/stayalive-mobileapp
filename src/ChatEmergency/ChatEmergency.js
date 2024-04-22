@@ -20,9 +20,8 @@ const ChatEmergency = ({ navigation, route }) => {
   const [message, setMessage] = useState('')
   const [chatHistory, setChatHistory] = useState([])
   const [chatConversationId, setChatConversationId] = useState("")
-  const [rescuerId, setRescuerId] = useState("");
   const [loading, setLoading] = useState(true);
-  const { callCenterId } = route?.params;
+  const { callCenterId, rescuerId } = route?.params;
 
   const initializeWebSocket = async () => {
     try {
@@ -65,16 +64,13 @@ const ChatEmergency = ({ navigation, route }) => {
       if (response.ok) {
         const data = await response.json();
         let lastId = "";
-        let lastRescuerId = "";
         for (let i = data.length - 1; i >= 0; i--) {
-          if (data[i].callCenterId === callCenterId) {
+          if (data[i].callCenterId === callCenterId && data[i].rescuerId === rescuerId) {
             lastId = data[i]._id;
-            lastRescuerId = data[i].rescuerId;
             break;
           }
         }
         setChatConversationId(lastId)
-        setRescuerId(lastRescuerId)
         setLoading(false);
       } else {
         throw new Error('Invalid credentials');
@@ -200,7 +196,7 @@ const ChatEmergency = ({ navigation, route }) => {
               <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
-                    placeholder="Type your message..."
+                    placeholder="Ecrivez votre message...."
                     value={message}
                     onChangeText={(text) => setMessage(text)}
                 />
