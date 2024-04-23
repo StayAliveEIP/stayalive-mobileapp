@@ -1,106 +1,32 @@
-import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import * as PropTypes from 'prop-types'
-import DocumentPicker from 'react-native-document-picker'
 import { colors } from '../Style/StayAliveStyle'
-
-const imagePaths = {
-  documentID: require('../../assets/DocumentID.png'),
-  documentSauveteur: require('../../assets/DocumentSauveteur.png'),
-}
-
-export function BoxDocument(props) {
-  const { id, onFileSelect } = props
-  const [filename, setFilename] = useState(null)
-
-  SendDocumentPage.propTypes = {
-    navigation: PropTypes.object.isRequired,
-  }
-  const handleDocumentPick = async () => {
-    const result = await DocumentPicker.pick({
-      type: [DocumentPicker.types.allFiles],
-    })
-
-    const selectedFilename = result[0].name
-    setFilename(selectedFilename)
-    onFileSelect(id, result[0])
-  }
-
-  return (
-    <View
-      style={{
-        alignSelf: 'center',
-        alignItems: 'center',
-        backgroundColor: 'lightgray',
-        width: 350,
-        height: 200,
-        borderRadius: 20,
-        marginBottom: 30,
-      }}
-    >
-      <Image
-        style={{ marginTop: 10, width: 50, height: 50 }}
-        source={imagePaths[id]}
-      />
-      <Text
-        style={{
-          fontSize: 18,
-          fontWeight: 'bold',
-          color: 'black',
-          marginBottom: 3,
-        }}
-      >
-        {props.title}
-      </Text>
-      <Text style={{ fontSize: 16, color: 'black', textAlign: 'center' }}>
-        {props.description}
-      </Text>
-      <TouchableOpacity
-        onPress={handleDocumentPick}
-        style={{
-          marginTop: 14,
-          marginBottom: 10,
-          borderWidth: 3,
-          borderRadius: 50,
-          borderColor: colors.StayAliveRed,
-          paddingHorizontal: 50,
-          paddingVertical: 1,
-          backgroundColor: colors.StayAliveRed,
-        }}
-      >
-        <Text
-          style={{
-            textAlign: 'center',
-            fontSize: 16,
-            color: 'white',
-            fontWeight: 'bold',
-          }}
-          testID={`selectDocument-button-${id}`}
-        >
-          {filename
-            ? filename.length > 20
-              ? `${filename.slice(0, 20)}...`
-              : filename
-            : 'Télécharger mon document'}
-        </Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
-
-BoxDocument.propTypes = {
-  id: PropTypes.oneOf(Object.keys(imagePaths)),
-  description: PropTypes.string,
-  title: PropTypes.string,
-  onFileSelect: PropTypes.func,
-}
+import { BoxUploadDocument } from './BoxUploadDocument'
+import { BoxDocument } from './BoxDocument'
+import { urlApi } from '../Utils/Api'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Snackbar from 'react-native-snackbar'
+import PropTypes from 'prop-types'
 
 export default function SendDocumentPage({ navigation }) {
   const [selectedFiles, setSelectedFiles] = useState({
-    documentID: null,
-    documentSauveteur: null,
+    ID_CARD: null,
+    RESCUER_CERTIFICATE: null,
   })
+  SendDocumentPage.propTypes = {
+    navigation: PropTypes.object.isRequired,
+  }
+  const [documentID, setDocumentID] = useState(null)
+  const [documentRescuer, setDocumentRescuer] = useState(null)
+  const [loadingDocuments, setLoadingDocuments] = useState(true)
+  const [loadingSendDocuments, setLoadingSendDocuments] = useState(false)
 
   const onFileSelect = (id, filename) => {
     setSelectedFiles((prevSelectedFiles) => ({
@@ -109,14 +35,46 @@ export default function SendDocumentPage({ navigation }) {
     }))
   }
 
-  const onPressSendDocuments = () => {
-    if (
-      selectedFiles.documentID !== null &&
-      selectedFiles.documentSauveteur !== null
-    ) {
-      console.log(
-        `Noms des fichiers sélectionnés : ${selectedFiles.documentID.name} ${selectedFiles.documentSauveteur.name}`
-      )
+  const onPressSendDocuments = async (type) => {
+    setLoadingSendDocuments(true)
+
+    try {
+      const apiUrl = `${urlApi}/rescuer/document/upload?type=${type}`
+
+      const token = await AsyncStorage.getItem('userToken')
+
+      const formData = new FormData()
+      formData.append('file', selectedFiles[type])
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      })
+
+      if (response.status === 201)
+        Snackbar.show({
+          text: 'Les documents on été envoyés avec succès',
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: 'white',
+          textColor: 'green',
+        })
+      if (documentID === null) setDocumentID(selectedFiles.ID_CARD)
+      if (documentRescuer === null)
+        setDocumentRescuer(selectedFiles.RESCUER_CERTIFICATE)
+    } catch (error) {
+      Snackbar.show({
+        text: "Une erreur est apparue lors de l'envoie des documents",
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: 'white',
+        textColor: 'green',
+      })
+      console.error("Erreur lors de l'envoi des documents : ", error)
+    } finally {
+      setLoadingSendDocuments(false)
     }
   }
 
@@ -124,6 +82,47 @@ export default function SendDocumentPage({ navigation }) {
     console.log('arrow left clicked !')
     navigation.goBack()
   }
+
+  const getDocuments = async () => {
+    setLoadingDocuments(true)
+
+    try {
+      const apiUrl = `${urlApi}/rescuer/document/all`
+      const token = await AsyncStorage.getItem('userToken')
+
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      const responseData = await response.json()
+
+      const dataOfIdCard = responseData.find((item) => item.type === 'ID_CARD')
+      const dataOfRescuerCertificate = responseData.find(
+        (item) => item.type === 'RESCUER_CERTIFICATE'
+      )
+      if (dataOfIdCard.data !== null) setDocumentID(dataOfIdCard.data)
+      if (dataOfRescuerCertificate.data !== null)
+        setDocumentRescuer(dataOfRescuerCertificate.data)
+    } catch (error) {
+      Snackbar.show({
+        text: 'Une erreur est apparue lors de la récupération des documents',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: 'white',
+        textColor: 'green',
+      })
+      console.error('Erreur lors de la récupération des documents : ', error)
+    } finally {
+      setLoadingDocuments(false)
+    }
+  }
+
+  useEffect(() => {
+    getDocuments()
+  }, [])
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -158,43 +157,84 @@ export default function SendDocumentPage({ navigation }) {
             Envoyer mes documents
           </Text>
         </View>
-
-        <BoxDocument
-          onFileSelect={onFileSelect}
-          id="documentID"
-          title={"Pièce d'identité"}
-          description="Nous avons besoin de ce document afin de vous identifier auprès des services de secours et en cas de besoin, pour vous contacter."
-        />
-        <BoxDocument
-          onFileSelect={onFileSelect}
-          id="documentSauveteur"
-          title="Certificat de secourisme"
-          description="Nous avons besoin de ce document afin de vous identifier auprès des services de secours et en cas de besoin, pour vous contacter."
-        />
-        <TouchableOpacity
-          onPress={onPressSendDocuments}
-          style={{
-            marginTop: 20,
-            borderWidth: 3,
-            borderRadius: 50,
-            borderColor: colors.StayAliveRed,
-            paddingHorizontal: 50,
-            paddingVertical: 10,
-            backgroundColor: 'white',
-          }}
-          testID="sendDocument-button"
-        >
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 18,
-              color: colors.StayAliveRed,
-              fontWeight: 'bold',
-            }}
-          >
-            Envoyer vos documents
-          </Text>
-        </TouchableOpacity>
+        {loadingDocuments ? (
+          <ActivityIndicator size="large" color={colors.StayAliveRed} />
+        ) : (
+          <>
+            {documentID === null ? (
+              <BoxUploadDocument
+                testID="selectDocument-button-documentID"
+                onFileSelect={onFileSelect}
+                id="ID_CARD"
+                title="Pièce d'identité"
+                description="Nous avons besoin de ce document afin de vous identifier auprès des services de secours et en cas de besoin, pour vous contacter."
+              />
+            ) : (
+              <BoxDocument
+                id="documentID"
+                type={'ID_CARD'}
+                title={"Pièce d'identité"}
+                data={documentID}
+                setData={setDocumentID}
+              />
+            )}
+            {documentRescuer === null ? (
+              <BoxUploadDocument
+                testID="selectDocument-button-documentRescuer"
+                onFileSelect={onFileSelect}
+                id="RESCUER_CERTIFICATE"
+                title="Certificat de secourisme"
+                description="Nous avons besoin de ce document afin de vous identifier auprès des services de secours et en cas de besoin, pour vous contacter."
+              />
+            ) : (
+              <BoxDocument
+                id="documentSauveteur"
+                type="RESCUER_CERTIFICATE"
+                title="Certificat de secourisme"
+                data={documentRescuer}
+                setData={setDocumentRescuer}
+              />
+            )}
+            {documentID !== null && documentRescuer !== null ? null : (
+              <TouchableOpacity
+                onPress={() => {
+                  console.log(selectedFiles)
+                  if (selectedFiles.ID_CARD !== null) {
+                    onPressSendDocuments('ID_CARD')
+                  }
+                  if (selectedFiles.RESCUER_CERTIFICATE !== null) {
+                    onPressSendDocuments('RESCUER_CERTIFICATE')
+                  }
+                }}
+                style={{
+                  marginTop: 20,
+                  borderWidth: 3,
+                  borderRadius: 50,
+                  borderColor: colors.StayAliveRed,
+                  paddingHorizontal: 50,
+                  paddingVertical: 10,
+                  backgroundColor: 'white',
+                }}
+                testID={'sendDocument-button'}
+              >
+                {loadingSendDocuments ? (
+                  <ActivityIndicator size="small" color={colors.StayAliveRed} />
+                ) : (
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 18,
+                      color: colors.StayAliveRed,
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Envoyer vos documents
+                  </Text>
+                )}
+              </TouchableOpacity>
+            )}
+          </>
+        )}
       </View>
     </View>
   )

@@ -9,6 +9,17 @@ jest.mock('@notifee/react-native', () => ({
   onBackgroundEvent: jest.fn(),
 }))
 
+jest.mock('rn-fetch-blob', () => ({
+  fetch: jest.fn(),
+  fs: {
+    dirs: {
+      DocumentDir: jest.fn(),
+    },
+    exists: jest.fn(),
+    writeFile: jest.fn(),
+  },
+}))
+
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
   getItem: jest.fn(),
@@ -34,7 +45,6 @@ jest.mock('react-native-document-picker', () => ({
   ],
   isCancel: jest.fn(),
 }))
-
 describe('RegistrationPage', () => {
   it('renders without crashing', () => {
     render(<App />)
