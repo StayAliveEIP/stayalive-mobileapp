@@ -6,6 +6,8 @@ import {
   FlatList,
   StyleSheet,
   Image,
+  ActivityIndicator,
+  Alert,
 } from 'react-native'
 import { io } from 'socket.io-client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -15,13 +17,22 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { Appbar } from 'react-native-paper'
 import PropTypes from 'prop-types'
 
-const ChatEmergency = ({ navigation }) => {
+const ChatEmergency = ({ navigation, route }) => {
   const [socket, setSocket] = useState(null)
   const [message, setMessage] = useState('')
   const [chatHistory, setChatHistory] = useState([])
+  const [chatConversationId, setChatConversationId] = useState('')
+  const [loading, setLoading] = useState(true)
+  const { rescuerId, emergencyId } = route.params
 
   ChatEmergency.propTypes = {
     navigation: PropTypes.object.isRequired,
+    route: PropTypes.shape({
+      params: PropTypes.shape({
+        rescuerId: PropTypes.string.isRequired,
+        emergencyId: PropTypes.string.isRequired,
+      }),
+    }).isRequired,
   }
 
   const initializeWebSocket = async () => {
@@ -35,10 +46,12 @@ const ChatEmergency = ({ navigation }) => {
           console.log('Connected to WebSocket')
         })
 
-        newSocket.on('message', (data) => {
-          const jsonData = data?.data
-          if (jsonData !== null && jsonData !== undefined) {
-            setChatHistory((prevChat) => [...prevChat, jsonData])
+        newSocket.on('messageCallCenter', (data) => {
+          if (data?.conversationId === chatConversationId) {
+            setChatHistory((prevChat) => [
+              ...prevChat,
+              { text: data.message, sender: 'callCenter' },
+            ])
           }
         })
 
@@ -51,43 +64,109 @@ const ChatEmergency = ({ navigation }) => {
     }
   }
 
+  const getConversationId = async () => {
+    try {
+      const url = `${urlApi}/rescuer/chat/conversations`
+      const token = await AsyncStorage.getItem('userToken')
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (response.ok) {
+        const data = await response.json()
+        console.log(data)
+        const emergencyObj = data.find((obj) => obj.emergencyId === emergencyId)
+        setChatConversationId(emergencyObj._id)
+        setLoading(false)
+      } else {
+        throw new Error('Invalid credentials')
+      }
+    } catch (error) {
+      if (error?.message !== 'Invalid credentials') {
+        console.error(
+          'There has been an issue with the fetch operation:',
+          error
+        )
+        Alert.alert('Error', 'Nous ne parvenons pas à contacter nos serveurs')
+      }
+    }
+  }
+
   const sendMessage = () => {
     if (socket && message.trim() !== '') {
-      socket.emit('message', { text: message })
+      socket.emit('messageRescuer', {
+        conversationId: chatConversationId,
+        message,
+      })
       setChatHistory((prevChat) => [
         ...prevChat,
-        { text: message, sender: 'user' },
+        { text: message, sender: rescuerId },
       ])
       setMessage('')
     }
   }
 
-  useEffect(() => {
-    initializeWebSocket()
+  const loadChatHistory = async () => {
+    try {
+      const url = `${urlApi}/rescuer/chat/messages?id=${chatConversationId}`
+      const token = await AsyncStorage.getItem('userToken')
 
-    return () => {
-      if (socket) {
-        socket.disconnect()
-        setSocket(null)
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (response.ok) {
+        const data = await response.json()
+        if (data) {
+          const formattedMessages = data.map((message) => ({
+            text: message.content,
+            sender: message.senderId,
+          }))
+          setChatHistory(formattedMessages)
+          setLoading(false)
+        }
+      } else {
+        throw new Error('Invalid credentials')
       }
+    } catch (error) {
+      console.error('Erreur lors de la récupération des messages :', error)
     }
-  }, [])
+  }
 
-  const renderMessageBubbleUser = ({ item }) => {
+  useEffect(() => {
+    getConversationId()
+    if (chatConversationId) {
+      loadChatHistory()
+      initializeWebSocket()
+    }
+  }, [chatConversationId])
+
+  const renderMessageBubble = ({ item }) => {
+    const bubbleStyle =
+      item.sender === rescuerId ? styles.userBubble : styles.callCenterBubble
+    const textStyle =
+      item.sender === rescuerId ? styles.userText : styles.callCenterText
+
     return (
-      <View
-        style={[
-          styles.messageBubble,
-          item.sender === 'user' ? styles.userBubble : styles.callCenterBubble,
-        ]}
-      >
-        <Text style={styles.messageText}>{item.text}</Text>
+      <View style={[styles.messageBubble, bubbleStyle]}>
+        <Text style={textStyle}>{item.text}</Text>
       </View>
     )
   }
 
-  const goBack = () => {
+  const goBack = async () => {
     console.log('arrow left clicked !')
+    if (socket) {
+      socket.disconnect()
+      setSocket(null)
+    }
+    await AsyncStorage.setItem('chatHistory', JSON.stringify(chatHistory))
     navigation.goBack()
   }
 
@@ -107,30 +186,36 @@ const ChatEmergency = ({ navigation }) => {
         source={require('./../../assets/ChatEmergency.png')}
         style={styles.image}
       />
-      <View style={styles.container}>
-        <FlatList
-          inverted
-          showsVerticalScrollIndicator={false}
-          data={chatHistory}
-          renderItem={({ item }) => renderMessageBubbleUser({ item })}
-          keyExtractor={(item, index) => index.toString()}
-        />
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Type your message..."
-            value={message}
-            onChangeText={(text) => setMessage(text)}
-          />
-          <Icon
-            name="send"
-            size={30}
-            style={styles.icon}
-            onPress={sendMessage}
-            color={colors.StayAliveRed}
-          />
+      {loading ? (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color={colors.StayAliveRed} />
         </View>
-      </View>
+      ) : (
+        <View style={styles.container}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={chatHistory.slice().reverse()}
+            renderItem={renderMessageBubble}
+            keyExtractor={(item, index) => index.toString()}
+            inverted
+          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Ecrivez votre message...."
+              value={message}
+              onChangeText={(text) => setMessage(text)}
+            />
+            <Icon
+              name="send"
+              size={30}
+              style={styles.icon}
+              onPress={sendMessage}
+              color={colors.StayAliveRed}
+            />
+          </View>
+        </View>
+      )}
     </View>
   )
 }
@@ -157,18 +242,30 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   userBubble: {
-    flex: 1,
     backgroundColor: colors.StayAliveRed,
     padding: 12,
     borderRadius: 20,
     marginBottom: 10,
     alignSelf: 'flex-end',
   },
+  callCenterBubble: {
+    backgroundColor: 'lightgrey',
+    padding: 12,
+    borderRadius: 20,
+    marginBottom: 10,
+    alignSelf: 'flex-start',
+  },
+  userText: {
+    color: 'white',
+  },
+  callCenterText: {
+    color: 'black',
+  },
   iconBack: {
     marginLeft: 10,
   },
-  messageText: {
-    color: 'white',
+  messageBubble: {
+    maxWidth: '80%',
   },
   icon: {
     marginRight: 10,
@@ -190,6 +287,11 @@ const styles = StyleSheet.create({
     resizeMode: 'center',
     opacity: 0.7,
     marginBottom: 20,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 

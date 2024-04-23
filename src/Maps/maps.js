@@ -18,6 +18,7 @@ import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
 import Icon from 'react-native-vector-icons/Ionicons'
+import Snackbar from 'react-native-snackbar'
 
 const { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
@@ -116,6 +117,10 @@ export default function Maps({ navigation, route }) {
         console.log(response)
         if (response.ok) {
           console.log('Emergency terminated successfully')
+          await AsyncStorage.setItem('chatHistory', 'Empty')
+          await AsyncStorage.removeItem('chatHistory')
+          console.log('Chat history removed')
+
           navigation.navigate('AvailablePage')
         } else {
           console.error('Failed to terminate emergency')
@@ -146,13 +151,28 @@ export default function Maps({ navigation, route }) {
 
       <TouchableOpacity
         style={styles.chatButton}
-        onPress={() => navigation.navigate('ChatEmergency')}
+        onPress={async () => {
+          console.log('data')
+          console.log(dataAlert?.data)
+          const emergencyID = dataAlert?.data?.emergency?.id
+          const rescuerID = await AsyncStorage.getItem('userId')
+          if (!emergencyID)
+            Snackbar.show({
+              text: "Impossible de trouver l'ID de l'urgence émetteur",
+              duration: Snackbar.LENGTH_LONG,
+              backgroundColor: 'white',
+              textColor: 'red',
+            })
+          navigation.navigate('ChatEmergency', {
+            rescuerId: rescuerID,
+            emergencyId: emergencyID,
+          })
+        }}
       >
         <Icon
           name="chatbox-ellipses-outline"
           size={30}
           style={styles.iconChatEmergency}
-          onPress={() => navigation.navigate('ChatEmergency')}
           color={colors.StayAliveRed}
         />
       </TouchableOpacity>
