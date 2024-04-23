@@ -70,9 +70,8 @@ export default function SendDocumentPage({ navigation }) {
         text: "Une erreur est apparue lors de l'envoie des documents",
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: 'white',
-        textColor: 'green',
+        textColor: 'red',
       })
-      console.error("Erreur lors de l'envoi des documents : ", error)
     } finally {
       setLoadingSendDocuments(false)
     }
@@ -112,9 +111,8 @@ export default function SendDocumentPage({ navigation }) {
         text: 'Une erreur est apparue lors de la récupération des documents',
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: 'white',
-        textColor: 'green',
+        textColor: 'red',
       })
-      console.error('Erreur lors de la récupération des documents : ', error)
     } finally {
       setLoadingDocuments(false)
     }
