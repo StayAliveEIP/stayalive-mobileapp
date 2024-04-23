@@ -15,7 +15,7 @@ import { urlApi } from '../Utils/Api'
 import { colors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Appbar } from 'react-native-paper'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 const ChatEmergency = ({ navigation, route }) => {
   const [socket, setSocket] = useState(null)
@@ -33,7 +33,7 @@ const ChatEmergency = ({ navigation, route }) => {
         emergencyId: PropTypes.string.isRequired,
       }),
     }).isRequired,
-  };
+  }
 
   const initializeWebSocket = async () => {
     try {
@@ -47,14 +47,12 @@ const ChatEmergency = ({ navigation, route }) => {
         })
 
         newSocket.on('messageCallCenter', (data) => {
-          console.log(data);
           if (data?.conversationId === chatConversationId) {
-          setChatHistory((prevChat) => [
-            ...prevChat,
-            { text: data.message, sender: 'callCenter' },
-          ]
-          )
-        }
+            setChatHistory((prevChat) => [
+              ...prevChat,
+              { text: data.message, sender: 'callCenter' },
+            ])
+          }
         })
 
         setSocket(newSocket)
@@ -70,7 +68,7 @@ const ChatEmergency = ({ navigation, route }) => {
     try {
       const url = `${urlApi}/rescuer/chat/conversations`
       const token = await AsyncStorage.getItem('userToken')
-      const response   = await fetch(url, {
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -80,7 +78,7 @@ const ChatEmergency = ({ navigation, route }) => {
       if (response.ok) {
         const data = await response.json()
         console.log(data)
-        let emergencyObj = data.find(obj => obj.emergencyId === emergencyId);
+        const emergencyObj = data.find((obj) => obj.emergencyId === emergencyId)
         setChatConversationId(emergencyObj._id)
         setLoading(false)
       } else {
@@ -89,8 +87,8 @@ const ChatEmergency = ({ navigation, route }) => {
     } catch (error) {
       if (error?.message !== 'Invalid credentials') {
         console.error(
-            'There has been an issue with the fetch operation:',
-            error
+          'There has been an issue with the fetch operation:',
+          error
         )
         Alert.alert('Error', 'Nous ne parvenons pas à contacter nos serveurs')
       }
@@ -151,14 +149,14 @@ const ChatEmergency = ({ navigation, route }) => {
 
   const renderMessageBubble = ({ item }) => {
     const bubbleStyle =
-        item.sender === rescuerId ? styles.userBubble : styles.callCenterBubble
+      item.sender === rescuerId ? styles.userBubble : styles.callCenterBubble
     const textStyle =
-        item.sender === rescuerId ? styles.userText : styles.callCenterText
+      item.sender === rescuerId ? styles.userText : styles.callCenterText
 
     return (
-        <View style={[styles.messageBubble, bubbleStyle]}>
-          <Text style={textStyle}>{item.text}</Text>
-        </View>
+      <View style={[styles.messageBubble, bubbleStyle]}>
+        <Text style={textStyle}>{item.text}</Text>
+      </View>
     )
   }
 
@@ -173,52 +171,52 @@ const ChatEmergency = ({ navigation, route }) => {
   }
 
   return (
-      <View style={{ flex: 1 }}>
-        <Appbar.Header style={styles.appBar}>
-          <Icon
-              style={styles.iconBack}
-              name="arrow-left"
-              size={27}
-              onPress={goBack}
-          />
-          <Appbar.Content title="Centre d'appel" titleStyle={styles.title} />
-        </Appbar.Header>
-
-        <Image
-            source={require('./../../assets/ChatEmergency.png')}
-            style={styles.image}
+    <View style={{ flex: 1 }}>
+      <Appbar.Header style={styles.appBar}>
+        <Icon
+          style={styles.iconBack}
+          name="arrow-left"
+          size={27}
+          onPress={goBack}
         />
-        {loading ? (
-            <View style={styles.loaderContainer}>
-              <ActivityIndicator size="large" color={colors.StayAliveRed} />
-            </View>
-        ) : (
-            <View style={styles.container}>
-              <FlatList
-                  showsVerticalScrollIndicator={false}
-                  data={chatHistory.slice().reverse()}
-                  renderItem={renderMessageBubble}
-                  keyExtractor={(item, index) => index.toString()}
-                  inverted
-              />
-              <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Ecrivez votre message...."
-                    value={message}
-                    onChangeText={(text) => setMessage(text)}
-                />
-                <Icon
-                    name="send"
-                    size={30}
-                    style={styles.icon}
-                    onPress={sendMessage}
-                    color={colors.StayAliveRed}
-                />
-              </View>
-            </View>
-        )}
-      </View>
+        <Appbar.Content title="Centre d'appel" titleStyle={styles.title} />
+      </Appbar.Header>
+
+      <Image
+        source={require('./../../assets/ChatEmergency.png')}
+        style={styles.image}
+      />
+      {loading ? (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color={colors.StayAliveRed} />
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={chatHistory.slice().reverse()}
+            renderItem={renderMessageBubble}
+            keyExtractor={(item, index) => index.toString()}
+            inverted
+          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Ecrivez votre message...."
+              value={message}
+              onChangeText={(text) => setMessage(text)}
+            />
+            <Icon
+              name="send"
+              size={30}
+              style={styles.icon}
+              onPress={sendMessage}
+              color={colors.StayAliveRed}
+            />
+          </View>
+        </View>
+      )}
+    </View>
   )
 }
 
@@ -296,6 +294,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
-
 
 export default ChatEmergency
