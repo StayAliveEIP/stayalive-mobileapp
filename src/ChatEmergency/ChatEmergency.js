@@ -145,6 +145,14 @@ const ChatEmergency = ({ navigation, route }) => {
       loadChatHistory()
       initializeWebSocket()
     }
+
+    return () => {
+      if (socket) {
+        console.log('Closing WebSocket...')
+        socket.disconnect()
+        setSocket(null)
+      }
+    }
   }, [chatConversationId])
 
   const renderMessageBubble = ({ item }) => {

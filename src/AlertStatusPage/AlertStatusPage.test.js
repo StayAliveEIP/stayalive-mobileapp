@@ -18,7 +18,7 @@ jest.mock('react-native/Libraries/Alert/Alert', () => ({
 const mockNavigate = jest.fn()
 const mockNavigation = { push: mockNavigate }
 
-describe('AlertStatusPage', () => {
+describe('SettingsPage', () => {
   fetchMock.resetMocks()
   jest.clearAllMocks()
 

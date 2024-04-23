@@ -78,7 +78,7 @@ class WebSocketService {
       const token = await AsyncStorage.getItem('userToken')
       if (token) {
         const socketUrl = `${urlApi}/rescuer/ws?token=${token}`
-        this.socket = io(socketUrl) // Utilisez this.socket pour accéder à la propriété de la classe
+        this.socket = io(socketUrl)
 
         this.socket.on('message', (data) => {
           const jsonData = data?.data

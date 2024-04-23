@@ -192,7 +192,7 @@ export default function ProfilePage({ navigation }) {
           navigation={navigation}
           name="Préférences"
           icon="settings-outline"
-          goTo="Maps"
+          goTo="SettingsPage"
         />
         <TouchableOpacity
           testID="button-disconnect"
