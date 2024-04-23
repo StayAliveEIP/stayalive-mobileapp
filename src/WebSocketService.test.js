@@ -110,7 +110,7 @@ describe('initializeWebSocket function', (object, method) => {
       jsonData.data,
       token
     )
-    expect(navigation.navigate).toHaveBeenCalledWith('SettingsPage', {
+    expect(navigation.navigate).toHaveBeenCalledWith('AlertStatusPage', {
       dataAlert: jsonData.data,
     })
     expect(consoleLogSpy).toHaveBeenCalledWith('Disconnecting WebSocket...')
