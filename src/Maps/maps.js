@@ -32,7 +32,6 @@ export default function Maps({ navigation, route }) {
   const [currentPosition, setCurrentPosition] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const [walkingDuration, setWalkingDuration] = useState(null);
-  dataAlert.data.emergency.position = { latitude: 48.812130, longitude: 2.356810 };
 
   Maps.propTypes = {
     navigation: PropTypes.object.isRequired,
