@@ -108,7 +108,6 @@ export default function Maps({ navigation, route }) {
         const duration = data.routes[0].legs[0].duration.text
         setWalkingDuration(duration)
         console.log('Walking duration:', duration)
-
       } catch (error) {
         console.error(
           "Erreur lors de la récupération du temps d'itinéraire à pied :",
