@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -9,103 +9,117 @@ import {
   Platform,
   ActionSheetIOS,
   Alert,
-} from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { urlApi } from '../Utils/Api';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Snackbar from 'react-native-snackbar';
-import MapViewDirections from 'react-native-maps-directions';
+} from 'react-native'
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
+import Geolocation from '@react-native-community/geolocation'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { urlApi } from '../Utils/Api'
+import Icon from 'react-native-vector-icons/Ionicons'
+import Snackbar from 'react-native-snackbar'
+import MapViewDirections from 'react-native-maps-directions'
 import { colors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 
-const { width, height } = Dimensions.get('window');
-const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.02;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const { width, height } = Dimensions.get('window')
+const ASPECT_RATIO = width / height
+const LATITUDE_DELTA = 0.02
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
 export default function Maps({ navigation, route }) {
-  const dataAlert = route.params;
-  const [region, setRegion] = useState(null);
-  const [origin, setOrigin] = useState(null);
-  const [currentPosition, setCurrentPosition] = useState(null);
-  const [expanded, setExpanded] = useState(false);
-  const [walkingDuration, setWalkingDuration] = useState(null);
+  const dataAlert = route.params
+  const [region, setRegion] = useState(null)
+  const [origin, setOrigin] = useState(null)
+  const [currentPosition, setCurrentPosition] = useState(null)
+  const [expanded, setExpanded] = useState(false)
+  const [walkingDuration, setWalkingDuration] = useState(null)
 
   Maps.propTypes = {
     navigation: PropTypes.object.isRequired,
     route: PropTypes.object.isRequired,
-  };
+  }
 
   useEffect(() => {
     const calculateRegion = async () => {
       const watchId = Geolocation.watchPosition(
-        position => {
-          setCurrentPosition(position);
-          const { latitude, longitude } = position.coords;
+        (position) => {
+          setCurrentPosition(position)
+          const { latitude, longitude } = position.coords
           const userRegion = {
             latitude,
             longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
-          };
-          setOrigin(userRegion);
+          }
+          setOrigin(userRegion)
 
-          const minLat = Math.min(userRegion.latitude, dataAlert?.data?.emergency?.position?.latitude);
-          const maxLat = Math.max(userRegion.latitude, dataAlert?.data?.emergency?.position?.latitude);
-          const minLng = Math.min(userRegion.longitude, dataAlert?.data?.emergency?.position?.longitude);
-          const maxLng = Math.max(userRegion.longitude, dataAlert?.data?.emergency?.position?.longitude);
+          const minLat = Math.min(
+            userRegion.latitude,
+            dataAlert?.data?.emergency?.position?.latitude
+          )
+          const maxLat = Math.max(
+            userRegion.latitude,
+            dataAlert?.data?.emergency?.position?.latitude
+          )
+          const minLng = Math.min(
+            userRegion.longitude,
+            dataAlert?.data?.emergency?.position?.longitude
+          )
+          const maxLng = Math.max(
+            userRegion.longitude,
+            dataAlert?.data?.emergency?.position?.longitude
+          )
 
-          const deltaLat = maxLat - minLat;
-          const deltaLng = maxLng - minLng;
+          const deltaLat = maxLat - minLat
+          const deltaLng = maxLng - minLng
 
           const region = {
             latitude: (minLat + maxLat) / 2,
             longitude: (minLng + maxLng) / 2,
             latitudeDelta: deltaLat * 1.7,
             longitudeDelta: deltaLng * 1.7,
-          };
+          }
 
-          setRegion(region);
+          setRegion(region)
         },
-        error => console.log(error),
+        (error) => console.log(error),
         {
           enableHighAccuracy: true,
           timeout: 20000,
           maximumAge: 1000,
           distanceFilter: 10,
         }
-      );
+      )
 
-      return () => Geolocation.clearWatch(watchId);
-    };
+      return () => Geolocation.clearWatch(watchId)
+    }
 
-    calculateRegion();
-  }, []);
+    calculateRegion()
+  }, [])
 
   useEffect(() => {
     const fetchWalkingDuration = async () => {
       try {
-        console.log(currentPosition);
-        const response = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${currentPosition.coords.latitude},${currentPosition.coords.longitude}&destination=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&mode=walking&key=AIzaSyDZzzsyTDbIIkYjUII8pAQbbkpBA3Amwj0`);
-        const data = await response.json();
+        console.log(currentPosition)
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/directions/json?origin=${currentPosition.coords.latitude},${currentPosition.coords.longitude}&destination=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&mode=walking&key=AIzaSyDZzzsyTDbIIkYjUII8pAQbbkpBA3Amwj0`
+        )
+        const data = await response.json()
         console.log(data)
-        const duration = data.routes[0].legs[0].duration.text;
-        setWalkingDuration(duration);
-        console.log('Walking duration:', duration);
-
-        const remainingSeconds = data.routes[0].legs[0].duration.value;
-        const remainingTime = new Date(remainingSeconds * 1000).toISOString().substr(11, 8);
+        const duration = data.routes[0].legs[0].duration.text
+        setWalkingDuration(duration)
+        console.log('Walking duration:', duration)
 
       } catch (error) {
-        console.error('Erreur lors de la récupération du temps d\'itinéraire à pied :', error);
+        console.error(
+          "Erreur lors de la récupération du temps d'itinéraire à pied :",
+          error
+        )
       }
-    };
-    if (origin && currentPosition) {
-      fetchWalkingDuration();
     }
-  }, [origin, currentPosition]);
+    if (origin && currentPosition) {
+      fetchWalkingDuration()
+    }
+  }, [origin, currentPosition])
 
   const showMapOptions = () => {
     if (Platform.OS === 'ios') {
@@ -114,72 +128,72 @@ export default function Maps({ navigation, route }) {
           options: ['Cancel', 'Apple Maps', 'Google Maps'],
           cancelButtonIndex: 0,
         },
-        buttonIndex => {
+        (buttonIndex) => {
           if (buttonIndex === 1) {
-            openAppleMaps();
+            openAppleMaps()
           } else if (buttonIndex === 2) {
-            openGoogleMaps();
+            openGoogleMaps()
           }
         }
-      );
+      )
     } else {
       Alert.alert('Open in Maps', 'Choose a map application', [
         { text: 'Cancel', onPress: () => {}, style: 'cancel' },
         { text: 'Apple Maps', onPress: () => openAppleMaps() },
         { text: 'Google Maps', onPress: () => openGoogleMaps() },
-      ]);
+      ])
     }
-  };
+  }
 
   const openAppleMaps = () => {
-    const url = `http://maps.apple.com/?daddr=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&saddr=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`;
-    Linking.openURL(url);
-  };
+    const url = `http://maps.apple.com/?daddr=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&saddr=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`
+    Linking.openURL(url)
+  }
 
   const openGoogleMaps = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&origin=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`;
-    Linking.openURL(url);
-  };
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&origin=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`
+    Linking.openURL(url)
+  }
 
   const onClickEnd = async () => {
     try {
-      const token = await AsyncStorage.getItem('userToken');
-      const emergencyId = dataAlert?.data?.emergency?.id;
+      const token = await AsyncStorage.getItem('userToken')
+      const emergencyId = dataAlert?.data?.emergency?.id
 
       if (emergencyId && token) {
-        const terminateUrl = `${urlApi}/rescuer/emergency/terminate?id=${emergencyId}`;
+        const terminateUrl = `${urlApi}/rescuer/emergency/terminate?id=${emergencyId}`
 
         const response = await fetch(terminateUrl, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-        console.log(response);
+        })
+        console.log(response)
         if (response.ok) {
-          console.log('Emergency terminated successfully');
-          await AsyncStorage.setItem('chatHistory', 'Empty');
-          await AsyncStorage.removeItem('chatHistory');
-          console.log('Chat history removed');
+          console.log('Emergency terminated successfully')
+          await AsyncStorage.setItem('chatHistory', 'Empty')
+          await AsyncStorage.removeItem('chatHistory')
+          console.log('Chat history removed')
 
-          navigation.navigate('AvailablePage');
+          navigation.navigate('AvailablePage')
         } else {
-          console.error('Failed to terminate emergency');
-          navigation.navigate('AvailablePage');
+          console.error('Failed to terminate emergency')
+          navigation.navigate('AvailablePage')
         }
       } else {
-        console.error('Emergency ID not found');
-        navigation.navigate('AvailablePage');
+        console.error('Emergency ID not found')
+        navigation.navigate('AvailablePage')
       }
     } catch (error) {
-      console.error('Error terminating emergency:', error);
-      navigation.navigate('AvailablePage');
+      console.error('Error terminating emergency:', error)
+      navigation.navigate('AvailablePage')
     }
-  };
+  }
 
   const toggleClickInfos = () => {
-    setExpanded(!expanded);
-  };
+    setExpanded(!expanded)
+  }
 
   return (
     <View style={styles.container}>
@@ -196,8 +210,8 @@ export default function Maps({ navigation, route }) {
             destination={dataAlert?.data?.emergency?.position}
             strokeWidth={11}
             strokeColor={colors.StayAliveRed}
-            apikey={"AIzaSyDZzzsyTDbIIkYjUII8pAQbbkpBA3Amwj0"}
-            mode={"WALKING"}
+            apikey={'AIzaSyDZzzsyTDbIIkYjUII8pAQbbkpBA3Amwj0'}
+            mode={'WALKING'}
           />
         </MapView>
       ) : null}
@@ -205,21 +219,21 @@ export default function Maps({ navigation, route }) {
       <TouchableOpacity
         style={styles.chatButton}
         onPress={async () => {
-          console.log('data');
-          console.log(dataAlert?.data);
-          const emergencyID = dataAlert?.data?.emergency?.id;
-          const rescuerID = await AsyncStorage.getItem('userId');
+          console.log('data')
+          console.log(dataAlert?.data)
+          const emergencyID = dataAlert?.data?.emergency?.id
+          const rescuerID = await AsyncStorage.getItem('userId')
           if (!emergencyID)
             Snackbar.show({
               text: "Impossible de trouver l'ID de l'urgence émetteur",
               duration: Snackbar.LENGTH_LONG,
               backgroundColor: 'white',
               textColor: colors.StayAliveRed,
-            });
+            })
           navigation.navigate('ChatEmergency', {
             rescuerId: rescuerID,
             emergencyId: emergencyID,
-          });
+          })
         }}
       >
         <Icon
@@ -230,7 +244,14 @@ export default function Maps({ navigation, route }) {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={toggleClickInfos} style={expanded ? styles.floatingWindowExpanded : styles.floatingWindowNotExpanded}>
+      <TouchableOpacity
+        onPress={toggleClickInfos}
+        style={
+          expanded
+            ? styles.floatingWindowExpanded
+            : styles.floatingWindowNotExpanded
+        }
+      >
         <View style={styles.header}>
           {expanded ? (
             <Icon name="chevron-down" size={30} color={colors.StayAliveRed} />
@@ -255,7 +276,10 @@ export default function Maps({ navigation, route }) {
             </View>
 
             <View style={styles.buttonSection}>
-              <TouchableOpacity style={styles.redButton} onPress={showMapOptions}>
+              <TouchableOpacity
+                style={styles.redButton}
+                onPress={showMapOptions}
+              >
                 <Text style={styles.buttonText}>Ouvrir dans maps</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.whiteButton} onPress={onClickEnd}>
@@ -269,13 +293,20 @@ export default function Maps({ navigation, route }) {
         <View style={styles.timeBox}>
           <Text style={styles.timeText}>{walkingDuration}</Text>
         </View>
-        <Text style={styles.addressText}>{dataAlert?.data?.emergency?.address}</Text>
+        <Text style={styles.addressText}>
+          {dataAlert?.data?.emergency?.address}
+        </Text>
       </View>
     </View>
-  );
+  )
 }
 
 function InfoItem({ icon, name, detail }) {
+  InfoItem.propTypes = {
+    icon: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    detail: PropTypes.string.isRequired,
+  }
   return (
     <View style={styles.infoItem}>
       <Text style={styles.icon}>{icon}</Text>
@@ -284,7 +315,7 @@ function InfoItem({ icon, name, detail }) {
         <Text style={styles.infoDetail}>{detail}</Text>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -301,7 +332,7 @@ const styles = StyleSheet.create({
     bottom: '185%',
     maxWidth: '90%',
     alignSelf: 'center',
-    flexDirection: "row",
+    flexDirection: 'row',
     backgroundColor: 'white',
   },
   timeBox: {
@@ -416,4 +447,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.StayAliveRed,
     padding: 12,
   },
-});
+})
