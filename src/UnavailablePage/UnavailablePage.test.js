@@ -3,19 +3,21 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native'
 import UnavailablePage from './UnavailablePage'
 import fetchMock from 'jest-fetch-mock'
 
-// Mock de AsyncStorage
+jest.mock('@react-native-community/geolocation', () => ({
+  getCurrentPosition: jest.fn(),
+}))
+
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn().mockResolvedValue('mockToken'),
 }))
 
-// Mock pour navigation
 const navigationMock = { navigate: jest.fn() }
 
 fetchMock.enableMocks()
 
 describe('UnavailablePage', () => {
   beforeEach(() => {
-    jest.clearAllMocks() // Réinitialise les mocks avant chaque test
+    jest.clearAllMocks()
   })
 
   it('renders correctly', () => {
