@@ -23,6 +23,36 @@ export default function LoginPage({ navigation }) {
     navigation: PropTypes.object.isRequired,
   }
 
+  const getAccountInfos = async () => {
+    const token = await AsyncStorage.getItem('userToken')
+
+    const url = `${urlApi}/rescuer/account`
+
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        }
+        return Promise.reject(new Error('Failed to send position'))
+      })
+      .then((data) => {
+        console.log('Account infos: ', data)
+        return data
+      })
+      .catch((error) => {
+        console.error('There was an issue with the fetch operation:', error)
+        Alert.alert('Error', 'We could not send your position', [
+          { text: 'OK' },
+        ])
+      })
+  }
+
   const onClickLogin = () => {
     console.log(email.toLowerCase(), password)
 
@@ -48,11 +78,14 @@ export default function LoginPage({ navigation }) {
         Alert.alert('Error', 'Mauvais identifiants ou mot de passe')
         return Promise.reject(new Error('Invalid credentials'))
       })
-      .then((data) => {
+      .then(async (data) => {
         console.log('Response was OK:', data)
         const token = data.accessToken.split(' ')[1]
-        AsyncStorage.setItem('userToken', token)
+        await AsyncStorage.setItem('userToken', token)
         console.log('Token saved:', token)
+        const accountData = await getAccountInfos()
+        await AsyncStorage.setItem('userId', accountData?._id)
+        console.log('User ID saved:', accountData?._id)
         navigation.navigate('UnavailablePage')
       })
       .catch((error) => {

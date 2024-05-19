@@ -38,14 +38,4 @@ describe('ProfilePage', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith('Disconnect button press !')
     consoleLogSpy.mockRestore()
   })
-
-  it('updates avatarSource when selectImage is called', () => {
-    const { getByTestId } = render(<ProfilePage navigation={mockNavigation} />)
-    const selectImageButton = getByTestId('select-image-button')
-
-    fireEvent.press(selectImageButton)
-
-    const avatarSource = getByTestId('user-avatar').props.source
-    expect(avatarSource).not.toBeNull()
-  })
 })

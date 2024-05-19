@@ -115,7 +115,7 @@ export default function AccountPage({ navigation }) {
         }
       }
     } catch (error) {
-      // console.error('Erreur lors de la sauvegarde des modifications', error);
+      console.error('Erreur lors de la sauvegarde des modifications', error)
     }
   }
 
