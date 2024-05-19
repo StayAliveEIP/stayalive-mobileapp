@@ -195,11 +195,11 @@ const ChatEmergency = ({ navigation, route }) => {
         style={styles.image}
       />
       {loading ? (
-        <View style={styles.loaderContainer}>
+        <View testID="loader" style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={colors.StayAliveRed} />
         </View>
       ) : (
-        <View style={styles.container}>
+        <View style={styles.container} testID="chatContainer">
           <FlatList
             showsVerticalScrollIndicator={false}
             data={chatHistory.slice().reverse()}

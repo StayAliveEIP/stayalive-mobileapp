@@ -30,7 +30,7 @@ export default function Maps({ navigation, route }) {
   const [region, setRegion] = useState(null)
   const [origin, setOrigin] = useState(null)
   const [currentPosition, setCurrentPosition] = useState(null)
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
   const [walkingDuration, setWalkingDuration] = useState(null)
 
   Maps.propTypes = {
@@ -171,9 +171,6 @@ export default function Maps({ navigation, route }) {
         console.log(response)
         if (response.ok) {
           console.log('Emergency terminated successfully')
-          await AsyncStorage.setItem('chatHistory', 'Empty')
-          await AsyncStorage.removeItem('chatHistory')
-          console.log('Chat history removed')
 
           navigation.navigate('AvailablePage')
         } else {
@@ -216,6 +213,7 @@ export default function Maps({ navigation, route }) {
       ) : null}
 
       <TouchableOpacity
+        testID="chatButton"
         style={styles.chatButton}
         onPress={async () => {
           console.log('data')
