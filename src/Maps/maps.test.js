@@ -71,9 +71,7 @@ describe('Maps Component', () => {
       success(mockPosition)
     })
 
-    render(
-      <Maps navigation={mockNavigation} route={mockRoute} />
-    )
+    render(<Maps navigation={mockNavigation} route={mockRoute} />)
 
     await waitFor(() => {
       expect(consoleSpy).toHaveBeenCalledWith('Walking duration:', '30 mins')
