@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent } from '@testing-library/react-native'
+import { render, fireEvent, waitFor } from '@testing-library/react-native'
 import BoxDocument from './BoxDocument'
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -37,15 +37,19 @@ describe('<BoxDocument />', () => {
     expect(getByTestId('download-document-button')).toBeTruthy()
   })
 
-  it('calls handleDeleteDocument when delete button is pressed', () => {
+  it('calls handleDeleteDocument when delete button is pressed', async () => {
     const { getByTestId } = render(<BoxDocument {...mockProps} />)
     fireEvent.press(getByTestId('delete-document-button'))
-    expect(mockProps.setData).not.toHaveBeenCalled()
+    await waitFor(() => {
+      expect(mockProps.setData).not.toHaveBeenCalled()
+    })
   })
 
-  it('calls handleDownloadDocument when download button is pressed', () => {
+  it('calls handleDownloadDocument when download button is pressed', async () => {
     const { getByTestId } = render(<BoxDocument {...mockProps} />)
     fireEvent.press(getByTestId('download-document-button'))
-    expect(mockProps.setData).toHaveBeenCalled()
+    await waitFor(() => {
+      expect(mockProps.setData).toHaveBeenCalled()
+    })
   })
 })
