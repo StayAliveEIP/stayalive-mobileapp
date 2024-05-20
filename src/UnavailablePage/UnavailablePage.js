@@ -235,22 +235,20 @@ export default function UnavailablePage({ navigation }) {
         >
           Avant de se rendre disponible:
         </Text>
-        <View style={{ maxWidth: '80%' }}>
+        <View testID="warning-text" style={{ maxWidth: '80%' }}>
           <Text
             style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}
-            testID="warning-text"
+
           >
             • Assurez-vous d'être prêt à intervenir.
           </Text>
           <Text
             style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}
-            testID="warning-text"
           >
             • Ayez votre matériel médical à portée de main.
           </Text>
           <Text
             style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}
-            testID="warning-text"
           >
             • Vérifiez que votre téléphone est chargé et connecté.
           </Text>

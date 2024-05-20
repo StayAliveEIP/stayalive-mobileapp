@@ -1,12 +1,14 @@
 name: Build Apk
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Build Tests"]
+    types:
+      - completed
 
 jobs:
   ReactNative-BuildApk:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
