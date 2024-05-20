@@ -89,7 +89,7 @@ describe('initializeWebSocket function', (object, method) => {
       .spyOn(console, 'log')
       .mockImplementation(() => {})
 
-    const webSocketServiceInstance = new WebSocketService(
+    const webSocketServiceInstance = new WebSocketService()
     const displayNotificationSpy = jest.spyOn(
       webSocketServiceInstance,
       'onDisplayNotification'
