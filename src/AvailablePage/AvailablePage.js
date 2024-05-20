@@ -136,19 +136,13 @@ export default function AvailablePage({ navigation }) {
           Maintenant que vous etes disponibles :
         </Text>
         <View testID="warning-text" style={{ maxWidth: '80%' }}>
-          <Text
-            style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}
-          >
+          <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
             • Restez attentif aux notifications d'urgence.
           </Text>
-          <Text
-            style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}
-          >
+          <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
             • Gardez votre téléphone à portée de main en tout temps.
           </Text>
-          <Text
-            style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}
-          >
+          <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
             • Soyez prêt à intervenir rapidement en cas d'alerte.
           </Text>
         </View>
