@@ -84,7 +84,6 @@ describe('AccountPage', () => {
   })
 
   afterEach(() => {
-    // Clear mocks and restore fetchMock
     jest.clearAllMocks()
     fetchMock.resetMocks()
   })

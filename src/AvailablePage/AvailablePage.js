@@ -4,14 +4,14 @@ import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { colors } from '../Style/StayAliveStyle'
 import { urlApi } from '../Utils/Api'
-import WebSocketService from '../WebSocketService' // Import de la classe WebSocketService
+import WebSocketService from '../WebSocketService'
 
 export default function AvailablePage({ navigation }) {
   useEffect(() => {
-    const webSocketService = new WebSocketService() // Crée une instance de WebSocketService
-    webSocketService.initializeWebSocket(navigation) // Utilisation de la méthode de l'instance
+    const webSocketService = new WebSocketService()
+    webSocketService.initializeWebSocket(navigation)
     return () => {
-      webSocketService.disconnectWebSocket() // Utilisation de la méthode de l'instance
+      webSocketService.disconnectWebSocket()
     }
   }, [navigation])
 
@@ -101,8 +101,53 @@ export default function AvailablePage({ navigation }) {
         source={require('../../assets/AvailableLogo.png')}
       />
 
-      {/* Suppression de l'appel à TextSlider, vous devriez le réintégrer si nécessaire */}
+      <View
+        style={{
+          backgroundColor: 'white',
+          paddingVertical: 15,
+          paddingHorizontal: 10,
+          borderRadius: 15,
+          shadowColor: 'black',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+          alignItems: 'center',
+          maxWidth: '90%',
+          width: 400,
+          marginTop: 50,
+        }}
+        testID="warning-view"
+      >
+        <Image
+          source={require('../../assets/WarningLogo.png')}
+          style={{ width: 80, height: 80, marginBottom: 15 }}
+          testID="warning-logo"
+        />
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: colors.StayAliveRed,
+            marginBottom: 10,
+          }}
+          testID="warning-title"
+        >
+          Maintenant que vous etes disponibles :
+        </Text>
+        <View style={{ maxWidth: '80%' }}>
 
+          <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }} testID="warning-text">
+            • Restez attentif aux notifications d'urgence.
+          </Text>
+          <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }} testID="warning-text">
+            • Gardez votre téléphone à portée de main en tout temps.
+          </Text>
+          <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }} testID="warning-text">
+            • Soyez prêt à intervenir rapidement en cas d'alerte.
+          </Text>
+        </View>
+      </View>
       <TouchableOpacity
         onPress={onClickButton}
         style={{

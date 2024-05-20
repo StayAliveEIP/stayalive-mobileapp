@@ -34,7 +34,7 @@ describe('onDisplayNotification function', () => {
     const dataAlert = { emergency: { info: 'Test emergency info' } }
     const token = 'testToken'
 
-    const webSocketServiceInstance = new WebSocketService() // Create an instance of WebSocketService
+    const webSocketServiceInstance = new WebSocketService()
     const displayNotificationSpy = jest.spyOn(
       webSocketServiceInstance,
       'onDisplayNotification'
@@ -54,7 +54,7 @@ describe('onDisplayNotification function', () => {
       token
     )
 
-    displayNotificationSpy.mockRestore() // Restore the original method after the test
+    displayNotificationSpy.mockRestore()
   })
 })
 
@@ -66,8 +66,7 @@ describe('initializeWebSocket function', (object, method) => {
     AsyncStorage.getItem.mockResolvedValue('testToken')
     const expectedSocketUrl = `${urlApi}/rescuer/ws?token=testToken`
 
-    const webSocketServiceInstance = new WebSocketService() // Create an instance of WebSocketService
-
+    const webSocketServiceInstance = new WebSocketService()
     await webSocketServiceInstance.initializeWebSocket(navigation)
 
     expect(io).toHaveBeenCalledWith(expectedSocketUrl)
@@ -90,7 +89,7 @@ describe('initializeWebSocket function', (object, method) => {
       .spyOn(console, 'log')
       .mockImplementation(() => {})
 
-    const webSocketServiceInstance = new WebSocketService() // Create an instance of WebSocketService
+    const webSocketServiceInstance = new WebSocketService(
     const displayNotificationSpy = jest.spyOn(
       webSocketServiceInstance,
       'onDisplayNotification'
@@ -98,7 +97,6 @@ describe('initializeWebSocket function', (object, method) => {
 
     await webSocketServiceInstance.initializeWebSocket(navigation)
 
-    // Simulate the 'message' event with mocked data
     const messageCallback = mockSocket.on.mock.calls[0][1]
     messageCallback(jsonData)
 
@@ -116,7 +114,6 @@ describe('initializeWebSocket function', (object, method) => {
     expect(consoleLogSpy).toHaveBeenCalledWith('Disconnecting WebSocket...')
     expect(mockSocket.removeAllListeners).toHaveBeenCalled()
 
-    // Clean up
     consoleLogSpy.mockRestore()
     displayNotificationSpy.mockRestore()
   })

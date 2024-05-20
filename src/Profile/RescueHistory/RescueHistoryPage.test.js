@@ -13,7 +13,7 @@ jest.mock('react-native-snackbar', () => ({
   show: jest.fn(),
 }))
 
-jest.mock('node-fetch') // Mock fetch
+jest.mock('node-fetch')
 
 describe('RescueHistoryPage', () => {
   beforeEach(() => {

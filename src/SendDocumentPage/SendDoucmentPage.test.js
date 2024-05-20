@@ -5,8 +5,8 @@ import { fireEvent, render } from '@testing-library/react-native'
 global.fetch = jest.fn().mockResolvedValueOnce({
   json: () =>
     Promise.resolve([
-      { type: 'ID_CARD', data: null }, // Simule le cas où la réponse ne contient pas de données pour ID_CARD
-      { type: 'RESCUER_CERTIFICATE', data: null }, // Simule le cas où la réponse ne contient pas de données pour RESCUER_CERTIFICATE
+      { type: 'ID_CARD', data: null },
+      { type: 'RESCUER_CERTIFICATE', data: null },
     ]),
 })
 

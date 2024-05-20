@@ -67,7 +67,7 @@ export function EditInfosMenu(props) {
       </Text>
       {props.edit === true ? (
         <TextInput
-          testID="text-input" // Ajout du testID pour le TextInput
+          testID="text-input"
           style={{
             marginLeft: 30,
             textAlign: 'left',
@@ -102,7 +102,7 @@ export function EditInfosMenu(props) {
         />
       ) : (
         <Text
-          testID="text-element" // Ajout du testID pour le Text
+          testID="text-element"
           style={{
             marginLeft: 30,
             textAlign: 'left',

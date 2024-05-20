@@ -142,8 +142,8 @@ export default function AlertStatusPage({ navigation, route }) {
       <View
         style={{
           flex: 1,
-          flexDirection: 'row', // Assure que les éléments sont disposés horizontalement
-          justifyContent: 'flex-start', // Aligne les éléments sur l'axe principal (horizontalement) à gauche
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
           alignItems: 'center',
           marginLeft: 0,
           maxWidth: 300,
@@ -250,8 +250,8 @@ export default function AlertStatusPage({ navigation, route }) {
           paddingHorizontal: 50,
           paddingVertical: 10,
           backgroundColor: colors.StayAliveRed,
-          maxWidth: 500, // Ajoutez cette ligne pour définir une largeur maximale
-          alignSelf: 'center', // Ajoutez cette ligne pour centrer le bouton horizontalement
+          maxWidth: 500,
+          alignSelf: 'center',
         }}
       >
         <Text
@@ -277,8 +277,8 @@ export default function AlertStatusPage({ navigation, route }) {
           paddingHorizontal: 50,
           paddingVertical: 10,
           backgroundColor: 'white',
-          maxWidth: 500, // Ajoutez cette ligne pour définir une largeur maximale
-          alignSelf: 'center', // Ajoutez cette ligne pour centrer le bouton horizontalement
+          maxWidth: 500,
+          alignSelf: 'center',
         }}
       >
         <Text
