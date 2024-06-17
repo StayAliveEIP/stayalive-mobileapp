@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -7,42 +7,40 @@ import {
   StyleSheet,
   ActivityIndicator,
   Image,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { StayAliveColors } from '../../../Style/StayAliveStyle';
-import { TextInputStayAlive } from '../../../Utils/textInputStayAlive';
-import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Snackbar from 'react-native-snackbar';
-
-import { GITHUB_TOKEN } from '@env'; // Assurez-vous que votre .env est configuré correctement
+} from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
+import { StayAliveColors } from '../../../Style/StayAliveStyle'
+import { TextInputStayAlive } from '../../../Utils/textInputStayAlive'
+import PropTypes from 'prop-types'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import Snackbar from 'react-native-snackbar'
 
 export default function ReportBugPage({ navigation }) {
   ReportBugPage.propTypes = {
     navigation: PropTypes.object.isRequired,
-  };
+  }
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [loading, setLoading] = useState(false); // État pour gérer le chargement
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const goBack = () => {
-    console.log('arrow left clicked !');
-    navigation.goBack();
-  };
+    console.log('arrow left clicked !')
+    navigation.goBack()
+  }
 
   const handleSubmit = async () => {
     if (title.trim() === '' || description.trim() === '') {
       Snackbar.show({
-        text: "Erreur: Veuillez remplir tous les champs",
+        text: 'Erreur: Veuillez remplir tous les champs',
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: 'white',
         textColor: 'red',
-      });
-      return;
+      })
+      return
     }
 
-    setLoading(true); // Activer le chargement au début de la requête
+    setLoading(true)
 
     try {
       const response = await fetch(
@@ -50,8 +48,8 @@ export default function ReportBugPage({ navigation }) {
         {
           method: 'POST',
           headers: {
-            'Authorization': `token ${GITHUB_TOKEN}`,
-            'Accept': 'application/vnd.github.v3+json',
+            Authorization: `token ${process.env.GITHUB_TOKEN}`,
+            Accept: 'application/vnd.github.v3+json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -59,37 +57,37 @@ export default function ReportBugPage({ navigation }) {
             body: description,
           }),
         }
-      );
+      )
 
       if (response.status === 201) {
         Snackbar.show({
-          text: "Le bug a été signalé avec succès !",
+          text: 'Le bug a été signalé avec succès !',
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: 'white',
           textColor: 'green',
-        });
-        setTitle('');
-        setDescription('');
+        })
+        setTitle('')
+        setDescription('')
       } else {
         Snackbar.show({
-          text: "Erreur: Une erreur est survenue",
+          text: 'Erreur: Une erreur est survenue',
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: 'white',
           textColor: 'red',
-        });
+        })
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
       Snackbar.show({
-        text: "Erreur: Une erreur est survenue",
+        text: 'Erreur: Une erreur est survenue',
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: 'white',
         textColor: 'red',
-      });
+      })
     } finally {
-      setLoading(false); // Désactiver le chargement à la fin de la requête
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -144,7 +142,7 @@ export default function ReportBugPage({ navigation }) {
           <TouchableOpacity
             onPress={handleSubmit}
             style={styles.submitButton}
-            disabled={loading} // Désactiver le bouton pendant le chargement
+            disabled={loading}
           >
             {loading ? (
               <ActivityIndicator size="small" color="white" />
@@ -157,7 +155,7 @@ export default function ReportBugPage({ navigation }) {
         </View>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -230,4 +228,4 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-});
+})

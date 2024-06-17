@@ -6,7 +6,7 @@ import notifee from '@notifee/react-native'
 import { StayAliveColors } from '../src/Style/StayAliveStyle'
 
 class WebSocketService {
-  static socket // Déclarez socket comme une propriété statique de la classe
+  static socket
 
   async onDisplayNotification(navigation, dataAlert, token) {
     const batteryOptimizationEnabled =
@@ -64,7 +64,7 @@ class WebSocketService {
       body: '<p><font color="#000000">' + info + '</font></p>',
       android: {
         smallIcon: 'ic_stayalive_logo',
-        color: StayAliveColorsStayAliveRed,
+        color: StayAliveColors.StayAliveRed,
         channelId,
         pressAction: {
           id: 'default',

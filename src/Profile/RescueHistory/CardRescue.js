@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
+import { StayAliveColors } from '../..//Style/StayAliveStyle'
 
 export const CardRescue = ({ number, id, info, address, status }) => {
   const [expanded, setExpanded] = useState(false)

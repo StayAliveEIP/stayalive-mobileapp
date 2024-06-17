@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TextInput, View, Alert } from 'react-native'
+import { Text, TextInput, View } from 'react-native'
 import { StayAliveColors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 
@@ -15,36 +15,13 @@ export function TextInputStayAlive(props) {
     maxLength: PropTypes.number,
     numberOfLines: PropTypes.number,
   }
-  const calculateActualLength = (text) => {
-    let lengthWithLineBreaks = text.length
-    const lineBreaksCount = (text.match(/\n/g) || []).length
 
-    if (lineBreaksCount > 0) {
-      lengthWithLineBreaks += lineBreaksCount * 35
-    }
-
-    return lengthWithLineBreaks
-  }
-
-  const handleSubmit = () => {
-    const { field, maxLength } = props
-    const actualLength = calculateActualLength(field)
-
-    if (actualLength > maxLength) {
-      Alert.alert(
-        'Erreur',
-        `Le texte dépasse la limite de ${maxLength} caractères (retours à la ligne comptent pour 35 caractères chacun)`
-      )
-      return
-    }
-  }
+  const maxTextInputHeight = props.numberOfLines
+    ? props.numberOfLines * 25
+    : null
 
   return (
-    <View
-      style={{
-        marginTop: 7,
-      }}
-    >
+    <View style={{ marginTop: 7 }}>
       <Text
         style={{
           color: StayAliveColors.black,
@@ -66,6 +43,7 @@ export function TextInputStayAlive(props) {
           padding: 10,
           minHeight: 45,
           textAlignVertical: 'top',
+          maxHeight: maxTextInputHeight,
         }}
         placeholder={props.label}
         onChangeText={props.onChangeField}

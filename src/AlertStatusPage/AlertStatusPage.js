@@ -126,7 +126,7 @@ export default function AlertStatusPage({ navigation, route }) {
           style={{
             fontSize: 28,
             fontWeight: 'bold',
-            color: StayAliveColorsStayAliveRed,
+            color: StayAliveColors.StayAliveRed,
             marginTop: 5,
           }}
         >
@@ -246,12 +246,12 @@ export default function AlertStatusPage({ navigation, route }) {
           marginBottom: 10,
           borderWidth: 3,
           borderRadius: 50,
-          borderColor: StayAliveColorsStayAliveRed,
+          borderColor: StayAliveColors.StayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 10,
-          backgroundColor: StayAliveColorsStayAliveRed,
-          maxWidth: 500, // Ajoutez cette ligne pour définir une largeur maximale
-          alignSelf: 'center', // Ajoutez cette ligne pour centrer le bouton horizontalement
+          backgroundColor: StayAliveColors.StayAliveRed,
+          maxWidth: 500,
+          alignSelf: 'center',
         }}
       >
         <Text
