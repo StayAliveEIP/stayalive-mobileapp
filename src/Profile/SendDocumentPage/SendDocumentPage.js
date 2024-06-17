@@ -7,10 +7,10 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../../Style/StayAliveStyle'
 import { BoxUploadDocument } from './BoxUploadDocument'
 import { BoxDocument } from './BoxDocument'
-import { urlApi } from '../Utils/Api'
+import { urlApi } from '../../Utils/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Snackbar from 'react-native-snackbar'
 import PropTypes from 'prop-types'
@@ -141,7 +141,7 @@ export default function SendDocumentPage({ navigation }) {
         <View style={{ alignItems: 'center' }}>
           <Image
             style={{ alignSelf: 'center', width: 120, height: 120 }}
-            source={require('../../assets/DocumentLogo.png')}
+            source={require('../../../assets/DocumentLogo.png')}
           />
           <Text
             style={{
@@ -156,7 +156,10 @@ export default function SendDocumentPage({ navigation }) {
           </Text>
         </View>
         {loadingDocuments ? (
-          <ActivityIndicator size="large" color={colors.StayAliveRed} />
+          <ActivityIndicator
+            size="large"
+            color={StayAliveColors.StayAliveRed}
+          />
         ) : (
           <>
             {documentID === null ? (
@@ -208,7 +211,7 @@ export default function SendDocumentPage({ navigation }) {
                   marginTop: 20,
                   borderWidth: 3,
                   borderRadius: 50,
-                  borderColor: colors.StayAliveRed,
+                  borderColor: StayAliveColors.StayAliveRed,
                   paddingHorizontal: 50,
                   paddingVertical: 10,
                   backgroundColor: 'white',
@@ -216,13 +219,16 @@ export default function SendDocumentPage({ navigation }) {
                 testID={'sendDocument-button'}
               >
                 {loadingSendDocuments ? (
-                  <ActivityIndicator size="small" color={colors.StayAliveRed} />
+                  <ActivityIndicator
+                    size="small"
+                    color={StayAliveColors.StayAliveRed}
+                  />
                 ) : (
                   <Text
                     style={{
                       textAlign: 'center',
                       fontSize: 18,
-                      color: colors.StayAliveRed,
+                      color: StayAliveColors.StayAliveRed,
                       fontWeight: 'bold',
                     }}
                   >

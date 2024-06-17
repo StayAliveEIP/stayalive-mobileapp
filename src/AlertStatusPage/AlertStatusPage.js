@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -126,7 +126,7 @@ export default function AlertStatusPage({ navigation, route }) {
           style={{
             fontSize: 28,
             fontWeight: 'bold',
-            color: colors.StayAliveRed,
+            color: StayAliveColorsStayAliveRed,
             marginTop: 5,
           }}
         >
@@ -246,10 +246,10 @@ export default function AlertStatusPage({ navigation, route }) {
           marginBottom: 10,
           borderWidth: 3,
           borderRadius: 50,
-          borderColor: colors.StayAliveRed,
+          borderColor: StayAliveColorsStayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 10,
-          backgroundColor: colors.StayAliveRed,
+          backgroundColor: StayAliveColorsStayAliveRed,
           maxWidth: 500, // Ajoutez cette ligne pour définir une largeur maximale
           alignSelf: 'center', // Ajoutez cette ligne pour centrer le bouton horizontalement
         }}
@@ -273,7 +273,7 @@ export default function AlertStatusPage({ navigation, route }) {
           marginBottom: 40,
           borderWidth: 3,
           borderRadius: 50,
-          borderColor: colors.StayAliveRed,
+          borderColor: StayAliveColors.StayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 10,
           backgroundColor: 'white',
@@ -285,7 +285,7 @@ export default function AlertStatusPage({ navigation, route }) {
           style={{
             textAlign: 'center',
             fontSize: 18,
-            color: colors.StayAliveRed,
+            color: StayAliveColors.StayAliveRed,
             fontWeight: 'bold',
           }}
           testID="joinUs-button"

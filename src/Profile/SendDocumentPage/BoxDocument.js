@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { colors } from '../Style/StayAliveStyle'
-import { urlApi } from '../Utils/Api'
+import { StayAliveColors } from '../../Style/StayAliveStyle'
+import { urlApi } from '../../Utils/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Snackbar from 'react-native-snackbar'
 import RNFetchBlob from 'rn-fetch-blob'
 
 const imagePaths = {
-  documentID: require('../../assets/DocumentID.png'),
-  documentSauveteur: require('../../assets/DocumentSauveteur.png'),
+  documentID: require('../../../assets/DocumentID.png'),
+  documentSauveteur: require('../../../assets/DocumentSauveteur.png'),
 }
 
 export function BoxDocument(props) {
@@ -145,7 +145,7 @@ export function BoxDocument(props) {
                   <Text
                     style={{
                       fontSize: 16,
-                      color: colors.StayAliveRed,
+                      color: StayAliveColors.StayAliveRed,
                       fontWeight: 'bold',
                       marginRight: 5,
                     }}
@@ -187,9 +187,9 @@ export function BoxDocument(props) {
             borderWidth: 3,
             borderRadius: 50,
             marginRight: 10,
-            borderColor: colors.StayAliveRed,
+            borderColor: StayAliveColors.StayAliveRed,
             paddingHorizontal: 20,
-            backgroundColor: colors.StayAliveRed,
+            backgroundColor: StayAliveColors.StayAliveRed,
           }}
         >
           {loadingDelete ? (
@@ -219,9 +219,9 @@ export function BoxDocument(props) {
             marginTop: 14,
             borderWidth: 3,
             borderRadius: 50,
-            borderColor: colors.StayAliveRed,
+            borderColor: StayAliveColors.StayAliveRed,
             paddingHorizontal: 20,
-            backgroundColor: colors.StayAliveRed,
+            backgroundColor: StayAliveColors.StayAliveRed,
           }}
         >
           {loadingDownload ? (

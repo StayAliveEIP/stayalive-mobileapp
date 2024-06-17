@@ -9,11 +9,12 @@ import RescueHistoryPage from './Profile/RescueHistory/RescueHistoryPage'
 import AvailablePage from './AvailablePage/AvailablePage'
 import IntroductionPage from './IntroductionPage/IntroductionPage'
 import UnavailablePage from './UnavailablePage/UnavailablePage'
-import SendDocumentPage from './SendDocumentPage/SendDocumentPage'
+import SendDocumentPage from './Profile/SendDocumentPage/SendDocumentPage'
 import ForgotPasswordPage from './ForgotPasswordPage/ForgotPasswordPage'
 import Maps from './Maps/maps'
 import AlertStatusPage from './AlertStatusPage/AlertStatusPage'
-import SettingsPage from './SettingsPage/SettingsPage'
+import SettingsPage from './Profile/SettingsPage/SettingsPage'
+import ReportBugPage from './Profile/SettingsPage/ReportBugPage/ReportBugPage'
 import ChatEmergency from './ChatEmergency/ChatEmergency'
 import { UserProvider } from './Utils/UserContext'
 import notifee, { EventType } from '@notifee/react-native'
@@ -61,6 +62,7 @@ export default function App() {
           <Stack.Screen name="AlertStatusPage" component={AlertStatusPage} />
           <Stack.Screen name="AccountPage" component={AccountPage} />
           <Stack.Screen name="SettingsPage" component={SettingsPage} />
+          <Stack.Screen name="ReportBugPage" component={ReportBugPage} />
           <Stack.Screen
             name="RescueHistoryPage"
             component={RescueHistoryPage}

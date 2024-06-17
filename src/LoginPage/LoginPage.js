@@ -10,14 +10,14 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { FadeInView } from '../Animations/Animations'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
 import { urlApi } from '../Utils/Api'
 
 export default function LoginPage({ navigation }) {
-  const [email, onChangeEmail] = useState('')
-  const [password, onChangePassword] = useState('')
+  const [email, onChangeEmail] = useState('martin.leblancs@epitech.eu')
+  const [password, onChangePassword] = useState('martin1234')
 
   LoginPage.propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -47,7 +47,7 @@ export default function LoginPage({ navigation }) {
       })
       .catch((error) => {
         console.error('There was an issue with the fetch operation:', error)
-        Alert.alert('Error', 'We could not send your position', [
+        Alert.alert('Erreur', 'We could not send your position', [
           { text: 'OK' },
         ])
       })
@@ -75,7 +75,7 @@ export default function LoginPage({ navigation }) {
         if (response.ok) {
           return response.json()
         }
-        Alert.alert('Error', 'Mauvais identifiants ou mot de passe')
+        Alert.alert('Erreur', 'Mauvais identifiants ou mot de passe')
         return Promise.reject(new Error('Invalid credentials'))
       })
       .then(async (data) => {
@@ -94,7 +94,10 @@ export default function LoginPage({ navigation }) {
             'There has been an issue with the fetch operation:',
             error
           )
-          Alert.alert('Error', 'Nous ne parvenons pas à contacter nos serveurs')
+          Alert.alert(
+            'Erreur',
+            'Nous ne parvenons pas à contacter nos serveurs'
+          )
         }
       })
   }
@@ -127,7 +130,7 @@ export default function LoginPage({ navigation }) {
           }}
         >
           <LinearGradient
-            colors={[colors.StayAliveRed, colors.white]}
+            colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{ flex: 1 }}
@@ -145,7 +148,7 @@ export default function LoginPage({ navigation }) {
           }}
         >
           <LinearGradient
-            colors={[colors.StayAliveRed, colors.white]}
+            colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{ flex: 1 }}
@@ -198,14 +201,14 @@ export default function LoginPage({ navigation }) {
                 field={password}
                 onChangeField={onChangePassword}
                 label="Mot de passe"
-                secureTextEntry
+                secureTextEntry={true}
               />
               <TouchableOpacity onPress={onClickForgotPassword}>
                 <Text
                   style={{
                     fontWeight: 'bold',
                     marginTop: 5,
-                    color: colors.StayAliveRed,
+                    color: StayAliveColors.StayAliveRed,
                     textDecorationLine: 'underline',
                   }}
                 >
@@ -221,10 +224,10 @@ export default function LoginPage({ navigation }) {
                 marginBottom: 10,
                 borderWidth: 3,
                 borderRadius: 50,
-                borderColor: colors.StayAliveRed,
+                borderColor: StayAliveColors.StayAliveRed,
                 paddingHorizontal: 50,
                 paddingVertical: 10,
-                backgroundColor: colors.StayAliveRed,
+                backgroundColor: StayAliveColors.StayAliveRed,
               }}
             >
               <Text
@@ -247,7 +250,7 @@ export default function LoginPage({ navigation }) {
                 marginBottom: 30,
                 borderWidth: 3,
                 borderRadius: 50,
-                borderColor: colors.StayAliveRed,
+                borderColor: StayAliveColors.StayAliveRed,
                 paddingHorizontal: 50,
                 paddingVertical: 10,
                 backgroundColor: 'white',
@@ -257,7 +260,7 @@ export default function LoginPage({ navigation }) {
                 style={{
                   textAlign: 'center',
                   fontSize: 18,
-                  color: colors.StayAliveRed,
+                  color: StayAliveColors.StayAliveRed,
                   fontWeight: 'bold',
                 }}
                 testID="join-button"
@@ -281,7 +284,7 @@ export default function LoginPage({ navigation }) {
                 marginTop: 30,
                 borderWidth: 3,
                 borderRadius: 50,
-                borderColor: colors.StayAliveRed,
+                borderColor: StayAliveColors.StayAliveRed,
                 paddingHorizontal: 20,
                 paddingVertical: 10,
                 flexDirection: 'row',
@@ -302,7 +305,7 @@ export default function LoginPage({ navigation }) {
                 style={{
                   textAlign: 'center',
                   fontSize: 18,
-                  color: colors.StayAliveRed,
+                  color: StayAliveColors.StayAliveRed,
                   fontWeight: 'bold',
                 }}
                 testID="login-button-google"

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { colors } from '../../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 
@@ -31,7 +30,7 @@ export const CardRescue = ({ number, id, info, address, status }) => {
           <Icon
             name={expanded ? 'chevron-up' : 'chevron-down'}
             size={20}
-            color={colors.black}
+            color={StayAliveColors.black}
           />
         </View>
         <View style={styles.row}>
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: colors.StayAliveRed,
+    color: StayAliveColors.StayAliveRed,
     fontWeight: 'bold',
   },
   row: {
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontWeight: 'bold',
-    color: colors.black,
+    color: StayAliveColors.black,
   },
   id: {
     fontStyle: 'italic',
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   infos: {
-    color: colors.black,
+    color: StayAliveColors.black,
     maxWidth: 265,
   },
   separator: {

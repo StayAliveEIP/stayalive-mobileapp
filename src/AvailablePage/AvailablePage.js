@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, Alert } from 'react-native'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import { urlApi } from '../Utils/Api'
 import WebSocketService from '../WebSocketService' // Import de la classe WebSocketService
 
@@ -88,7 +88,7 @@ export default function AvailablePage({ navigation }) {
         style={{
           fontSize: 28,
           fontWeight: 'bold',
-          color: colors.StayAliveRed,
+          color: StayAliveColors.StayAliveRed,
           marginTop: 5,
         }}
         testID="status-text"
@@ -101,8 +101,6 @@ export default function AvailablePage({ navigation }) {
         source={require('../../assets/AvailableLogo.png')}
       />
 
-      {/* Suppression de l'appel à TextSlider, vous devriez le réintégrer si nécessaire */}
-
       <TouchableOpacity
         onPress={onClickButton}
         style={{
@@ -110,7 +108,7 @@ export default function AvailablePage({ navigation }) {
           bottom: 30,
           borderWidth: 4,
           borderRadius: 50,
-          borderColor: colors.StayAliveRed,
+          borderColor: StayAliveColors.StayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 15,
           backgroundColor: 'transparent',
@@ -121,7 +119,7 @@ export default function AvailablePage({ navigation }) {
           style={{
             textAlign: 'center',
             fontSize: 18,
-            color: colors.StayAliveRed,
+            color: StayAliveColors.StayAliveRed,
             fontWeight: 'bold',
           }}
         >

@@ -3,7 +3,7 @@ import { io } from 'socket.io-client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../src/Utils/Api'
 import notifee from '@notifee/react-native'
-import { colors } from '../src/Style/StayAliveStyle'
+import { StayAliveColors } from '../src/Style/StayAliveStyle'
 
 class WebSocketService {
   static socket // Déclarez socket comme une propriété statique de la classe
@@ -64,7 +64,7 @@ class WebSocketService {
       body: '<p><font color="#000000">' + info + '</font></p>',
       android: {
         smallIcon: 'ic_stayalive_logo',
-        color: colors.StayAliveRed,
+        color: StayAliveColorsStayAliveRed,
         channelId,
         pressAction: {
           id: 'default',

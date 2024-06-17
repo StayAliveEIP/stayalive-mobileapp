@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import * as PropTypes from 'prop-types'
 import DocumentPicker from 'react-native-document-picker'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../../Style/StayAliveStyle'
 import SendDocumentPage from './SendDocumentPage'
 
 const imagePaths = {
-  ID_CARD: require('../../assets/DocumentID.png'),
-  RESCUER_CERTIFICATE: require('../../assets/DocumentSauveteur.png'),
+  ID_CARD: require('../../../assets/DocumentID.png'),
+  RESCUER_CERTIFICATE: require('../../../assets/DocumentSauveteur.png'),
 }
 
 export function BoxUploadDocument(props) {
@@ -63,10 +63,10 @@ export function BoxUploadDocument(props) {
           marginBottom: 10,
           borderWidth: 3,
           borderRadius: 50,
-          borderColor: colors.StayAliveRed,
+          borderColor: StayAliveColors.StayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 1,
-          backgroundColor: colors.StayAliveRed,
+          backgroundColor: StayAliveColors.StayAliveRed,
         }}
       >
         <Text
