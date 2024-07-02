@@ -32,7 +32,7 @@ export function BoxUploadDocument(props) {
       style={{
         alignSelf: 'center',
         alignItems: 'center',
-        backgroundColor: '#e0e0e0',
+        backgroundColor: '#ededed',
         width: 350,
         height: 220,
         borderRadius: 20,
