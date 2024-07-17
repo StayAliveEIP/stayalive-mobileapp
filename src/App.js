@@ -14,6 +14,7 @@ import ForgotPasswordPage from './ForgotPasswordPage/ForgotPasswordPage'
 import Maps from './Maps/maps'
 import AlertStatusPage from './AlertStatusPage/AlertStatusPage'
 import SettingsPage from './SettingsPage/SettingsPage'
+import DefibrilatorPage from './DefibrilatorPage/DefibrilatorPage'
 import ChatEmergency from './ChatEmergency/ChatEmergency'
 import { UserProvider } from './Utils/UserContext'
 import notifee, { EventType } from '@notifee/react-native'
@@ -61,6 +62,7 @@ export default function App() {
           <Stack.Screen name="AlertStatusPage" component={AlertStatusPage} />
           <Stack.Screen name="AccountPage" component={AccountPage} />
           <Stack.Screen name="SettingsPage" component={SettingsPage} />
+          <Stack.Screen name="DefibrilatorPage" component={DefibrilatorPage} />
           <Stack.Screen
             name="RescueHistoryPage"
             component={RescueHistoryPage}

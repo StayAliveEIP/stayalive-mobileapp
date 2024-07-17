@@ -190,6 +190,12 @@ export default function ProfilePage({ navigation }) {
         />
         <Menu
           navigation={navigation}
+          name="Les Défibrilateurs"
+          icon="heart-outline"
+          goTo="DefibrilatorPage"
+        />
+        <Menu
+          navigation={navigation}
           name="Préférences"
           icon="settings-outline"
           goTo="SettingsPage"
