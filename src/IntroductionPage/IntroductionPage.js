@@ -63,14 +63,14 @@ export function IntroductionPage1({ navigation }) {
         <View style={styles.textContainer}>
           <Text style={styles.title}>Bienvenue sur StayAlive !</Text>
           <Text style={styles.description}>
-            Chaque <Text style={styles.redText}>'seconde'</Text> compte pour
+            Chaque <Text style={styles.redText}>seconde</Text> compte pour
             sauver une vie
           </Text>
           <Text style={styles.description}>
-            C'est la <Text style={styles.redText}>'mission'</Text> de StayAlive
+            C'est la <Text style={styles.redText}>mission</Text> de StayAlive
           </Text>
           <Text style={styles.description}>
-            StayAlive <Text style={styles.redText}>'révolutionne'</Text>{' '}
+            StayAlive <Text style={styles.redText}>révolutionne</Text>{' '}
             l'intervention d'urgence.
           </Text>
         </View>
@@ -107,7 +107,7 @@ export function IntroductionPage2({ navigation }) {
               source={require('../../assets/Introduction-logo1.png')}
             />
             <Text style={styles.description2}>
-              Accélération du <Text style={styles.redText}>'temps'</Text> de
+              Accélération du <Text style={styles.redText}>temps</Text> de
               prise en charge
             </Text>
           </View>
@@ -117,7 +117,7 @@ export function IntroductionPage2({ navigation }) {
               source={require('../../assets/Introduction-logo2.png')}
             />
             <Text style={styles.description2}>
-              Accroissement des <Text style={styles.redText}>'chances'</Text> de
+              Accroissement des <Text style={styles.redText}>chances</Text> de
               survie
             </Text>
           </View>
@@ -128,7 +128,7 @@ export function IntroductionPage2({ navigation }) {
             />
             <Text style={styles.description2}>
               <Text> Une communauté </Text>
-              <Text style={styles.redText}>'d'experts'</Text> dédiés et prêts à
+              <Text style={styles.redText}>d'experts</Text> dédiés et prêts à
               agir
             </Text>
           </View>
@@ -165,7 +165,7 @@ export function IntroductionPage3({ navigation }) {
           <Text style={styles.description3}>
             Dès qu'un centre d'appel d'urgence transfère l'alerte, notre système{' '}
             <Text style={styles.redText}>
-              'notifie les soignants qualifiés à proximité'
+              notifie les soignants qualifiés à proximité
             </Text>
             .{'\n\n'}
             Cela garantit une réponse rapide et augmente les chances de survie.
