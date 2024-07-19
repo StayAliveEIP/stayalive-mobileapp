@@ -86,7 +86,7 @@ export default function LoginPage({ navigation }) {
         const accountData = await getAccountInfos()
         await AsyncStorage.setItem('userId', accountData?._id)
         console.log('User ID saved:', accountData?._id)
-        navigation.navigate('UnavailablePage')
+        navigation.navigate('UnavailableAvailablePage')
       })
       .catch((error) => {
         if (error.message !== 'Invalid credentials') {
