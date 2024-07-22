@@ -33,7 +33,7 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
 
   const backgroundColor = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: ['white', colors.StayAliveRed],
+    outputRange: ['#F6F7EE', colors.StayAliveRed],
   });
 
   const textColor = animation.interpolate({
@@ -43,12 +43,12 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
 
   const sliderPosition = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [5, 125],
+    outputRange: [5, 175],
   });
 
   const textPosition = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [60, 20],
+    inputRange: [0, 2],
+    outputRange: [80, 20],
   });
 
   return (
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     borderColor: colors.StayAliveRed,
     borderWidth: 2,
     borderRadius: 50,
-    width: 180,
+    width: 230,
     height: 60,
     position: 'relative',
     overflow: 'hidden',
