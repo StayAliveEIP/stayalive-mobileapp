@@ -54,7 +54,14 @@ export function BoxUploadDocument(props) {
       >
         {props.title}
       </Text>
-      <Text style={{ fontSize: 16, maxWidth: 320, color: 'black', textAlign: 'center' }}>
+      <Text
+        style={{
+          fontSize: 16,
+          maxWidth: 320,
+          color: 'black',
+          textAlign: 'center',
+        }}
+      >
         {props.description}
       </Text>
       <TouchableOpacity

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, TextInput, TouchableOpacity } from 'react-native';
-import PropTypes from 'prop-types';
-import { colors } from '../../Style/StayAliveStyle';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, { useState, useEffect } from 'react'
+import { Text, View, TextInput, TouchableOpacity } from 'react-native'
+import PropTypes from 'prop-types'
+import { colors } from '../../Style/StayAliveStyle'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 export function EditInfosMenu(props) {
   EditInfosMenu.propTypes = {
@@ -10,30 +10,37 @@ export function EditInfosMenu(props) {
     indexVariable: PropTypes.string.isRequired,
     variable: PropTypes.object.isRequired,
     setVariable: PropTypes.func.isRequired,
-  };
-  console.log(props.variable);
+    marginLeft: PropTypes.number.isRequired
+  }
+  console.log(props.variable)
 
-  const [editable, setEditable] = useState(false);
-  const [textValue, setTextValue] = useState('');
+  const [editable, setEditable] = useState(false)
+  const [textValue, setTextValue] = useState('')
 
   useEffect(() => {
     if (props.variable && props.variable[props.indexVariable] !== undefined) {
-      setTextValue(props.indexVariable === 'phone' || props.indexVariable === 'email'
-        ? props.variable[props.indexVariable].phone ?? props.variable[props.indexVariable].email
-        : props.variable[props.indexVariable] ?? '');
+      setTextValue(
+        props.indexVariable === 'phone' || props.indexVariable === 'email'
+          ? props.variable[props.indexVariable].phone ??
+              props.variable[props.indexVariable].email
+          : props.variable[props.indexVariable] ?? ''
+      )
     }
-  }, [props.variable, props.indexVariable]);
+  }, [props.variable, props.indexVariable])
 
   const handleEditClick = () => {
     if (props.indexVariable === 'phone' || props.indexVariable === 'email') {
-      setEditable(true);
-      setTextValue(props.variable[props.indexVariable]?.phone ?? props.variable[props.indexVariable]?.email);
+      setEditable(true)
+      setTextValue(
+        props.variable[props.indexVariable]?.phone ??
+          props.variable[props.indexVariable]?.email
+      )
     }
-  };
+  }
 
   const handleSaveClick = () => {
-    setEditable(false);
-    console.log(textValue);
+    setEditable(false)
+    console.log(textValue)
 
     const updatedProfileData = {
       ...props.variable,
@@ -42,10 +49,10 @@ export function EditInfosMenu(props) {
         email: textValue,
         phone: textValue,
       },
-    };
+    }
 
-    props.setVariable(updatedProfileData);
-  };
+    props.setVariable(updatedProfileData)
+  }
 
   return (
     <View
@@ -84,7 +91,10 @@ export function EditInfosMenu(props) {
             value={textValue}
             onChangeText={(newText) => setTextValue(newText)}
           />
-          <TouchableOpacity onPress={handleSaveClick} style={{ marginLeft: 10 }}>
+          <TouchableOpacity
+            onPress={handleSaveClick}
+            style={{ marginLeft: 10 }}
+          >
             <Icon name="save" size={20} color={colors.StayAliveRed} />
           </TouchableOpacity>
         </View>
@@ -101,16 +111,21 @@ export function EditInfosMenu(props) {
             }}
           >
             {props.indexVariable === 'phone' || props.indexVariable === 'email'
-              ? props.variable[props.indexVariable]?.email ?? props.variable[props.indexVariable]?.phone
+              ? props.variable[props.indexVariable]?.email ??
+                props.variable[props.indexVariable]?.phone
               : props.variable[props.indexVariable] ?? ''}
           </Text>
-          {(props.indexVariable === 'phone' || props.indexVariable === 'email') && (
-            <TouchableOpacity onPress={handleEditClick} style={{ marginLeft: 10 }}>
+          {(props.indexVariable === 'phone' ||
+            props.indexVariable === 'email') && (
+            <TouchableOpacity
+              onPress={handleEditClick}
+              style={{ marginLeft: 10 }}
+            >
               <Icon name="pencil" size={20} color={colors.StayAliveRed} />
             </TouchableOpacity>
           )}
         </View>
       )}
     </View>
-  );
+  )
 }
