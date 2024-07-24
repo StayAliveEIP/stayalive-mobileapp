@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import * as PropTypes from 'prop-types'
 import DocumentPicker from 'react-native-document-picker'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../../Style/StayAliveStyle'
 import SendDocumentPage from './SendDocumentPage'
 
 const imagePaths = {
-  ID_CARD: require('../../assets/DocumentID.png'),
-  RESCUER_CERTIFICATE: require('../../assets/DocumentSauveteur.png'),
+  ID_CARD: require('../../../assets/DocumentID.png'),
+  RESCUER_CERTIFICATE: require('../../../assets/DocumentSauveteur.png'),
 }
 
 export function BoxUploadDocument(props) {
@@ -32,11 +32,12 @@ export function BoxUploadDocument(props) {
       style={{
         alignSelf: 'center',
         alignItems: 'center',
-        backgroundColor: 'lightgray',
+        backgroundColor: '#e0e0e0',
         width: 350,
-        height: 200,
+        height: 220,
         borderRadius: 20,
         marginBottom: 30,
+        elevation: 7,
       }}
     >
       <Image
@@ -53,7 +54,14 @@ export function BoxUploadDocument(props) {
       >
         {props.title}
       </Text>
-      <Text style={{ fontSize: 16, color: 'black', textAlign: 'center' }}>
+      <Text
+        style={{
+          fontSize: 16,
+          maxWidth: 320,
+          color: 'black',
+          textAlign: 'center',
+        }}
+      >
         {props.description}
       </Text>
       <TouchableOpacity
@@ -63,10 +71,10 @@ export function BoxUploadDocument(props) {
           marginBottom: 10,
           borderWidth: 3,
           borderRadius: 50,
-          borderColor: colors.StayAliveRed,
+          borderColor: StayAliveColors.StayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 1,
-          backgroundColor: colors.StayAliveRed,
+          backgroundColor: StayAliveColors.StayAliveRed,
         }}
       >
         <Text
