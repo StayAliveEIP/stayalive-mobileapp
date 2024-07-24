@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
 import { FadeInView } from '../Animations/Animations'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import Snackbar from 'react-native-snackbar'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -187,10 +187,10 @@ export default function ForgotPasswordPage({ navigation }) {
                   marginBottom: 10,
                   borderWidth: 3,
                   borderRadius: 50,
-                  borderColor: colors.StayAliveRed,
+                  borderColor: StayAliveColors.StayAliveRed,
                   paddingHorizontal: 50,
                   paddingVertical: 10,
-                  backgroundColor: colors.StayAliveRed,
+                  backgroundColor: StayAliveColors.StayAliveRed,
                 }}
               >
                 <Text
@@ -242,10 +242,10 @@ export default function ForgotPasswordPage({ navigation }) {
                   marginBottom: 10,
                   borderWidth: 3,
                   borderRadius: 50,
-                  borderColor: colors.StayAliveRed,
+                  borderColor: StayAliveColors.StayAliveRed,
                   paddingHorizontal: 50,
                   paddingVertical: 10,
-                  backgroundColor: colors.StayAliveRed,
+                  backgroundColor: StayAliveColors.StayAliveRed,
                 }}
               >
                 <Text

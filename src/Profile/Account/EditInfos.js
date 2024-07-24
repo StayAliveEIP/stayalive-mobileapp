@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import { Text, View, TextInput, ActivityIndicator } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Text, View, TextInput, TouchableOpacity } from 'react-native'
 import PropTypes from 'prop-types'
-import { colors } from '../../Style/StayAliveStyle'
+import { StayAliveColors } from '../../Style/StayAliveStyle'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 export function EditInfosMenu(props) {
   EditInfosMenu.propTypes = {
@@ -9,36 +10,48 @@ export function EditInfosMenu(props) {
     indexVariable: PropTypes.string.isRequired,
     variable: PropTypes.object.isRequired,
     setVariable: PropTypes.func.isRequired,
-    edit: PropTypes.bool.isRequired,
+    marginLeft: PropTypes.number.isRequired,
+  }
+  console.log(props.variable)
+
+  const [editable, setEditable] = useState(false)
+  const [textValue, setTextValue] = useState('')
+
+  useEffect(() => {
+    if (props.variable && props.variable[props.indexVariable] !== undefined) {
+      setTextValue(
+        props.indexVariable === 'phone' || props.indexVariable === 'email'
+          ? props.variable[props.indexVariable].phone ??
+              props.variable[props.indexVariable].email
+          : props.variable[props.indexVariable] ?? ''
+      )
+    }
+  }, [props.variable, props.indexVariable])
+
+  const handleEditClick = () => {
+    if (props.indexVariable === 'phone' || props.indexVariable === 'email') {
+      setEditable(true)
+      setTextValue(
+        props.variable[props.indexVariable]?.phone ??
+          props.variable[props.indexVariable]?.email
+      )
+    }
   }
 
-  const [loaded, setLoaded] = useState(false)
+  const handleSaveClick = () => {
+    setEditable(false)
+    console.log(textValue)
 
-  if (!props.variable && loaded === false) {
-    setLoaded(true)
-    return (
-      <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <ActivityIndicator size="small" color={colors.StayAliveRed} />
-      </View>
-    )
-  }
-  const textValue =
-    props.variable && props.variable[props.indexVariable] !== null
-      ? props.indexVariable === 'phone' || props.indexVariable === 'email'
-        ? props.variable[props.indexVariable]?.[props.indexVariable] ?? ''
-        : props.variable[props.indexVariable] ?? ''
-      : ''
+    const updatedProfileData = {
+      ...props.variable,
+      [props.indexVariable]: {
+        ...props.variable[props.indexVariable],
+        email: textValue,
+        phone: textValue,
+      },
+    }
 
-  const calculateFontSize = () => {
-    const baseFontSize = 20
-    const minFontSize = 12
-
-    const lengthFactor = textValue.length / 7
-    const calculatedSize = baseFontSize - Math.floor(lengthFactor)
-
-    return isNaN(calculatedSize)
-      ? baseFontSize
-      : Math.max(minFontSize, calculatedSize)
+    props.setVariable(updatedProfileData)
   }
 
   return (
@@ -49,7 +62,6 @@ export function EditInfosMenu(props) {
         alignItems: 'center',
         top: -160,
         borderWidth: 2,
-        width: '100%',
         height: 60,
         borderColor: 'lightgray',
       }}
@@ -57,7 +69,7 @@ export function EditInfosMenu(props) {
       <Text
         testID="text-menu"
         style={{
-          color: colors.StayAliveRed,
+          color: StayAliveColors.StayAliveRed,
           fontWeight: 'bold',
           fontSize: 20,
           marginLeft: 40,
@@ -65,54 +77,58 @@ export function EditInfosMenu(props) {
       >
         {props.name} :
       </Text>
-      {props.edit === true ? (
-        <TextInput
-          testID="text-input" // Ajout du testID pour le TextInput
-          style={{
-            marginLeft: 30,
-            textAlign: 'left',
-            color: 'blue',
-            fontWeight: 'bold',
-            fontSize: calculateFontSize(),
-          }}
-          value={textValue}
-          onChangeText={(newText) => {
-            let updatedProfileData
-
-            if (
-              props.indexVariable === 'phone' ||
-              props.indexVariable === 'email'
-            ) {
-              updatedProfileData = {
-                ...props.variable,
-                [props.indexVariable]: {
-                  ...props.variable[props.indexVariable],
-                  [props.indexVariable]: newText,
-                },
-              }
-            } else {
-              updatedProfileData = {
-                ...props.variable,
-                [props.indexVariable]: newText,
-              }
-            }
-
-            props.setVariable(updatedProfileData)
-          }}
-        />
+      {editable ? (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TextInput
+            testID="text-input"
+            style={{
+              marginLeft: props.marginLeft,
+              textAlign: 'left',
+              color: 'blue',
+              fontWeight: 'bold',
+              fontSize: 15,
+            }}
+            value={textValue}
+            onChangeText={(newText) => setTextValue(newText)}
+          />
+          <TouchableOpacity
+            onPress={handleSaveClick}
+            style={{ marginLeft: 10 }}
+          >
+            <Icon name="save" size={20} color={StayAliveColors.StayAliveRed} />
+          </TouchableOpacity>
+        </View>
       ) : (
-        <Text
-          testID="text-element" // Ajout du testID pour le Text
-          style={{
-            marginLeft: 30,
-            textAlign: 'left',
-            color: colors.black,
-            fontWeight: 'bold',
-            fontSize: calculateFontSize(),
-          }}
-        >
-          {textValue}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text
+            testID="text-element"
+            style={{
+              marginLeft: props.marginLeft,
+              textAlign: 'left',
+              color: StayAliveColors.black,
+              fontWeight: 'bold',
+              fontSize: 15,
+            }}
+          >
+            {props.indexVariable === 'phone' || props.indexVariable === 'email'
+              ? props.variable[props.indexVariable]?.email ??
+                props.variable[props.indexVariable]?.phone
+              : props.variable[props.indexVariable] ?? ''}
+          </Text>
+          {(props.indexVariable === 'phone' ||
+            props.indexVariable === 'email') && (
+            <TouchableOpacity
+              onPress={handleEditClick}
+              style={{ marginLeft: 10 }}
+            >
+              <Icon
+                name="pencil"
+                size={20}
+                color={StayAliveColors.StayAliveRed}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
       )}
     </View>
   )

@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import PropTypes from 'prop-types'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import { urlApi } from '../Utils/Api'
 import Geolocation from '@react-native-community/geolocation'
 
@@ -187,7 +187,7 @@ export default function UnavailablePage({ navigation }) {
         style={{
           fontSize: 28,
           fontWeight: 'bold',
-          color: colors.StayAliveRed,
+          color: StayAliveColors.StayAliveRed,
           marginTop: 5,
         }}
         testID="status-indisponible"
@@ -228,21 +228,24 @@ export default function UnavailablePage({ navigation }) {
           style={{
             fontSize: 18,
             fontWeight: 'bold',
-            color: colors.StayAliveRed,
+            color: StayAliveColors.StayAliveRed,
             marginBottom: 10,
           }}
           testID="warning-title"
         >
           Avant de se rendre disponible:
         </Text>
-        <Text
-          style={{ fontSize: 16, textAlign: 'center', maxWidth: '80%' }}
-          testID="warning-text"
-        >
-          Lorem ipsum dolor sit amet consectetur molestiae quas vel sint commodi
-          repudiandae consequuntur voluptatum fugiat iusto fuga
-          praesentiumoptio, eaque rerum!
-        </Text>
+        <View testID="warning-text" style={{ maxWidth: '80%' }}>
+          <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
+            • Assurez-vous d'être prêt à intervenir.
+          </Text>
+          <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
+            • Ayez votre matériel médical à portée de main.
+          </Text>
+          <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
+            • Vérifiez que votre téléphone est chargé et connecté.
+          </Text>
+        </View>
       </View>
 
       <TouchableOpacity
@@ -253,21 +256,21 @@ export default function UnavailablePage({ navigation }) {
           bottom: 30,
           borderWidth: 4,
           borderRadius: 50,
-          borderColor: colors.StayAliveRed,
+          borderColor: StayAliveColors.StayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 15,
-          backgroundColor: loading ? colors.LightGray : 'transparent',
+          backgroundColor: loading ? StayAliveColors.LightGray : 'transparent',
         }}
         testID="available-button"
       >
         {loading ? (
-          <ActivityIndicator color={colors.StayAliveRed} />
+          <ActivityIndicator color={StayAliveColors.StayAliveRed} />
         ) : (
           <Text
             style={{
               textAlign: 'center',
               fontSize: 18,
-              color: colors.StayAliveRed,
+              color: StayAliveColors.StayAliveRed,
               fontWeight: 'bold',
             }}
             testID="available-button-text"

@@ -11,7 +11,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { launchImageLibrary } from 'react-native-image-picker'
 import { EditInfosMenu } from './EditInfos'
-import { colors } from '../../Style/StayAliveStyle'
+import { StayAliveColors } from '../../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Snackbar from 'react-native-snackbar'
@@ -132,7 +132,7 @@ export default function AccountPage({ navigation }) {
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -152,7 +152,10 @@ export default function AccountPage({ navigation }) {
             alignItems: 'center',
           }}
         >
-          <ActivityIndicator size="large" color={colors.StayAliveRed} />
+          <ActivityIndicator
+            size="large"
+            color={StayAliveColors.StayAliveRed}
+          />
         </View>
       )}
 
@@ -212,6 +215,7 @@ export default function AccountPage({ navigation }) {
           <Icon name="arrow-left" size={30} onPress={goBack} />
         </TouchableOpacity>
         <EditInfosMenu
+          marginLeft={34}
           name="Prénom"
           indexVariable="firstname"
           variable={profileData}
@@ -219,6 +223,7 @@ export default function AccountPage({ navigation }) {
           edit={false}
         />
         <EditInfosMenu
+          marginLeft={64}
           name="Nom"
           indexVariable="lastname"
           variable={profileData}
@@ -226,6 +231,7 @@ export default function AccountPage({ navigation }) {
           edit={false}
         />
         <EditInfosMenu
+          marginLeft={46}
           name="E-mail"
           indexVariable="email"
           variable={profileData}
@@ -233,6 +239,7 @@ export default function AccountPage({ navigation }) {
           edit={true}
         />
         <EditInfosMenu
+          marginLeft={10}
           name="Téléphone"
           indexVariable="phone"
           variable={profileData}
@@ -251,7 +258,7 @@ export default function AccountPage({ navigation }) {
             <Text
               testID="text-menu"
               style={{
-                color: colors.StayAliveRed,
+                color: StayAliveColors.StayAliveRed,
                 fontWeight: 'bold',
                 fontSize: 20,
               }}
@@ -264,8 +271,8 @@ export default function AccountPage({ navigation }) {
                 style={{
                   color:
                     profileData.email?.verified !== false
-                      ? colors.green
-                      : colors.StayAliveRed,
+                      ? StayAliveColors.green
+                      : StayAliveColors.StayAliveRed,
                   fontWeight: 'bold',
                   fontSize: 18,
                   marginLeft: 10,
@@ -289,7 +296,7 @@ export default function AccountPage({ navigation }) {
             <Text
               testID="text-menu"
               style={{
-                color: colors.StayAliveRed,
+                color: StayAliveColors.StayAliveRed,
                 fontWeight: 'bold',
                 fontSize: 20,
                 marginLeft: 0,
@@ -304,8 +311,8 @@ export default function AccountPage({ navigation }) {
                 style={{
                   color:
                     profileData.phone?.verified !== false
-                      ? colors.green
-                      : colors.StayAliveRed,
+                      ? StayAliveColors.green
+                      : StayAliveColors.StayAliveRed,
                   fontWeight: 'bold',
                   fontSize: 18,
                   marginLeft: 10,
@@ -329,10 +336,10 @@ export default function AccountPage({ navigation }) {
             marginBottom: 10,
             borderWidth: 3,
             borderRadius: 50,
-            borderColor: colors.StayAliveRed,
+            borderColor: StayAliveColors.StayAliveRed,
             paddingHorizontal: 50,
             paddingVertical: 10,
-            backgroundColor: colors.StayAliveRed,
+            backgroundColor: StayAliveColors.StayAliveRed,
             width: '60%',
           }}
         >
