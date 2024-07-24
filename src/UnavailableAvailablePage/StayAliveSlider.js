@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity, Animated, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PropTypes from 'prop-types'; // Import de PropTypes
-import { colors } from '../Style/StayAliveStyle';
+import { StayAliveColors } from '../Style/StayAliveStyle';
 
 const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
   const [isAvailable, setIsAvailable] = useState(defaultValue);
@@ -33,12 +33,12 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
 
   const backgroundColor = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#F6F7EE', colors.StayAliveRed],
+    outputRange: ['#F6F7EE', StayAliveColors.StayAliveRed],
   });
 
   const textColor = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [colors.StayAliveRed, 'white'],
+    outputRange: [StayAliveColors.StayAliveRed, 'white'],
   });
 
   const sliderPosition = animation.interpolate({
@@ -67,15 +67,15 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
             styles.iconContainer,
             {
               transform: [{ translateX: sliderPosition }],
-              borderColor: isAvailable ? 'white' : colors.StayAliveRed,
-              backgroundColor: isAvailable ? 'white' : colors.StayAliveRed,
+              borderColor: isAvailable ? 'white' : StayAliveColors.StayAliveRed,
+              backgroundColor: isAvailable ? 'white' : StayAliveColors.StayAliveRed,
             },
           ]}
         >
           <Icon
             name={isAvailable ? 'check' : 'times'}
             size={24}
-            color={isAvailable ? colors.StayAliveRed : 'white'}
+            color={isAvailable ? StayAliveColors.StayAliveRed : 'white'}
           />
         </Animated.View>
       </Animated.View>
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: colors.StayAliveRed,
+    borderColor: StayAliveColors.StayAliveRed,
     borderWidth: 2,
     borderRadius: 50,
     width: 230,

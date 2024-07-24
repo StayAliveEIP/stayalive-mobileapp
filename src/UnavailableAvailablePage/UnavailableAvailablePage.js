@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import PropTypes from 'prop-types'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import { urlApi } from '../Utils/Api'
 import Geolocation from '@react-native-community/geolocation'
 import StayAliveSlider from './StayAliveSlider'
@@ -198,7 +198,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
         <ActivityIndicator
           style={{ position: 'absolute', zIndex: 999 }}
           size="large"
-          color={colors.StayAliveRed}
+          color={StayAliveColors.StayAliveRed}
         />
       )}
       <View
@@ -213,7 +213,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -231,7 +231,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -271,7 +271,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
         style={{
           fontSize: 28,
           fontWeight: 'bold',
-          color: colors.StayAliveRed,
+          color: StayAliveColors.StayAliveRed,
           marginTop: 5,
         }}
         testID="status-indisponible"
@@ -319,7 +319,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
             style={{
               fontSize: 18,
               fontWeight: 'bold',
-              color: colors.StayAliveRed,
+              color: StayAliveColors.StayAliveRed,
               marginBottom: 10,
             }}
             testID="warning-title"
@@ -366,7 +366,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
             style={{
               fontSize: 18,
               fontWeight: 'bold',
-              color: colors.StayAliveRed,
+              color: StayAliveColors.StayAliveRed,
               marginBottom: 10,
             }}
             testID="warning-title"
