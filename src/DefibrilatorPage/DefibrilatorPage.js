@@ -10,7 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import MapView, { Marker } from 'react-native-maps';
 import { TextInputStayAlive } from '../Utils/textInputStayAlive';
-import { colors } from '../Style/StayAliveStyle';
+import { StayAliveColors } from '../Style/StayAliveStyle';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { launchImageLibrary } from 'react-native-image-picker'; // Import here
@@ -178,7 +178,7 @@ export default function DefibrillatorPage({ navigation }) {
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -290,18 +290,18 @@ const styles = StyleSheet.create({
   photoName: {
     fontSize: 16,
     marginBottom: 20,
-    color: colors.StayAliveRed,
+    color: StayAliveColors.StayAliveRed,
   },
   button: {
     marginTop: 20,
     marginBottom: 10,
     borderWidth: 3,
     borderRadius: 50,
-    borderColor: colors.StayAliveRed,
+    borderColor: StayAliveColors.StayAliveRed,
     paddingHorizontal: 50,
     paddingVertical: 10,
     maxWidth: 290,
-    backgroundColor: colors.StayAliveRed,
+    backgroundColor: StayAliveColors.StayAliveRed,
   },
   buttonText: {
     textAlign: 'center',
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     borderWidth: 3,
     borderRadius: 50,
-    borderColor: colors.StayAliveRed,
+    borderColor: StayAliveColors.StayAliveRed,
     paddingHorizontal: 40,
     paddingVertical: 5,
     maxWidth: 290,
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
   submitButtonText: {
     textAlign: 'center',
     fontSize: 18,
-    color: colors.StayAliveRed,
+    color: StayAliveColors.StayAliveRed,
     fontWeight: 'bold',
   },
   predictionsList: {
