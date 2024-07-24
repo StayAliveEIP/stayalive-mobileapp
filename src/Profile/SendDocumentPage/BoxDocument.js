@@ -1,110 +1,30 @@
 import React, { useState } from 'react'
 import * as PropTypes from 'prop-types'
-import {
-  ActivityIndicator,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import DocumentPicker from 'react-native-document-picker'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { StayAliveColors } from '../../Style/StayAliveStyle'
-import { urlApi } from '../../Utils/Api'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import Snackbar from 'react-native-snackbar'
-import RNFetchBlob from 'rn-fetch-blob'
+import SendDocumentPage from './SendDocumentPage'
 
 const imagePaths = {
-  documentID: require('../../../assets/DocumentID.png'),
-  documentSauveteur: require('../../../assets/DocumentSauveteur.png'),
+  ID_CARD: require('../../../assets/DocumentID.png'),
+  RESCUER_CERTIFICATE: require('../../../assets/DocumentSauveteur.png'),
 }
 
-export function BoxDocument(props) {
-  const { id, setData, type } = props
-  const [loadingDownload, setLoadingDownload] = useState(false)
-  const [loadingDelete, setLoadingDelete] = useState(false)
+export function BoxUploadDocument(props) {
+  const { id, onFileSelect } = props
+  const [filename, setFilename] = useState(null)
 
-  const handleDeleteDocument = async () => {
-    setLoadingDelete(true)
-    try {
-      const apiUrl = `${urlApi}/rescuer/document?type=${type}`
-      const token = await AsyncStorage.getItem('userToken')
-      const response = await fetch(apiUrl, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-
-      if (response.status === 200) {
-        Snackbar.show({
-          text: 'Les documents ont été supprimés avec succès',
-          duration: Snackbar.LENGTH_LONG,
-          backgroundColor: 'white',
-          textColor: 'green',
-        })
-        setData(null)
-      }
-    } catch (error) {
-      Snackbar.show({
-        text: 'Une erreur est survenue lors de la suppression des documents',
-        duration: Snackbar.LENGTH_LONG,
-        backgroundColor: 'white',
-        textColor: 'red',
-      })
-      setData(null)
-      console.error(
-        "Erreur lors de la tentative de suppression d'un document : ",
-        error
-      )
-    } finally {
-      setLoadingDelete(false)
-    }
+  SendDocumentPage.propTypes = {
+    navigation: PropTypes.object.isRequired,
   }
+  const handleDocumentPick = async () => {
+    const result = await DocumentPicker.pick({
+      type: [DocumentPicker.types.allFiles],
+    })
 
-  const handleDownloadDocument = async () => {
-    setLoadingDownload(true)
-
-    try {
-      const apiUrl = `${urlApi}/rescuer/document/download?type=${type}`
-      const token = await AsyncStorage.getItem('userToken')
-
-      RNFetchBlob.config({
-        fileCache: true,
-        addAndroidDownloads: {
-          useDownloadManager: true,
-          notification: true,
-          mediaScannable: true,
-          title: type,
-          path: `${RNFetchBlob.fs.dirs.DownloadDir}/${type}`,
-        },
-      })
-        .fetch('GET', apiUrl, {
-          Authorization: `Bearer ${token}`,
-        })
-        .then(() => {
-          setLoadingDownload(false)
-        })
-        .catch((error) => {
-          setLoadingDownload(false)
-          console.error('Erreur lors du téléchargement du document : ', error)
-          Snackbar.show({
-            text: 'Une erreur est survenue lors du téléchargement du document',
-            duration: Snackbar.LENGTH_LONG,
-            backgroundColor: 'white',
-            textColor: 'red',
-          })
-        })
-    } catch (error) {
-      setLoadingDownload(false)
-      console.error('Erreur lors du téléchargement du document : ', error)
-      Snackbar.show({
-        text: 'Une erreur est survenue lors du téléchargement du document',
-        duration: Snackbar.LENGTH_LONG,
-        backgroundColor: 'white',
-        textColor: 'red',
-      })
-    }
+    const selectedFilename = result[0].name
+    setFilename(selectedFilename)
+    onFileSelect(id, result[0])
   }
 
   return (
@@ -112,14 +32,18 @@ export function BoxDocument(props) {
       style={{
         alignSelf: 'center',
         alignItems: 'center',
-        backgroundColor: 'lightgray',
+        backgroundColor: '#e0e0e0',
         width: 350,
+        height: 220,
         borderRadius: 20,
         marginBottom: 30,
-        padding: 10,
+        elevation: 7,
       }}
     >
-      <Image style={{ width: 50, height: 50 }} source={imagePaths[id]} />
+      <Image
+        style={{ marginTop: 10, width: 50, height: 50 }}
+        source={imagePaths[id]}
+      />
       <Text
         style={{
           fontSize: 18,
@@ -130,133 +54,52 @@ export function BoxDocument(props) {
       >
         {props.title}
       </Text>
-      <View
+      <Text
         style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
+          fontSize: 16,
+          maxWidth: 320,
+          color: 'black',
+          textAlign: 'center',
         }}
       >
-        {Object.entries(props.data).map(
-          ([key, value]) =>
-            key !== 'uri' && (
-              <View key={key} style={{ flexDirection: 'column' }}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: StayAliveColors.StayAliveRed,
-                      fontWeight: 'bold',
-                      marginRight: 5,
-                    }}
-                  >
-                    {key}:
-                  </Text>
-                  {key === 'size' ? (
-                    <Text
-                      style={{ fontSize: 16, color: 'black', marginRight: 5 }}
-                    >
-                      {value === null
-                        ? 'Aucune information'
-                        : `${(value / 1024).toFixed(2)} Ko`}
-                    </Text>
-                  ) : (
-                    <Text
-                      style={{ fontSize: 16, color: 'black', marginRight: 5 }}
-                    >
-                      {value === null ? 'Aucune information' : value}
-                    </Text>
-                  )}
-                </View>
-              </View>
-            )
-        )}
-      </View>
-      <View
+        {props.description}
+      </Text>
+      <TouchableOpacity
+        onPress={handleDocumentPick}
         style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'flex-end',
-          maxWidth: '40%',
+          marginTop: 14,
+          marginBottom: 10,
+          borderWidth: 3,
+          borderRadius: 50,
+          borderColor: StayAliveColors.StayAliveRed,
+          paddingHorizontal: 50,
+          paddingVertical: 1,
+          backgroundColor: StayAliveColors.StayAliveRed,
         }}
       >
-        <TouchableOpacity
-          onPress={handleDeleteDocument}
-          testID={'delete-document-button'}
+        <Text
           style={{
-            borderWidth: 3,
-            borderRadius: 50,
-            marginRight: 10,
-            borderColor: StayAliveColors.StayAliveRed,
-            paddingHorizontal: 20,
-            backgroundColor: StayAliveColors.StayAliveRed,
+            textAlign: 'center',
+            fontSize: 16,
+            color: 'white',
+            fontWeight: 'bold',
           }}
+          testID={`selectDocument-button-${id}`}
         >
-          {loadingDelete ? (
-            <ActivityIndicator
-              testID={'delete-document-loading-indicator'}
-              size="small"
-              color="white"
-            />
-          ) : (
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 12,
-                color: 'white',
-                fontWeight: 'bold',
-              }}
-              testID={`selectDocument-button-${id}`}
-            >
-              {'Supprimer ce document'}
-            </Text>
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          testID={'download-document-button'}
-          onPress={handleDownloadDocument}
-          style={{
-            marginTop: 14,
-            borderWidth: 3,
-            borderRadius: 50,
-            borderColor: StayAliveColors.StayAliveRed,
-            paddingHorizontal: 20,
-            backgroundColor: StayAliveColors.StayAliveRed,
-          }}
-        >
-          {loadingDownload ? (
-            <ActivityIndicator
-              testID={'download-document-loading-indicator'}
-              size="small"
-              color="white"
-            />
-          ) : (
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 12,
-                color: 'white',
-                fontWeight: 'bold',
-              }}
-              testID={`selectDocument-button-${id}`}
-            >
-              {'Télécharger ce document'}
-            </Text>
-          )}
-        </TouchableOpacity>
-      </View>
+          {filename
+            ? filename.length > 20
+              ? `${filename.slice(0, 20)}...`
+              : filename
+            : 'Charger mon document'}
+        </Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
-BoxDocument.propTypes = {
+BoxUploadDocument.propTypes = {
   id: PropTypes.oneOf(Object.keys(imagePaths)),
   description: PropTypes.string,
   title: PropTypes.string,
   onFileSelect: PropTypes.func,
-  setData: PropTypes.func,
-  type: PropTypes.string,
-  data: PropTypes.object,
 }
-
-export default BoxDocument
