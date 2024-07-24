@@ -215,6 +215,7 @@ export default function AccountPage({ navigation }) {
           <Icon name="arrow-left" size={30} onPress={goBack} />
         </TouchableOpacity>
         <EditInfosMenu
+          marginLeft={34}
           name="Prénom"
           indexVariable="firstname"
           variable={profileData}
@@ -222,6 +223,7 @@ export default function AccountPage({ navigation }) {
           edit={false}
         />
         <EditInfosMenu
+          marginLeft={64}
           name="Nom"
           indexVariable="lastname"
           variable={profileData}
@@ -229,6 +231,7 @@ export default function AccountPage({ navigation }) {
           edit={false}
         />
         <EditInfosMenu
+          marginLeft={46}
           name="E-mail"
           indexVariable="email"
           variable={profileData}
@@ -236,6 +239,7 @@ export default function AccountPage({ navigation }) {
           edit={true}
         />
         <EditInfosMenu
+          marginLeft={10}
           name="Téléphone"
           indexVariable="phone"
           variable={profileData}

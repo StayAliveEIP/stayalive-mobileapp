@@ -282,7 +282,7 @@ export default function RescueHistoryPage({ navigation }) {
               maxWidth: 200,
             }}
           >
-            Oupss, vous n'avez pas encore de sauvetages...
+            Vous n'avez pas encore de sauvetages...
           </Text>
         ) : (
           <FlatList
