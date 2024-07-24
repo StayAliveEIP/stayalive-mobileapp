@@ -10,7 +10,7 @@ export function EditInfosMenu(props) {
     indexVariable: PropTypes.string.isRequired,
     variable: PropTypes.object.isRequired,
     setVariable: PropTypes.func.isRequired,
-    marginLeft: PropTypes.number.isRequired
+    marginLeft: PropTypes.number.isRequired,
   }
   console.log(props.variable)
 
