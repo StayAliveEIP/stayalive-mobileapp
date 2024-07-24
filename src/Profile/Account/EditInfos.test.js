@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, waitFor } from '@testing-library/react-native'
+import { render } from '@testing-library/react-native'
 import { EditInfosMenu } from './EditInfos'
 
 describe('EditInfosMenu Component', () => {
@@ -30,7 +30,6 @@ describe('EditInfosMenu Component', () => {
     expect(boxMenu).toBeTruthy()
     expect(textMenu).toBeTruthy()
   })
-
 
   it('renders Text when not in edit mode', () => {
     const { getByTestId } = render(
