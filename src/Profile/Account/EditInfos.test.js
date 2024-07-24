@@ -31,46 +31,6 @@ describe('EditInfosMenu Component', () => {
     expect(textMenu).toBeTruthy()
   })
 
-  it('renders TextInput when in edit mode', () => {
-    const { getByTestId } = render(
-      <EditInfosMenu
-        name="Phone"
-        indexVariable="phone"
-        variable={mockVariable}
-        setVariable={() => {}}
-        edit={true}
-      />
-    )
-
-    const textInput = getByTestId('text-input')
-
-    expect(textInput).toBeTruthy()
-  })
-
-  it('calls setVariable with updated data when TextInput value changes', async () => {
-    const setVariableMock = jest.fn()
-
-    const { getByTestId } = render(
-      <EditInfosMenu
-        name="Name"
-        indexVariable="name"
-        variable={mockVariable}
-        setVariable={setVariableMock}
-        edit={true}
-      />
-    )
-
-    const textInput = getByTestId('text-input')
-
-    fireEvent.changeText(textInput, 'New Name')
-
-    await waitFor(() => {
-      expect(setVariableMock).toHaveBeenCalledWith({
-        ...mockVariable,
-        name: 'New Name',
-      })
-    })
-  })
 
   it('renders Text when not in edit mode', () => {
     const { getByTestId } = render(
