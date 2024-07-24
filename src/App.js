@@ -13,6 +13,7 @@ import SendDocumentPage from './Profile/SendDocumentPage/SendDocumentPage'
 import ForgotPasswordPage from './ForgotPasswordPage/ForgotPasswordPage'
 import Maps from './Maps/maps'
 import AlertStatusPage from './AlertStatusPage/AlertStatusPage'
+import DefibrilatorPage from './DefibrilatorPage/DefibrilatorPage'
 import SettingsPage from './Profile/SettingsPage/SettingsPage'
 import ReportBugPage from './Profile/SettingsPage/ReportBugPage/ReportBugPage'
 import ChatEmergency from './ChatEmergency/ChatEmergency'
@@ -62,6 +63,7 @@ export default function App() {
           <Stack.Screen name="AlertStatusPage" component={AlertStatusPage} />
           <Stack.Screen name="AccountPage" component={AccountPage} />
           <Stack.Screen name="SettingsPage" component={SettingsPage} />
+          <Stack.Screen name="DefibrilatorPage" component={DefibrilatorPage} />
           <Stack.Screen name="ReportBugPage" component={ReportBugPage} />
           <Stack.Screen
             name="RescueHistoryPage"
