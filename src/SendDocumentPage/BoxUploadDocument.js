@@ -32,11 +32,12 @@ export function BoxUploadDocument(props) {
       style={{
         alignSelf: 'center',
         alignItems: 'center',
-        backgroundColor: 'lightgray',
+        backgroundColor: '#ededed',
         width: 350,
-        height: 200,
+        height: 220,
         borderRadius: 20,
         marginBottom: 30,
+        elevation: 7,
       }}
     >
       <Image
@@ -53,7 +54,7 @@ export function BoxUploadDocument(props) {
       >
         {props.title}
       </Text>
-      <Text style={{ fontSize: 16, color: 'black', textAlign: 'center' }}>
+      <Text style={{ fontSize: 16, maxWidth: 320, color: 'black', textAlign: 'center' }}>
         {props.description}
       </Text>
       <TouchableOpacity
