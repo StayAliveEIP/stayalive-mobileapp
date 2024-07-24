@@ -172,18 +172,18 @@ export default function Maps({ navigation, route }) {
         if (response.ok) {
           console.log('Emergency terminated successfully')
 
-          navigation.navigate('AvailablePage')
+          navigation.navigate('UnavailableAvailablePage')
         } else {
           console.error('Failed to terminate emergency')
-          navigation.navigate('AvailablePage')
+          navigation.navigate('UnavailableAvailablePage')
         }
       } else {
         console.error('Emergency ID not found')
-        navigation.navigate('AvailablePage')
+        navigation.navigate('UnavailableAvailablePage')
       }
     } catch (error) {
       console.error('Error terminating emergency:', error)
-      navigation.navigate('AvailablePage')
+      navigation.navigate('UnavailableAvailablePage')
     }
   }
 

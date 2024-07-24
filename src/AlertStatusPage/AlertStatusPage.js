@@ -41,7 +41,7 @@ export default function AlertStatusPage({ navigation, route }) {
 
         if (response.ok) {
           console.log('Emergency refused successfully')
-          navigation.navigate('AvailablePage')
+          navigation.navigate('UnavailableAvailablePage')
         } else {
           console.error('Failed to refuse emergency')
         }

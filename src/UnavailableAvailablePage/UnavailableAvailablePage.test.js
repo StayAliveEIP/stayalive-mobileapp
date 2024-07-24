@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, fireEvent, waitFor } from '@testing-library/react-native'
-import UnavailablePage from './UnavailablePage'
+import UnavailableAvailablePage from './UnavailableAvailablePage'
 import fetchMock from 'jest-fetch-mock'
 
 jest.mock('@react-native-community/geolocation', () => ({
@@ -15,14 +15,14 @@ const navigationMock = { navigate: jest.fn() }
 
 fetchMock.enableMocks()
 
-describe('UnavailablePage', () => {
+describe('UnavailableAvailablePage', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
   it('renders correctly', () => {
     const { getByTestId } = render(
-      <UnavailablePage navigation={navigationMock} />
+      <UnavailableAvailablePage navigation={navigationMock} />
     )
     expect(getByTestId('main-view')).toBeDefined()
     expect(getByTestId('profile-badge')).toBeDefined()
@@ -39,7 +39,7 @@ describe('UnavailablePage', () => {
 
   it('navigates to ProfilePage when profile badge is clicked', () => {
     const { getByTestId } = render(
-      <UnavailablePage navigation={navigationMock} />
+      <UnavailableAvailablePage navigation={navigationMock} />
     )
     fireEvent.press(getByTestId('profile-badge'))
     expect(navigationMock.navigate).toHaveBeenCalledWith('ProfilePage')
@@ -50,7 +50,7 @@ describe('UnavailablePage', () => {
     const consoleSpy = jest.spyOn(console, 'log')
 
     const { getByTestId } = render(
-      <UnavailablePage navigation={navigationMock} />
+      <UnavailableAvailablePage navigation={navigationMock} />
     )
     fireEvent.press(getByTestId('available-button'))
 
