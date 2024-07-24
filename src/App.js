@@ -21,35 +21,54 @@ import UnavailableAvailablePage from "./UnavailableAvailablePage/UnavailableAvai
 const Stack = createNativeStackNavigator()
 
 notifee.onBackgroundEvent(async ({ type, detail }) => {
-  const { notification, pressAction } = detail
+  const { notification, pressAction } = detail;
 
   if (type === EventType.PRESS && pressAction.id === 'default') {
-    console.log('the default button was pressed')
-    await notifee.cancelNotification(notification.id)
+    console.log('the default button was pressed');
+    await notifee.cancelNotification(notification.id);
   }
-})
+});
 
 async function requestNotificationPermission() {
-  await notifee.requestPermission()
+  await notifee.requestPermission();
 }
 
 export default function App() {
+  const [initialRoute, setInitialRoute] = React.useState(null);
+
   React.useEffect(() => {
-    requestNotificationPermission()
-  }, [])
+    const checkFirstLaunch = async () => {
+      try {
+        const firstLaunch = await AsyncStorage.getItem('firstLaunch');
+        if (firstLaunch === null) {
+          await AsyncStorage.setItem('firstLaunch', 'false');
+          setInitialRoute('IntroductionPage');
+        } else {
+          setInitialRoute('LoginPage');
+        }
+      } catch (error) {
+        console.error('Error checking first launch: ', error);
+        setInitialRoute('LoginPage');
+      }
+    };
+
+    requestNotificationPermission();
+    checkFirstLaunch();
+  }, []);
+
+  if (initialRoute === null) {
+    return <ActivityIndicator size="large" color={colors.StayAliveRed} />;
+  }
 
   return (
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="LoginPage"
+          initialRouteName={initialRoute}
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="LoginPage" component={LoginPage} />
-          <Stack.Screen
-            name="ForgotPasswordPage"
-            component={ForgotPasswordPage}
-          />
+          <Stack.Screen name="ForgotPasswordPage" component={ForgotPasswordPage} />
           <Stack.Screen name="ChatEmergency" component={ChatEmergency} />
           <Stack.Screen name="RegistrationPage" component={RegistrationPage} />
           <Stack.Screen name="ProfilePage" component={ProfilePage} />
@@ -59,6 +78,7 @@ export default function App() {
           <Stack.Screen name="AlertStatusPage" component={AlertStatusPage} />
           <Stack.Screen name="AccountPage" component={AccountPage} />
           <Stack.Screen name="SettingsPage" component={SettingsPage} />
+          <Stack.Screen name="RescueHistoryPage" component={RescueHistoryPage} />
           <Stack.Screen name="DefibrilatorPage" component={DefibrilatorPage} />
           <Stack.Screen name="ReportBugPage" component={ReportBugPage} />
           <Stack.Screen name="UnavailableAvailablePage" component={UnavailableAvailablePage} />
@@ -69,5 +89,5 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
-  )
+  );
 }
