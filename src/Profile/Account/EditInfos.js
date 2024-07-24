@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Text, View, TextInput, ActivityIndicator } from 'react-native'
 import PropTypes from 'prop-types'
-import { colors } from '../../Style/StayAliveStyle'
+import { StayAliveColors } from '../../Style/StayAliveStyle'
 
 export function EditInfosMenu(props) {
   EditInfosMenu.propTypes = {
@@ -18,7 +18,7 @@ export function EditInfosMenu(props) {
     setLoaded(true)
     return (
       <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <ActivityIndicator size="small" color={colors.StayAliveRed} />
+        <ActivityIndicator size="small" color={StayAliveColors.StayAliveRed} />
       </View>
     )
   }
@@ -57,7 +57,7 @@ export function EditInfosMenu(props) {
       <Text
         testID="text-menu"
         style={{
-          color: colors.StayAliveRed,
+          color: StayAliveColors.StayAliveRed,
           fontWeight: 'bold',
           fontSize: 20,
           marginLeft: 40,
@@ -106,7 +106,7 @@ export function EditInfosMenu(props) {
           style={{
             marginLeft: 30,
             textAlign: 'left',
-            color: colors.black,
+            color: StayAliveColors.black,
             fontWeight: 'bold',
             fontSize: calculateFontSize(),
           }}

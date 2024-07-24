@@ -16,8 +16,8 @@ import PropTypes from 'prop-types'
 import { urlApi } from '../Utils/Api'
 
 export default function LoginPage({ navigation }) {
-  const [email, onChangeEmail] = useState('martin.leblancs@epitech.eu')
-  const [password, onChangePassword] = useState('martin1234')
+  const [email, onChangeEmail] = useState('')
+  const [password, onChangePassword] = useState('')
 
   LoginPage.propTypes = {
     navigation: PropTypes.object.isRequired,
