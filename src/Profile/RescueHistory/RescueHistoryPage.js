@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { colors } from '../../Style/StayAliveStyle'
+import { StayAliveColors } from '../../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../../Utils/Api'
@@ -145,7 +145,7 @@ export default function RescueHistoryPage({ navigation }) {
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -165,7 +165,10 @@ export default function RescueHistoryPage({ navigation }) {
             alignItems: 'center',
           }}
         >
-          <ActivityIndicator size="large" color={colors.StayAliveRed} />
+          <ActivityIndicator
+            size="large"
+            color={StayAliveColors.StayAliveRed}
+          />
         </View>
       )}
 
@@ -234,7 +237,7 @@ export default function RescueHistoryPage({ navigation }) {
             marginTop: -30,
           }}
         >
-          <Text style={{ fontSize: 18, color: colors.black }}>
+          <Text style={{ fontSize: 18, color: StayAliveColors.black }}>
             Nombre de sauvetages :
           </Text>
           <View
@@ -243,7 +246,7 @@ export default function RescueHistoryPage({ navigation }) {
               width: 30,
               height: 30,
               borderRadius: 15,
-              backgroundColor: colors.StayAliveRed,
+              backgroundColor: StayAliveColors.StayAliveRed,
               justifyContent: 'center',
               alignItems: 'center',
             }}
@@ -273,13 +276,13 @@ export default function RescueHistoryPage({ navigation }) {
             testID="no-rescues-message"
             style={{
               fontSize: 18,
-              color: colors.black,
+              color: StayAliveColors.black,
               marginBottom: 20,
               marginTop: 130,
               maxWidth: 200,
             }}
           >
-            Oupss, vous n'avez pas encore de sauvetages...
+            Vous n'avez pas encore de sauvetages...
           </Text>
         ) : (
           <FlatList

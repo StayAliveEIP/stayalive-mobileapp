@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import PropTypes from 'prop-types'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 
 export function IntroductionPage1({ navigation }) {
   IntroductionPage1.propTypes = {
@@ -24,7 +24,7 @@ export function IntroductionPage1({ navigation }) {
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -43,7 +43,7 @@ export function IntroductionPage1({ navigation }) {
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -195,7 +195,7 @@ export default function IntroductionPage({ navigation }) {
             key={i}
             style={{
               fontSize: 40,
-              color: i === index ? colors.StayAliveRed : 'lightgray',
+              color: i === index ? StayAliveColors.StayAliveRed : 'lightgray',
               marginHorizontal: 5,
             }}
           >
@@ -250,15 +250,15 @@ const styles = StyleSheet.create({
   button: {
     borderWidth: 3,
     borderRadius: 50,
-    borderColor: colors.StayAliveRed,
+    borderColor: StayAliveColors.StayAliveRed,
     paddingHorizontal: 50,
     paddingVertical: 10,
-    backgroundColor: colors.StayAliveRed,
+    backgroundColor: StayAliveColors.StayAliveRed,
   },
   buttonText: {
     textAlign: 'center',
     fontSize: 18,
-    color: colors.white,
+    color: StayAliveColors.white,
     fontWeight: 'bold',
   },
   image: {
@@ -281,27 +281,27 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: colors.black,
+    color: StayAliveColors.black,
     marginBottom: 20,
   },
   description: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.black,
+    color: StayAliveColors.black,
     flexWrap: 'wrap',
   },
   description2: {
     flex: 1,
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.black,
+    color: StayAliveColors.black,
     flexWrap: 'wrap',
   },
   description3: {
     alignItems: 'center',
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.black,
+    color: StayAliveColors.black,
     marginLeft: 20,
   },
   textWithLogo: {
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   redText: {
-    color: colors.StayAliveRed,
+    color: StayAliveColors.StayAliveRed,
   },
   logoIcon: {
     width: 40,

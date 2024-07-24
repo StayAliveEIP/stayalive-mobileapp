@@ -124,7 +124,9 @@ describe('Maps Component', () => {
     })
 
     await waitFor(() => {
-      expect(mockNavigation.navigate).toHaveBeenCalledWith('AvailablePage')
+      expect(mockNavigation.navigate).toHaveBeenCalledWith(
+        'UnavailableAvailablePage'
+      )
     })
   })
 })

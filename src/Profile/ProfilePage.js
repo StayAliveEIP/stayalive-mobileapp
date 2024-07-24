@@ -10,7 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Menu } from './Menu'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
@@ -91,7 +91,7 @@ export default function ProfilePage({ navigation }) {
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -111,7 +111,10 @@ export default function ProfilePage({ navigation }) {
             alignItems: 'center',
           }}
         >
-          <ActivityIndicator size="large" color={colors.StayAliveRed} />
+          <ActivityIndicator
+            size="large"
+            color={StayAliveColors.StayAliveRed}
+          />
         </View>
       )}
 
@@ -190,6 +193,12 @@ export default function ProfilePage({ navigation }) {
         />
         <Menu
           navigation={navigation}
+          name="Les Défibrilateurs"
+          icon="heart-outline"
+          goTo="DefibrilatorPage"
+        />
+        <Menu
+          navigation={navigation}
           name="Préférences"
           icon="settings-outline"
           goTo="SettingsPage"
@@ -202,7 +211,7 @@ export default function ProfilePage({ navigation }) {
             marginTop: 200,
             borderWidth: 3,
             borderRadius: 50,
-            borderColor: colors.StayAliveRed,
+            borderColor: StayAliveColors.StayAliveRed,
             paddingHorizontal: 50,
             paddingVertical: 10,
             backgroundColor: 'white',
@@ -213,7 +222,7 @@ export default function ProfilePage({ navigation }) {
             style={{
               textAlign: 'center',
               fontSize: 18,
-              color: colors.StayAliveRed,
+              color: StayAliveColors.StayAliveRed,
               fontWeight: 'bold',
             }}
             testID="joinUs-button"

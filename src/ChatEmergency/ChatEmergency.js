@@ -12,7 +12,7 @@ import {
 import { io } from 'socket.io-client'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Appbar } from 'react-native-paper'
 import PropTypes from 'prop-types'
@@ -196,7 +196,10 @@ const ChatEmergency = ({ navigation, route }) => {
       />
       {loading ? (
         <View testID="loader" style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={colors.StayAliveRed} />
+          <ActivityIndicator
+            size="large"
+            color={StayAliveColors.StayAliveRed}
+          />
         </View>
       ) : (
         <View style={styles.container} testID="chatContainer">
@@ -219,7 +222,7 @@ const ChatEmergency = ({ navigation, route }) => {
               size={30}
               style={styles.icon}
               onPress={sendMessage}
-              color={colors.StayAliveRed}
+              color={StayAliveColors.StayAliveRed}
             />
           </View>
         </View>
@@ -250,7 +253,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   userBubble: {
-    backgroundColor: colors.StayAliveRed,
+    backgroundColor: StayAliveColors.StayAliveRed,
     padding: 12,
     borderRadius: 20,
     marginBottom: 10,
@@ -283,7 +286,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    color: colors.StayAliveRed,
+    color: StayAliveColors.StayAliveRed,
     fontWeight: 'bold',
     textAlign: 'center',
   },

@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Snackbar from 'react-native-snackbar'
 import { TextInputStayAlive } from './textInputStayAlive'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import { SlideInView } from '../Animations/Animations'
 import PropTypes from 'prop-types'
 import { urlApi } from '../Utils/Api'
@@ -80,7 +80,7 @@ export default function RegistrationPage({ navigation }) {
           }}
         >
           <LinearGradient
-            colors={[colors.StayAliveRed, colors.white]}
+            colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{ flex: 1 }}
@@ -98,7 +98,7 @@ export default function RegistrationPage({ navigation }) {
           }}
         >
           <LinearGradient
-            colors={[colors.StayAliveRed, colors.white]}
+            colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{ flex: 1 }}
@@ -198,12 +198,12 @@ export default function RegistrationPage({ navigation }) {
                 testID="checkboxCGUV"
                 value={selectCGUV}
                 onValueChange={setSelectionCGUV}
-                tintColors={{ true: colors.StayAliveRed }}
+                tintColors={{ true: StayAliveColors.StayAliveRed }}
               />
               <Text>Accepter nos </Text>
-              <Text style={{ color: colors.StayAliveRed }}>CGU</Text>
+              <Text style={{ color: StayAliveColors.StayAliveRed }}>CGU</Text>
               <Text> et nos </Text>
-              <Text style={{ color: colors.StayAliveRed }}>CGV</Text>
+              <Text style={{ color: StayAliveColors.StayAliveRed }}>CGV</Text>
             </View>
 
             <TouchableOpacity
@@ -212,7 +212,7 @@ export default function RegistrationPage({ navigation }) {
                 marginTop: 20,
                 borderWidth: 3,
                 borderRadius: 50,
-                borderColor: colors.StayAliveRed,
+                borderColor: StayAliveColors.StayAliveRed,
                 paddingHorizontal: 50,
                 paddingVertical: 10,
                 backgroundColor: 'white',
@@ -222,7 +222,7 @@ export default function RegistrationPage({ navigation }) {
                 style={{
                   textAlign: 'center',
                   fontSize: 18,
-                  color: colors.StayAliveRed,
+                  color: StayAliveColors.StayAliveRed,
                   fontWeight: 'bold',
                 }}
                 testID="joinUs-button"

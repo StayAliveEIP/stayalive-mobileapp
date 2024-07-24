@@ -17,7 +17,7 @@ import { urlApi } from '../Utils/Api'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Snackbar from 'react-native-snackbar'
 import MapViewDirections from 'react-native-maps-directions'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 
 const { width, height } = Dimensions.get('window')
@@ -172,18 +172,18 @@ export default function Maps({ navigation, route }) {
         if (response.ok) {
           console.log('Emergency terminated successfully')
 
-          navigation.navigate('AvailablePage')
+          navigation.navigate('UnavailableAvailablePage')
         } else {
           console.error('Failed to terminate emergency')
-          navigation.navigate('AvailablePage')
+          navigation.navigate('UnavailableAvailablePage')
         }
       } else {
         console.error('Emergency ID not found')
-        navigation.navigate('AvailablePage')
+        navigation.navigate('UnavailableAvailablePage')
       }
     } catch (error) {
       console.error('Error terminating emergency:', error)
-      navigation.navigate('AvailablePage')
+      navigation.navigate('UnavailableAvailablePage')
     }
   }
 
@@ -205,7 +205,7 @@ export default function Maps({ navigation, route }) {
             origin={origin}
             destination={dataAlert?.data?.emergency?.position}
             strokeWidth={11}
-            strokeColor={colors.StayAliveRed}
+            strokeColor={StayAliveColors.StayAliveRed}
             apikey={'AIzaSyDZzzsyTDbIIkYjUII8pAQbbkpBA3Amwj0'}
             mode={'WALKING'}
           />
@@ -225,7 +225,7 @@ export default function Maps({ navigation, route }) {
               text: "Impossible de trouver l'ID de l'urgence émetteur",
               duration: Snackbar.LENGTH_LONG,
               backgroundColor: 'white',
-              textColor: colors.StayAliveRed,
+              textColor: StayAliveColors.StayAliveRed,
             })
           navigation.navigate('ChatEmergency', {
             rescuerId: rescuerID,
@@ -237,7 +237,7 @@ export default function Maps({ navigation, route }) {
           name="chatbox-ellipses-outline"
           size={30}
           style={styles.iconChatEmergency}
-          color={colors.StayAliveRed}
+          color={StayAliveColors.StayAliveRed}
         />
       </TouchableOpacity>
 
@@ -251,9 +251,17 @@ export default function Maps({ navigation, route }) {
       >
         <View style={styles.header}>
           {expanded ? (
-            <Icon name="chevron-down" size={30} color={colors.StayAliveRed} />
+            <Icon
+              name="chevron-down"
+              size={30}
+              color={StayAliveColors.StayAliveRed}
+            />
           ) : (
-            <Icon name="chevron-up" size={30} color={colors.StayAliveRed} />
+            <Icon
+              name="chevron-up"
+              size={30}
+              color={StayAliveColors.StayAliveRed}
+            />
           )}
           <Text style={styles.title}>Sauvetage en cours</Text>
         </View>
@@ -324,7 +332,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   timeContainer: {
-    borderColor: colors.StayAliveRed,
+    borderColor: StayAliveColors.StayAliveRed,
     borderWidth: 2,
     bottom: '185%',
     maxWidth: '90%',
@@ -333,7 +341,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   timeBox: {
-    backgroundColor: colors.StayAliveRed,
+    backgroundColor: StayAliveColors.StayAliveRed,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
@@ -346,7 +354,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     maxWidth: '50%',
     fontWeight: 'bold',
-    color: colors.StayAliveRed,
+    color: StayAliveColors.StayAliveRed,
   },
   floatingWindowExpanded: {
     position: 'absolute',
@@ -372,7 +380,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: colors.StayAliveRed,
+    color: StayAliveColors.StayAliveRed,
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -409,17 +417,17 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderWidth: 3,
     borderRadius: 50,
-    borderColor: colors.StayAliveRed,
+    borderColor: StayAliveColors.StayAliveRed,
     paddingHorizontal: 50,
     paddingVertical: 10,
-    backgroundColor: colors.StayAliveRed,
+    backgroundColor: StayAliveColors.StayAliveRed,
   },
   whiteButton: {
     marginTop: 5,
     marginBottom: 10,
     borderWidth: 3,
     borderRadius: 50,
-    borderColor: colors.StayAliveRed,
+    borderColor: StayAliveColors.StayAliveRed,
     paddingHorizontal: 50,
     paddingVertical: 10,
     backgroundColor: 'white',
@@ -433,7 +441,7 @@ const styles = StyleSheet.create({
   redText: {
     textAlign: 'center',
     fontSize: 18,
-    color: colors.StayAliveRed,
+    color: StayAliveColors.StayAliveRed,
     fontWeight: 'bold',
   },
   chatButton: {
@@ -441,7 +449,7 @@ const styles = StyleSheet.create({
     top: 20,
     left: 20,
     borderRadius: 50,
-    backgroundColor: colors.StayAliveRed,
+    backgroundColor: StayAliveColors.StayAliveRed,
     padding: 12,
   },
 })
