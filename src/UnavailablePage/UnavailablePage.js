@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import PropTypes from 'prop-types'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import { urlApi } from '../Utils/Api'
 import Geolocation from '@react-native-community/geolocation'
 
@@ -187,7 +187,7 @@ export default function UnavailablePage({ navigation }) {
         style={{
           fontSize: 28,
           fontWeight: 'bold',
-          color: colors.StayAliveRed,
+          color: StayAliveColors.StayAliveRed,
           marginTop: 5,
         }}
         testID="status-indisponible"
@@ -228,7 +228,7 @@ export default function UnavailablePage({ navigation }) {
           style={{
             fontSize: 18,
             fontWeight: 'bold',
-            color: colors.StayAliveRed,
+            color: StayAliveColors.StayAliveRed,
             marginBottom: 10,
           }}
           testID="warning-title"
@@ -256,21 +256,21 @@ export default function UnavailablePage({ navigation }) {
           bottom: 30,
           borderWidth: 4,
           borderRadius: 50,
-          borderColor: colors.StayAliveRed,
+          borderColor: StayAliveColors.StayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 15,
-          backgroundColor: loading ? colors.LightGray : 'transparent',
+          backgroundColor: loading ? StayAliveColors.LightGray : 'transparent',
         }}
         testID="available-button"
       >
         {loading ? (
-          <ActivityIndicator color={colors.StayAliveRed} />
+          <ActivityIndicator color={StayAliveColors.StayAliveRed} />
         ) : (
           <Text
             style={{
               textAlign: 'center',
               fontSize: 18,
-              color: colors.StayAliveRed,
+              color: StayAliveColors.StayAliveRed,
               fontWeight: 'bold',
             }}
             testID="available-button-text"
