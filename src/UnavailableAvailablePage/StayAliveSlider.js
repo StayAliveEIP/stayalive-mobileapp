@@ -59,7 +59,11 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
   })
 
   return (
-    <TouchableOpacity style={styles.container} onPress={toggleSwitch}>
+    <TouchableOpacity
+      testID="available-button"
+      style={styles.container}
+      onPress={toggleSwitch}
+    >
       <Animated.View style={[styles.button, { backgroundColor }]}>
         <Animated.Text
           style={[

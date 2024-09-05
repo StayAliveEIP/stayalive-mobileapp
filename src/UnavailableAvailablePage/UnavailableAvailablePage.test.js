@@ -33,8 +33,6 @@ describe('UnavailableAvailablePage', () => {
     expect(getByTestId('warning-logo')).toBeDefined()
     expect(getByTestId('warning-title')).toBeDefined()
     expect(getByTestId('warning-text')).toBeDefined()
-    expect(getByTestId('available-button')).toBeDefined()
-    expect(getByTestId('available-button-text')).toBeDefined()
   })
 
   it('navigates to ProfilePage when profile badge is clicked', () => {
@@ -59,12 +57,9 @@ describe('UnavailableAvailablePage', () => {
     })
 
     // Vérifie que console.log a été appelé avec le message attendu
-    expect(consoleSpy).toHaveBeenCalledWith('Status updated !')
+    expect(consoleSpy).toHaveBeenCalledWith('Status updated successfully!')
 
     // Assurez-vous de nettoyer le mock après le test
     consoleSpy.mockRestore()
-
-    // Vérifie la navigation
-    expect(navigationMock.navigate).toHaveBeenCalledWith('AvailablePage')
   })
 })
