@@ -1,8 +1,10 @@
 import React from 'react'
-import { View, TouchableOpacity, Image, Text } from 'react-native'
+import { View, TouchableOpacity, Image, Text, Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 import { StayAliveColors } from '../../Style/StayAliveStyle'
+
+const { width, height } = Dimensions.get('window');
 
 export default function SettingsPage({ navigation }) {
   SettingsPage.propTypes = {
@@ -25,25 +27,24 @@ export default function SettingsPage({ navigation }) {
         testID="button-left-arrow"
         style={{
           position: 'absolute',
-          top: 40,
-          left: 30,
+          top: height * 0.05,
+          left: width * 0.1,
           zIndex: 1,
         }}
         onPress={() => goBack()}
       >
-        <Icon testID="document-logo" name="arrow-left" size={30} />
+        <Icon testID="document-logo" name="arrow-left" size={width * 0.08} />
       </TouchableOpacity>
       <View style={{ alignItems: 'center' }}>
         <View style={{ alignItems: 'flex-start', marginTop: '17%' }}>
           <Image
-            style={{ alignSelf: 'center', width: 120, height: 120 }}
+            style={{ alignSelf: 'center', width: width * 0.32, height: height * 0.18 }}
             source={require('../../../assets/SettingsLogo.png')}
           />
           <Text
             style={{
-              marginBottom: 40,
-              marginTop: 20,
-              fontSize: 30,
+              marginTop: height * 0.02,
+              fontSize: width * 0.06,
               fontWeight: 'bold',
               color: 'black',
             }}
@@ -57,12 +58,12 @@ export default function SettingsPage({ navigation }) {
           onPress={onClickButtonBug}
           style={{
             position: 'absolute',
-            bottom: 30,
+            bottom: height * 0.04,
             borderWidth: 4,
             borderRadius: 50,
             borderColor: StayAliveColors.StayAliveRed,
-            paddingHorizontal: 50,
-            paddingVertical: 15,
+            paddingHorizontal: width * 0.1,
+            paddingVertical: height * 0.02,
             backgroundColor: 'transparent',
           }}
           testID="indisponible-button"
@@ -70,7 +71,7 @@ export default function SettingsPage({ navigation }) {
           <Text
             style={{
               textAlign: 'center',
-              fontSize: 18,
+              fontSize: width * 0.04,
               color: StayAliveColors.StayAliveRed,
               fontWeight: 'bold',
             }}

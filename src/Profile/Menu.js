@@ -1,7 +1,9 @@
 import React from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View, TouchableOpacity, Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
+
+const { width, height } = Dimensions.get('window');
 
 export function Menu(props) {
   Menu.propTypes = {
@@ -21,7 +23,7 @@ export function Menu(props) {
       style={{
         flex: 1,
         justifyContent: 'center',
-        top: -160,
+        top: -height * 0.25,
         borderWidth: 2,
         width: '100%',
         height: 60,
@@ -32,16 +34,16 @@ export function Menu(props) {
         testID="icon-menu"
         style={{ position: 'absolute', marginLeft: 30 }}
         name={props.icon}
-        size={35}
+        size={width * 0.09}
       />
       <Text
         testID="text-menu"
         style={{
-          marginLeft: -100,
+          marginLeft: -width * 0.2,
           textAlign: 'center',
           color: 'black',
           fontWeight: 'bold',
-          fontSize: 17,
+          fontSize: width * 0.045,
         }}
       >
         {props.name}
@@ -55,7 +57,7 @@ export function Menu(props) {
         <Icon
           style={{ marginLeft: '90%' }}
           name="chevron-forward-outline"
-          size={35}
+          size={width * 0.09}
         />
       </TouchableOpacity>
     </View>

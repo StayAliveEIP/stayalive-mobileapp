@@ -19,6 +19,8 @@ import { UserProvider } from './Utils/UserContext'
 import notifee, { EventType } from '@notifee/react-native'
 import UnavailableAvailablePage from "./UnavailableAvailablePage/UnavailableAvailablePage"
 const Stack = createNativeStackNavigator()
+import { StayAliveColors } from './Style/StayAliveStyle'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 notifee.onBackgroundEvent(async ({ type, detail }) => {
   const { notification, pressAction } = detail;
@@ -56,10 +58,6 @@ export default function App() {
     checkFirstLaunch();
   }, []);
 
-  if (initialRoute === null) {
-    return <ActivityIndicator size="large" color={colors.StayAliveRed} />;
-  }
-
   return (
     <UserProvider>
       <NavigationContainer>
@@ -82,10 +80,6 @@ export default function App() {
           <Stack.Screen name="DefibrilatorPage" component={DefibrilatorPage} />
           <Stack.Screen name="ReportBugPage" component={ReportBugPage} />
           <Stack.Screen name="UnavailableAvailablePage" component={UnavailableAvailablePage} />
-          <Stack.Screen
-            name="RescueHistoryPage"
-            component={RescueHistoryPage}
-          />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

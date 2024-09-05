@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Image,
+  Dimensions,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { StayAliveColors } from '../../../Style/StayAliveStyle'
@@ -14,6 +15,8 @@ import { TextInputStayAlive } from '../../../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Snackbar from 'react-native-snackbar'
+
+const { width, height } = Dimensions.get('window');
 
 export default function ReportBugPage({ navigation }) {
   ReportBugPage.propTypes = {
@@ -96,7 +99,7 @@ export default function ReportBugPage({ navigation }) {
         style={styles.backButton}
         onPress={() => goBack()}
       >
-        <Icon testID="document-logo" name="arrow-left" size={30} />
+        <Icon testID="document-logo" name="arrow-left" size={width * 0.08} />
       </TouchableOpacity>
       <LinearGradient
         colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
@@ -165,52 +168,50 @@ const styles = StyleSheet.create({
   gradient1: {
     position: 'absolute',
     bottom: 0,
-    left: -400,
-    right: 0,
-    height: 500,
-    width: 500,
+    left: -width * 0.95,
+    height: height * 0.6,
+    width: width * 1.2,
     borderRadius: 10000,
   },
   gradient2: {
     position: 'absolute',
-    bottom: -150,
-    left: -150,
-    width: 300,
-    height: 300,
+    bottom: -height * 0.2,
+    left: -width * 0.3,
+    width: width * 0.7,
+    height: height * 0.4,
     borderRadius: 10000,
   },
   mainContainer: {
     flex: 1,
-    paddingTop: 20,
     alignItems: 'center',
   },
   backButton: {
     position: 'absolute',
-    top: 50,
-    left: 30,
+    top: height * 0.08,
+    left: width * 0.1,
     zIndex: 1,
   },
   content: {
-    marginTop: '20%',
+    marginTop: height * 0.07,
     alignItems: 'center',
   },
   logo: {
     alignSelf: 'center',
-    width: 120,
-    height: 120,
+    width: width * 0.3,
+    height: height * 0.17,
   },
   title: {
-    marginTop: 20,
-    fontSize: 30,
+    marginTop: height * 0.02,
+    fontSize: width * 0.07,
     fontWeight: 'bold',
     color: 'black',
   },
   inputContainer: {
-    marginTop: '10%',
-    width: '80%',
+    marginTop: height * 0.05,
+    width: width * 0.7,
   },
   descriptionInput: {
-    height: 100,
+    height: height * 1,
     textAlignVertical: 'top',
   },
   submitButton: {

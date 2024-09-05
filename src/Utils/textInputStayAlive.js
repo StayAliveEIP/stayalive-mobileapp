@@ -1,7 +1,9 @@
 import React from 'react'
-import { Text, TextInput, View } from 'react-native'
+import { Text, TextInput, View, Dimensions } from 'react-native'
 import { StayAliveColors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
+
+const { width, height } = Dimensions.get('window');
 
 export function TextInputStayAlive(props) {
   TextInputStayAlive.propTypes = {
@@ -17,7 +19,7 @@ export function TextInputStayAlive(props) {
   }
 
   const maxTextInputHeight = props.numberOfLines
-    ? props.numberOfLines * 25
+    ? props.numberOfLines * height * 0.02
     : null
 
   return (
@@ -26,7 +28,7 @@ export function TextInputStayAlive(props) {
         style={{
           color: StayAliveColors.black,
           fontWeight: 'bold',
-          fontSize: 16,
+          fontSize: 12,
           alignSelf: 'flex-start',
         }}
       >
