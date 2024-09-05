@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
-import { StayAliveColors } from '../..//Style/StayAliveStyle'
+import { StayAliveColors } from '../../Style/StayAliveStyle'
 
 const { width, height } = Dimensions.get('window');
 

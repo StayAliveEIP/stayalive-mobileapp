@@ -136,8 +136,8 @@ export default function Maps({ navigation, route }) {
         }
       )
     } else {
-      Alert.alert('Open in Maps', 'Choose a map application', [
-        { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+      Alert.alert('Ouvrir dans maps', 'Choisissez une application', [
+        { text: 'Retour', onPress: () => {}, style: 'cancel' },
         { text: 'Apple Maps', onPress: () => openAppleMaps() },
         { text: 'Google Maps', onPress: () => openGoogleMaps() },
       ])

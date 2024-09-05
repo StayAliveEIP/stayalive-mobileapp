@@ -186,7 +186,7 @@ export default function ProfilePage({ navigation }) {
           navigation={navigation}
           name="Les Défibrilateurs"
           icon="heart-outline"
-          goTo="DefibrilatorPage"
+          goTo="DefibrilatorListPage"
         />
         <Menu
           navigation={navigation}
