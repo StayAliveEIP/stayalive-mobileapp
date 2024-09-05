@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { Text, View, TextInput, TouchableOpacity, Dimensions } from 'react-native'
 import PropTypes from 'prop-types'
 import { StayAliveColors } from '../../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
+
+const { width, height } = Dimensions.get('window');
 
 export function EditInfosMenu(props) {
   EditInfosMenu.propTypes = {
@@ -60,9 +62,9 @@ export function EditInfosMenu(props) {
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        top: -160,
+        top: -height * 0.34,
         borderWidth: 2,
-        height: 60,
+        height: height * 0.07,
         borderColor: 'lightgray',
       }}
     >
@@ -71,8 +73,8 @@ export function EditInfosMenu(props) {
         style={{
           color: StayAliveColors.StayAliveRed,
           fontWeight: 'bold',
-          fontSize: 20,
-          marginLeft: 40,
+          fontSize: width * 0.045,
+          marginLeft: height * 0.04,
         }}
       >
         {props.name} :
@@ -86,16 +88,16 @@ export function EditInfosMenu(props) {
               textAlign: 'left',
               color: 'blue',
               fontWeight: 'bold',
-              fontSize: 15,
+              fontSize: width * 0.04,
             }}
             value={textValue}
             onChangeText={(newText) => setTextValue(newText)}
           />
           <TouchableOpacity
             onPress={handleSaveClick}
-            style={{ marginLeft: 10 }}
+            style={{ marginLeft: height * 0.01}}
           >
-            <Icon name="save" size={20} color={StayAliveColors.StayAliveRed} />
+            <Icon name="save" size={width * 0.05} color={StayAliveColors.StayAliveRed} />
           </TouchableOpacity>
         </View>
       ) : (
@@ -107,7 +109,7 @@ export function EditInfosMenu(props) {
               textAlign: 'left',
               color: StayAliveColors.black,
               fontWeight: 'bold',
-              fontSize: 15,
+              fontSize: width * 0.04,
             }}
           >
             {props.indexVariable === 'phone' || props.indexVariable === 'email'
@@ -119,11 +121,11 @@ export function EditInfosMenu(props) {
             props.indexVariable === 'email') && (
             <TouchableOpacity
               onPress={handleEditClick}
-              style={{ marginLeft: 10 }}
+              style={{ marginLeft: height * 0.02 }}
             >
               <Icon
                 name="pencil"
-                size={20}
+                size={width * 0.05}
                 color={StayAliveColors.StayAliveRed}
               />
             </TouchableOpacity>

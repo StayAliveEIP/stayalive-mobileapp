@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { StayAliveColors } from '../../Style/StayAliveStyle'
@@ -14,6 +15,8 @@ import { urlApi } from '../../Utils/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Snackbar from 'react-native-snackbar'
 import PropTypes from 'prop-types'
+
+const { width, height } = Dimensions.get('window');
 
 export default function SendDocumentPage({ navigation }) {
   const [selectedFiles, setSelectedFiles] = useState({
@@ -128,8 +131,8 @@ export default function SendDocumentPage({ navigation }) {
         testID="button-left-arrow"
         style={{
           position: 'absolute',
-          top: 20,
-          left: 20,
+          top: height * 0.05,
+          left: width * 0.05,
           zIndex: 1,
         }}
         onPress={() => goBack()}
@@ -140,14 +143,14 @@ export default function SendDocumentPage({ navigation }) {
       <View style={{ alignItems: 'center' }}>
         <View style={{ alignItems: 'center' }}>
           <Image
-            style={{ alignSelf: 'center', width: 120, height: 120 }}
+            style={{ alignSelf: 'center', width: width * 0.25, height: height * 0.136 }}
             source={require('../../../assets/DocumentLogo.png')}
           />
           <Text
             style={{
-              marginBottom: 40,
-              marginTop: 20,
-              fontSize: 30,
+              marginBottom: height * 0.04,
+              marginTop: height * 0.01,
+              fontSize: width * 0.06,
               fontWeight: 'bold',
               color: 'black',
             }}
@@ -208,12 +211,12 @@ export default function SendDocumentPage({ navigation }) {
                   }
                 }}
                 style={{
-                  marginTop: 20,
+                  marginTop: height * 0.005,
                   borderWidth: 3,
                   borderRadius: 50,
                   borderColor: StayAliveColors.StayAliveRed,
-                  paddingHorizontal: 50,
-                  paddingVertical: 10,
+                  paddingHorizontal: width * 0.07,
+                  paddingVertical: height * 0.01,
                   backgroundColor: 'white',
                 }}
                 testID={'sendDocument-button'}
@@ -227,7 +230,7 @@ export default function SendDocumentPage({ navigation }) {
                   <Text
                     style={{
                       textAlign: 'center',
-                      fontSize: 18,
+                      fontSize: width * 0.045,
                       color: StayAliveColors.StayAliveRed,
                       fontWeight: 'bold',
                     }}

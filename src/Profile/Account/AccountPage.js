@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -20,6 +21,8 @@ import {
   requestUpdatePhone,
 } from './RequestUpdateInfos/RequestsUpdateInfos'
 import { urlApi } from '../../Utils/Api'
+
+const { width, height } = Dimensions.get('window');
 
 export default function AccountPage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -124,9 +127,9 @@ export default function AccountPage({ navigation }) {
       <View
         style={{
           alignSelf: 'center',
-          top: -260,
-          width: 550,
-          height: 500,
+          top: -height * 0.44,
+          width: width * 1.3,
+          height: height * 0.7,
           borderRadius: 1000,
           overflow: 'hidden',
         }}
@@ -142,11 +145,6 @@ export default function AccountPage({ navigation }) {
       {loading && (
         <View
           style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
             backgroundColor: 'rgba(255, 255, 255, 0.7)',
             justifyContent: 'center',
             alignItems: 'center',
@@ -167,7 +165,7 @@ export default function AccountPage({ navigation }) {
               position: 'absolute',
               justifyContent: 'center',
               alignItems: 'center',
-              top: -360,
+              top: -height * 0.58,
             }}
             onPress={selectImage}
           >
@@ -175,8 +173,8 @@ export default function AccountPage({ navigation }) {
               testID="user-avatar"
               style={{
                 alignSelf: 'center',
-                width: 160,
-                height: 160,
+                width: width * 0.4,
+                height: height * 0.18,
                 borderRadius: 100,
                 resizeMode: 'contain',
               }}
@@ -189,15 +187,15 @@ export default function AccountPage({ navigation }) {
             <TouchableOpacity
               style={{
                 position: 'absolute',
-                bottom: 0,
-                right: 0,
                 backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 padding: 8,
                 borderRadius: 20,
+                right: width * 0.02,
+                top: height * 0.14
               }}
               onPress={selectImage}
             >
-              <Icon name="camera" size={20} color="white" />
+              <Icon name="camera" size={width * 0.05} color="white" />
             </TouchableOpacity>
           </TouchableOpacity>
         </View>
@@ -206,16 +204,16 @@ export default function AccountPage({ navigation }) {
           testID="button-left-arrow"
           style={{
             position: 'absolute',
-            top: -440,
-            left: 30,
+            top: -height * 0.62,
+            left: height * 0.04,
             zIndex: 1,
           }}
           onPress={goBack}
         >
-          <Icon name="arrow-left" size={30} onPress={goBack} />
+          <Icon name="arrow-left" size={width * 0.08} onPress={goBack} />
         </TouchableOpacity>
         <EditInfosMenu
-          marginLeft={34}
+          marginLeft={width * 0.09}
           name="Prénom"
           indexVariable="firstname"
           variable={profileData}
@@ -223,7 +221,7 @@ export default function AccountPage({ navigation }) {
           edit={false}
         />
         <EditInfosMenu
-          marginLeft={64}
+          marginLeft={width * 0.15}
           name="Nom"
           indexVariable="lastname"
           variable={profileData}
@@ -231,7 +229,7 @@ export default function AccountPage({ navigation }) {
           edit={false}
         />
         <EditInfosMenu
-          marginLeft={46}
+          marginLeft={width * 0.11}
           name="E-mail"
           indexVariable="email"
           variable={profileData}
@@ -239,20 +237,20 @@ export default function AccountPage({ navigation }) {
           edit={true}
         />
         <EditInfosMenu
-          marginLeft={10}
+          marginLeft={width * 0.04}
           name="Téléphone"
           indexVariable="phone"
           variable={profileData}
           setVariable={setProfileData}
           edit={true}
         />
-        <View style={{ marginTop: -130 }}>
+        <View style={{ marginTop: height * -0.3 }}>
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
-              marginLeft: 20,
+              marginLeft: width * 0.06,
             }}
           >
             <Text
@@ -260,7 +258,7 @@ export default function AccountPage({ navigation }) {
               style={{
                 color: StayAliveColors.StayAliveRed,
                 fontWeight: 'bold',
-                fontSize: 20,
+                fontSize: width * 0.05,
               }}
             >
               E-mail :
@@ -274,9 +272,8 @@ export default function AccountPage({ navigation }) {
                       ? StayAliveColors.green
                       : StayAliveColors.StayAliveRed,
                   fontWeight: 'bold',
-                  fontSize: 18,
-                  marginLeft: 10,
-                  marginTop: 0,
+                  fontSize: width * 0.05,
+                  marginLeft: width * 0.03,
                 }}
               >
                 {profileData.email?.verified === false
@@ -290,7 +287,7 @@ export default function AccountPage({ navigation }) {
               flexDirection: 'row',
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
-              marginLeft: 20,
+              marginLeft: width * 0.06,
             }}
           >
             <Text
@@ -298,9 +295,7 @@ export default function AccountPage({ navigation }) {
               style={{
                 color: StayAliveColors.StayAliveRed,
                 fontWeight: 'bold',
-                fontSize: 20,
-                marginLeft: 0,
-                marginTop: 0,
+                fontSize: width * 0.05,
               }}
             >
               Téléphone :
@@ -314,9 +309,8 @@ export default function AccountPage({ navigation }) {
                       ? StayAliveColors.green
                       : StayAliveColors.StayAliveRed,
                   fontWeight: 'bold',
-                  fontSize: 18,
-                  marginLeft: 10,
-                  marginTop: 0,
+                  fontSize: width * 0.05,
+                  marginLeft: width * 0.03,
                 }}
               >
                 {profileData.phone?.verified === false
@@ -332,13 +326,12 @@ export default function AccountPage({ navigation }) {
           testID="save-button"
           onPress={saveChanges}
           style={{
-            marginTop: 50,
-            marginBottom: 10,
+            marginTop: height * 0.05,
             borderWidth: 3,
             borderRadius: 50,
             borderColor: StayAliveColors.StayAliveRed,
-            paddingHorizontal: 50,
-            paddingVertical: 10,
+            paddingHorizontal: width * 0.02,
+            paddingVertical: height * 0.015,
             backgroundColor: StayAliveColors.StayAliveRed,
             width: '60%',
           }}

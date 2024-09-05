@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native'
 import { FadeInView } from '../Animations/Animations'
 import { StayAliveColors } from '../Style/StayAliveStyle'
 import { TextInputStayAlive } from '../Utils/textInputStayAlive'
@@ -8,12 +8,14 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 import { urlApi } from '../Utils/Api'
 
+const { width, height } = Dimensions.get('window');
+
 export default function ForgotPasswordPage({ navigation }) {
   const [email, onChangeEmail] = useState('')
   const [token, onChangeToken] = useState('')
   const [newPassword, onChangeNewPassword] = useState('')
   const [confirmPassword, onChangeConfirmPassword] = useState('')
-  const [resetStep, setResetStep] = useState(0)
+  const [resetStep, setResetStep] = useState(1)
 
   ForgotPasswordPage.propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -110,8 +112,8 @@ export default function ForgotPasswordPage({ navigation }) {
             name="arrow-left"
             size={30}
             style={{
-              marginTop: 20,
-              marginLeft: 20,
+              marginTop: height * 0.03,
+              marginLeft: width * 0.06,
             }}
           />
         </TouchableOpacity>
@@ -119,16 +121,16 @@ export default function ForgotPasswordPage({ navigation }) {
           <Image
             testID="forgot-password-logo"
             style={{
-              width: 200,
-              height: 200,
+              width: width * 0.5,
+              height: height * 0.25,
               resizeMode: 'contain',
             }}
             source={require('../../assets/ForgotPasswordLogo.png')}
           />
           <Text
             style={{
-              marginTop: 0,
-              fontSize: 22,
+              marginTop: height * -0.02,
+              fontSize: width * 0.06,
               color: 'black',
               fontWeight: 'bold',
             }}
@@ -139,8 +141,8 @@ export default function ForgotPasswordPage({ navigation }) {
           </Text>
           <Text
             style={{
-              marginTop: 50,
-              fontSize: 16,
+              marginTop: height * 0.03,
+              fontSize: width * 0.04,
               color: 'black',
               fontWeight: 'bold',
             }}
@@ -150,15 +152,15 @@ export default function ForgotPasswordPage({ navigation }) {
 
           <View
             style={{
-              marginTop: 30,
+              marginTop: height * 0.03,
               paddingHorizontal: 20,
               alignItems: 'center',
             }}
           >
             <Text
               style={{
-                fontSize: 16,
-                marginBottom: 20,
+                fontSize: width * 0.04,
+                marginBottom: height * 0.01,
                 color: 'black',
                 fontWeight: 'bold',
                 textAlign: 'center',
@@ -183,8 +185,7 @@ export default function ForgotPasswordPage({ navigation }) {
               <TouchableOpacity
                 onPress={resetPassword}
                 style={{
-                  marginTop: 80,
-                  marginBottom: 10,
+                  marginTop: height * 0.07,
                   borderWidth: 3,
                   borderRadius: 50,
                   borderColor: StayAliveColors.StayAliveRed,
@@ -196,7 +197,7 @@ export default function ForgotPasswordPage({ navigation }) {
                 <Text
                   style={{
                     textAlign: 'center',
-                    fontSize: 18,
+                    fontSize: width * 0.04,
                     color: 'white',
                     fontWeight: 'bold',
                   }}
@@ -238,20 +239,20 @@ export default function ForgotPasswordPage({ navigation }) {
               <TouchableOpacity
                 onPress={submitNewPassword}
                 style={{
-                  marginTop: 40,
+                  marginTop: height * 0.01,
                   marginBottom: 10,
                   borderWidth: 3,
                   borderRadius: 50,
                   borderColor: StayAliveColors.StayAliveRed,
-                  paddingHorizontal: 50,
-                  paddingVertical: 10,
+                  paddingHorizontal: width * 0.08,
+                  paddingVertical: height * 0.01,
                   backgroundColor: StayAliveColors.StayAliveRed,
                 }}
               >
                 <Text
                   style={{
                     textAlign: 'center',
-                    fontSize: 18,
+                    fontSize: width * 0.037,
                     color: 'white',
                     fontWeight: 'bold',
                   }}
@@ -264,7 +265,7 @@ export default function ForgotPasswordPage({ navigation }) {
           ) : (
             <Text
               style={{
-                marginTop: 50,
+                marginTop: height * 0.1,
                 fontSize: 16,
                 color: 'black',
                 fontWeight: 'bold',

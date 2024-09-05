@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { TouchableOpacity, Animated, StyleSheet } from 'react-native';
+import { TouchableOpacity, Animated, StyleSheet, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import PropTypes from 'prop-types'; // Import de PropTypes
+import PropTypes from 'prop-types';
 import { StayAliveColors } from '../Style/StayAliveStyle';
+
+const { width, height } = Dimensions.get('window');
 
 const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
   const [isAvailable, setIsAvailable] = useState(defaultValue);
@@ -43,7 +45,7 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
 
   const sliderPosition = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [5, 175],
+    outputRange: [5, width * 0.44],
   });
 
   const textPosition = animation.interpolate({
@@ -74,7 +76,7 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
         >
           <Icon
             name={isAvailable ? 'check' : 'times'}
-            size={24}
+            size={width * 0.06}
             color={isAvailable ? StayAliveColors.StayAliveRed : 'white'}
           />
         </Animated.View>
@@ -100,8 +102,8 @@ const styles = StyleSheet.create({
     borderColor: StayAliveColors.StayAliveRed,
     borderWidth: 2,
     borderRadius: 50,
-    width: 230,
-    height: 60,
+    width: width * 0.58,
+    height: height * 0.078,
     position: 'relative',
     overflow: 'hidden',
     shadowColor: 'black',
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     elevation: 4, // For Android shadow
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: width * 0.048,
     fontWeight: 'bold',
   },
   iconContainer: {
@@ -119,8 +121,8 @@ const styles = StyleSheet.create({
     borderRadius: 22.5,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 45,
-    height: 45,
+    width: width * 0.11,
+    height: height * 0.06,
     borderWidth: 2,
   },
 });
