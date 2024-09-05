@@ -40,10 +40,10 @@ exports[`SendDocumentPage renders correctly 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
-        "left": 20,
+        "left": 37.5,
         "opacity": 1,
         "position": "absolute",
-        "top": 20,
+        "top": 66.7,
         "zIndex": 1,
       }
     }
@@ -95,8 +95,8 @@ exports[`SendDocumentPage renders correctly 1`] = `
         style={
           {
             "alignSelf": "center",
-            "height": 120,
-            "width": 120,
+            "height": 200.1,
+            "width": 240,
           }
         }
       />
@@ -104,10 +104,10 @@ exports[`SendDocumentPage renders correctly 1`] = `
         style={
           {
             "color": "black",
-            "fontSize": 30,
+            "fontSize": 45,
             "fontWeight": "bold",
-            "marginBottom": 40,
-            "marginTop": 20,
+            "marginBottom": 53.36,
+            "marginTop": 13.34,
           }
         }
       >
