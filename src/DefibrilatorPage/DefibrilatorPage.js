@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   Alert,
+  Dimensions,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import MapView, { Marker } from 'react-native-maps'
@@ -18,13 +19,15 @@ import { urlApi } from '../Utils/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Snackbar from 'react-native-snackbar'
 
+const { width, height } = Dimensions.get('window');
+
 export default function DefibrillatorPage({ navigation }) {
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [photo, setPhoto] = useState(null)
   const [region, setRegion] = useState({
-    latitude: 48.8566,
-    longitude: 2.3522,
+    latitude: 48.866667,
+    longitude: 2.333333,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   })
@@ -177,9 +180,9 @@ export default function DefibrillatorPage({ navigation }) {
         style={{
           position: 'absolute',
           alignSelf: 'center',
-          top: -280,
-          width: 510,
-          height: 480,
+          top: -height * 0.4,
+          width: width * 1.2,
+          height: height * 0.65,
           borderRadius: 1000,
           overflow: 'hidden',
         }}
@@ -273,33 +276,33 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: height * 0.04,
   },
   backButton: {
     position: 'absolute',
-    top: 50,
-    left: 35,
+    top: height * 0.06,
+    left: height * 0.05,
     zIndex: 1,
   },
   image: {
     alignSelf: 'center',
-    width: 120,
-    height: 120,
+    width: width * 0.36,
+    height: height * 0.17,
   },
   header: {
-    fontSize: 30,
+    fontSize: width * 0.06,
     fontWeight: 'bold',
     color: 'black',
-    marginBottom: 20,
-    marginTop: 20,
+    marginBottom: height * 0.02,
+    marginTop: height * 0.04,
   },
   innerContainer: {
     alignItems: 'center',
   },
   mapContainer: {
-    width: '90%',
-    height: 200,
-    marginTop: 20,
+    width: width * 0.8,
+    height: height * 0.20,
+    marginTop: height * 0.01,
     borderRadius: 30,
     overflow: 'hidden',
   },
@@ -312,30 +315,29 @@ const styles = StyleSheet.create({
     color: StayAliveColors.StayAliveRed,
   },
   button: {
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: height * 0.01,
+    marginBottom: height * 0.01,
     borderWidth: 3,
     borderRadius: 50,
     borderColor: StayAliveColors.StayAliveRed,
-    paddingHorizontal: 50,
-    paddingVertical: 10,
+    paddingHorizontal: width * 0.1,
+    paddingVertical: height * 0.01,
     maxWidth: 290,
     backgroundColor: StayAliveColors.StayAliveRed,
   },
   buttonText: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: width * 0.04,
     color: 'white',
     fontWeight: 'bold',
   },
   submitButton: {
-    marginTop: 10,
-    marginBottom: 30,
+    marginTop: height * 0.01,
     borderWidth: 3,
     borderRadius: 50,
     borderColor: StayAliveColors.StayAliveRed,
-    paddingHorizontal: 40,
-    paddingVertical: 5,
+    paddingHorizontal: width * 0.08,
+    paddingVertical: height * 0.001,
     maxWidth: 290,
     backgroundColor: 'white',
   },

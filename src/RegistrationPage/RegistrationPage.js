@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -9,6 +9,8 @@ import { StayAliveColors } from '../Style/StayAliveStyle'
 import { SlideInView } from '../Animations/Animations'
 import PropTypes from 'prop-types'
 import { urlApi } from '../Utils/Api'
+
+const { width, height } = Dimensions.get('window');
 
 export default function RegistrationPage({ navigation }) {
   const [names, onChangeNames] = useState('')
@@ -67,43 +69,44 @@ export default function RegistrationPage({ navigation }) {
 
   return (
     <SlideInView duration={400} value={200}>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 30,
+          right: -height * 0.53,
+          width: width * 1.27,
+          height: 500,
+          borderRadius: 10000,
+          overflow: 'hidden',
+        }}
+      >
+        <LinearGradient
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{ flex: 1 }}
+        />
+      </View>
+      <View
+        style={{
+          position: 'absolute',
+          bottom: -height * 0.19,
+          right: -width * 0.4,
+          width: width * 0.75,
+          height: height * 0.38,
+          borderRadius: 10000,
+          overflow: 'hidden',
+        }}
+      >
+        <LinearGradient
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{ flex: 1 }}
+        />
+      </View>
       <ScrollView>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 30,
-            right: -420,
-            width: 500,
-            height: 500,
-            borderRadius: 10000,
-            overflow: 'hidden',
-          }}
-        >
-          <LinearGradient
-            colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={{ flex: 1 }}
-          />
-        </View>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: -150,
-            right: -150,
-            width: 300,
-            height: 300,
-            borderRadius: 10000,
-            overflow: 'hidden',
-          }}
-        >
-          <LinearGradient
-            colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={{ flex: 1 }}
-          />
-        </View>
+
 
         <View style={{ flex: 1 }}>
           <TouchableOpacity
@@ -114,8 +117,8 @@ export default function RegistrationPage({ navigation }) {
               name="arrow-left"
               size={30}
               style={{
-                marginTop: 20,
-                marginLeft: 20,
+                marginTop: height * 0.05,
+                marginLeft: width * 0.07,
               }}
               onPress={() => navigation.navigate('LoginPage')}
             />
@@ -123,27 +126,27 @@ export default function RegistrationPage({ navigation }) {
           <View style={{ flex: 1, alignItems: 'center' }}>
             <Image
               style={{
-                width: 400,
-                height: 400,
-                marginTop: -100,
+                width: width * 0.8,
+                height: height * 0.39,
+                marginTop: -height * 0.13,
                 resizeMode: 'contain',
               }}
               source={require('../../assets/StayAlive1.png')}
             />
             <Image
               style={{
-                width: 160,
-                height: 160,
+                width: width * 0.3,
+                height: height * 0.15,
                 borderRadius: 40,
-                marginTop: -180,
+                marginTop: -height * 0.17,
                 resizeMode: 'contain',
               }}
               source={require('../../assets/StayAlive-logo.png')}
             />
             <Text
               style={{
-                marginTop: 14,
-                fontSize: 22,
+                marginTop: height * 0.01,
+                fontSize: width * 0.05,
                 color: 'black',
                 fontWeight: 'bold',
               }}
@@ -151,7 +154,7 @@ export default function RegistrationPage({ navigation }) {
               Nous rejoindre
             </Text>
 
-            <View style={{ marginTop: 15 }}>
+            <View style={{ marginTop: height * 0.02 }}>
               <TextInputStayAlive
                 valueTestID="names-input"
                 text="Votre nom et prénom"
@@ -209,19 +212,19 @@ export default function RegistrationPage({ navigation }) {
             <TouchableOpacity
               onPress={onClickJoinUs}
               style={{
-                marginTop: 20,
+                marginTop: height * 0.01,
                 borderWidth: 3,
                 borderRadius: 50,
                 borderColor: StayAliveColors.StayAliveRed,
-                paddingHorizontal: 50,
-                paddingVertical: 10,
+                paddingHorizontal: width * 0.1,
+                paddingVertical: height * 0.012,
                 backgroundColor: 'white',
               }}
             >
               <Text
                 style={{
                   textAlign: 'center',
-                  fontSize: 18,
+                  fontSize: width * 0.045,
                   color: StayAliveColors.StayAliveRed,
                   fontWeight: 'bold',
                 }}

@@ -23,6 +23,8 @@ import UnavailableAvailablePage from './UnavailableAvailablePage/UnavailableAvai
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Stack = createNativeStackNavigator()
+import { StayAliveColors } from './Style/StayAliveStyle'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // Handle background notifications
 notifee.onBackgroundEvent(async ({ type, detail }) => {
@@ -55,13 +57,11 @@ export default function App() {
         console.error('Error checking first launch: ', error)
         setInitialRoute('LoginPage')
       }
-    }
-
     requestNotificationPermission()
     checkFirstLaunch()
   }, [])
 
-  return (
+    return (
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator
@@ -100,6 +100,9 @@ export default function App() {
             name="MapDefibrilatorPage"
             component={MapDefibrilatorPage}
           />
+          <Stack.Screen name="DefibrilatorPage" component={DefibrilatorPage} />
+          <Stack.Screen name="ReportBugPage" component={ReportBugPage} />
+          <Stack.Screen name="UnavailableAvailablePage" component={UnavailableAvailablePage} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

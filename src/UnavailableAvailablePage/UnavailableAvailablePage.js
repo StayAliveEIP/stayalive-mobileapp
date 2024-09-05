@@ -7,6 +7,7 @@ import {
   Alert,
   PermissionsAndroid,
   ActivityIndicator,
+  Dimensions,
   Platform,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -16,6 +17,8 @@ import { urlApi } from '../Utils/Api'
 import Geolocation from '@react-native-community/geolocation'
 import StayAliveSlider from './StayAliveSlider'
 import LinearGradient from 'react-native-linear-gradient'
+
+const { width, height } = Dimensions.get('window');
 
 const UnavailableAvailablePage = ({ navigation }) => {
   const [available, setAvailable] = useState(false)
@@ -198,16 +201,16 @@ const UnavailableAvailablePage = ({ navigation }) => {
         <ActivityIndicator
           style={{ position: 'absolute', zIndex: 999 }}
           size="large"
-          color={StayAliveColors.StayAliveRed}
+          color={StayAliveColors.white}
         />
       )}
       <View
         style={{
           position: 'absolute',
-          bottom: -30,
-          left: -420,
-          width: 500,
-          height: 500,
+          bottom: width * 0.03,
+          left: width * -1.05,
+          width: width * 1.25,
+          height: height * 0.5,
           borderRadius: 10000,
           overflow: 'hidden',
         }}
@@ -222,10 +225,10 @@ const UnavailableAvailablePage = ({ navigation }) => {
       <View
         style={{
           position: 'absolute',
-          bottom: -150,
-          left: -150,
-          width: 300,
-          height: 300,
+          bottom: height * -0.2,
+          left: width * -0.4,
+          width: width * 0.8,
+          height: height * 0.38,
           borderRadius: 10000,
           overflow: 'hidden',
         }}
@@ -242,8 +245,8 @@ const UnavailableAvailablePage = ({ navigation }) => {
         testID="profile-badge"
         style={{
           position: 'absolute',
-          top: 50,
-          right: 20,
+          top: height * 0.05,
+          right: width * 0.04,
           shadowColor: '#000',
           shadowOffset: {
             width: 0,
@@ -255,7 +258,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
         }}
       >
         <Image
-          style={{ width: 60, height: 60 }}
+          style={{ width: width * 0.13, height: height * 0.074 }}
           source={require('../../assets/ProfileBadge.png')}
           testID="profile-badge-image"
         />
@@ -263,13 +266,13 @@ const UnavailableAvailablePage = ({ navigation }) => {
 
       <Text
         testID="status-text"
-        style={{ marginTop: 100, fontSize: 24, color: 'black' }}
+        style={{ marginTop: height * 0.1, fontSize: 24, color: 'black' }}
       >
         Votre statut:
       </Text>
       <Text
         style={{
-          fontSize: 28,
+          fontSize: width * 0.06,
           fontWeight: 'bold',
           color: StayAliveColors.StayAliveRed,
           marginTop: 5,
@@ -280,12 +283,12 @@ const UnavailableAvailablePage = ({ navigation }) => {
       </Text>
       {available ? (
         <Image
-          style={{ width: 150, height: 150, marginTop: 30 }}
+          style={{ width: width * 0.37, height: height * 0.17, marginTop: height * 0.04 }}
           source={require('../../assets/AvailableLogo.png')}
         />
       ) : (
         <Image
-          style={{ width: 150, height: 150, marginTop: 30 }}
+          style={{ width: width * 0.37, height: height * 0.17, marginTop: height * 0.04 }}
           source={require('../../assets/UnavailableLogo.png')}
           testID="unavailable-logo"
         />
@@ -305,19 +308,19 @@ const UnavailableAvailablePage = ({ navigation }) => {
             elevation: 5,
             alignItems: 'center',
             maxWidth: '90%',
-            width: 400,
-            marginTop: 50,
+            width: width * 0.9,
+            marginTop: height * 0.02,
           }}
           testID="warning-view"
         >
           <Image
             source={require('../../assets/WarningLogo.png')}
-            style={{ width: 80, height: 80, marginBottom: 15 }}
+            style={{ width: width * 0.2, height: height * 0.1, marginBottom: height * 0.01 }}
             testID="warning-logo"
           />
           <Text
             style={{
-              fontSize: 18,
+              fontSize: width * 0.04,
               fontWeight: 'bold',
               color: StayAliveColors.StayAliveRed,
               marginBottom: 10,
@@ -327,13 +330,13 @@ const UnavailableAvailablePage = ({ navigation }) => {
             Maintenant que vous êtes disponibles :
           </Text>
           <View testID="warning-text" style={{ maxWidth: '80%' }}>
-            <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
+            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
               • Restez attentif aux notifications d'urgence.
             </Text>
-            <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
+            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
               • Gardez votre téléphone à portée de main en tout temps.
             </Text>
-            <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
+            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
               • Soyez prêt à intervenir rapidement en cas d'alerte.
             </Text>
           </View>
@@ -352,19 +355,19 @@ const UnavailableAvailablePage = ({ navigation }) => {
             elevation: 5,
             alignItems: 'center',
             maxWidth: '90%',
-            width: 400,
-            marginTop: 50,
+            width: width * 0.9,
+            marginTop: height * 0.02,
           }}
           testID="warning-view"
         >
           <Image
             source={require('../../assets/WarningLogo.png')}
-            style={{ width: 80, height: 80, marginBottom: 15 }}
+            style={{ width: width * 0.2, height: height * 0.1, marginBottom: height * 0.01 }}
             testID="warning-logo"
           />
           <Text
             style={{
-              fontSize: 18,
+              fontSize: width * 0.04,
               fontWeight: 'bold',
               color: StayAliveColors.StayAliveRed,
               marginBottom: 10,
@@ -374,13 +377,13 @@ const UnavailableAvailablePage = ({ navigation }) => {
             Maintenant que vous êtes indisponibles :
           </Text>
           <View testID="warning-text" style={{ maxWidth: '80%' }}>
-            <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
+            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
               • Changez votre statut lorsque vous êtes prêt à intervenir.
             </Text>
-            <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
+            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
               • Restez informé des mises à jour des situations d'urgence.
             </Text>
-            <Text style={{ fontSize: 16, textAlign: 'left', marginBottom: 5 }}>
+            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
               • Assurez-vous que votre emplacement est mis à jour si nécessaire.
             </Text>
           </View>
