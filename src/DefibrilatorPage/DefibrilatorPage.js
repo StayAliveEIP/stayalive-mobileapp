@@ -19,7 +19,7 @@ import { urlApi } from '../Utils/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Snackbar from 'react-native-snackbar'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export default function DefibrillatorPage({ navigation }) {
   const [name, setName] = useState('')
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     width: width * 0.8,
-    height: height * 0.20,
+    height: height * 0.2,
     marginTop: height * 0.01,
     borderRadius: 30,
     overflow: 'hidden',

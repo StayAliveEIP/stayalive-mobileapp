@@ -1,57 +1,62 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { TouchableOpacity, Animated, StyleSheet, Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import PropTypes from 'prop-types';
-import { StayAliveColors } from '../Style/StayAliveStyle';
+import React, { useState, useEffect, useRef } from 'react'
+import {
+  TouchableOpacity,
+  Animated,
+  StyleSheet,
+  Dimensions,
+} from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import PropTypes from 'prop-types'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
-  const [isAvailable, setIsAvailable] = useState(defaultValue);
-  const animation = useRef(new Animated.Value(defaultValue ? 1 : 0)).current;
+  const [isAvailable, setIsAvailable] = useState(defaultValue)
+  const animation = useRef(new Animated.Value(defaultValue ? 1 : 0)).current
 
   useEffect(() => {
-    setIsAvailable(defaultValue);
+    setIsAvailable(defaultValue)
     Animated.timing(animation, {
       toValue: defaultValue ? 1 : 0,
       duration: 300,
       useNativeDriver: false,
-    }).start();
-  }, [defaultValue]);
+    }).start()
+  }, [defaultValue])
 
   const toggleSwitch = () => {
-    const newValue = !isAvailable;
+    const newValue = !isAvailable
 
     Animated.timing(animation, {
       toValue: newValue ? 1 : 0,
       duration: 300,
       useNativeDriver: false,
-    }).start();
+    }).start()
 
-    setIsAvailable(newValue);
-    setAvailable(newValue);
-    onPress(newValue);
-  };
+    setIsAvailable(newValue)
+    setAvailable(newValue)
+    onPress(newValue)
+  }
 
   const backgroundColor = animation.interpolate({
     inputRange: [0, 1],
     outputRange: ['#F6F7EE', StayAliveColors.StayAliveRed],
-  });
+  })
 
   const textColor = animation.interpolate({
     inputRange: [0, 1],
     outputRange: [StayAliveColors.StayAliveRed, 'white'],
-  });
+  })
 
   const sliderPosition = animation.interpolate({
     inputRange: [0, 1],
     outputRange: [5, width * 0.44],
-  });
+  })
 
   const textPosition = animation.interpolate({
     inputRange: [0, 2],
     outputRange: [80, 20],
-  });
+  })
 
   return (
     <TouchableOpacity style={styles.container} onPress={toggleSwitch}>
@@ -70,7 +75,9 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
             {
               transform: [{ translateX: sliderPosition }],
               borderColor: isAvailable ? 'white' : StayAliveColors.StayAliveRed,
-              backgroundColor: isAvailable ? 'white' : StayAliveColors.StayAliveRed,
+              backgroundColor: isAvailable
+                ? 'white'
+                : StayAliveColors.StayAliveRed,
             },
           ]}
         >
@@ -82,14 +89,14 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
         </Animated.View>
       </Animated.View>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 StayAliveSlider.propTypes = {
   defaultValue: PropTypes.bool.isRequired, // Propriété defaultValue de type booléen requis
   setAvailable: PropTypes.func.isRequired, // Propriété setAvailable de type fonction requise
   onPress: PropTypes.func.isRequired, // Propriété onPress de type fonction requise
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -125,6 +132,6 @@ const styles = StyleSheet.create({
     height: height * 0.06,
     borderWidth: 2,
   },
-});
+})
 
-export default StayAliveSlider;
+export default StayAliveSlider

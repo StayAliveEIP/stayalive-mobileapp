@@ -18,7 +18,7 @@ import Geolocation from '@react-native-community/geolocation'
 import StayAliveSlider from './StayAliveSlider'
 import LinearGradient from 'react-native-linear-gradient'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 const UnavailableAvailablePage = ({ navigation }) => {
   const [available, setAvailable] = useState(false)
@@ -283,12 +283,20 @@ const UnavailableAvailablePage = ({ navigation }) => {
       </Text>
       {available ? (
         <Image
-          style={{ width: width * 0.37, height: height * 0.17, marginTop: height * 0.04 }}
+          style={{
+            width: width * 0.37,
+            height: height * 0.17,
+            marginTop: height * 0.04,
+          }}
           source={require('../../assets/AvailableLogo.png')}
         />
       ) : (
         <Image
-          style={{ width: width * 0.37, height: height * 0.17, marginTop: height * 0.04 }}
+          style={{
+            width: width * 0.37,
+            height: height * 0.17,
+            marginTop: height * 0.04,
+          }}
           source={require('../../assets/UnavailableLogo.png')}
           testID="unavailable-logo"
         />
@@ -315,7 +323,11 @@ const UnavailableAvailablePage = ({ navigation }) => {
         >
           <Image
             source={require('../../assets/WarningLogo.png')}
-            style={{ width: width * 0.2, height: height * 0.1, marginBottom: height * 0.01 }}
+            style={{
+              width: width * 0.2,
+              height: height * 0.1,
+              marginBottom: height * 0.01,
+            }}
             testID="warning-logo"
           />
           <Text
@@ -330,13 +342,31 @@ const UnavailableAvailablePage = ({ navigation }) => {
             Maintenant que vous êtes disponibles :
           </Text>
           <View testID="warning-text" style={{ maxWidth: '80%' }}>
-            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
+            <Text
+              style={{
+                fontSize: width * 0.04,
+                textAlign: 'left',
+                marginBottom: 5,
+              }}
+            >
               • Restez attentif aux notifications d'urgence.
             </Text>
-            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
+            <Text
+              style={{
+                fontSize: width * 0.04,
+                textAlign: 'left',
+                marginBottom: 5,
+              }}
+            >
               • Gardez votre téléphone à portée de main en tout temps.
             </Text>
-            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
+            <Text
+              style={{
+                fontSize: width * 0.04,
+                textAlign: 'left',
+                marginBottom: 5,
+              }}
+            >
               • Soyez prêt à intervenir rapidement en cas d'alerte.
             </Text>
           </View>
@@ -362,7 +392,11 @@ const UnavailableAvailablePage = ({ navigation }) => {
         >
           <Image
             source={require('../../assets/WarningLogo.png')}
-            style={{ width: width * 0.2, height: height * 0.1, marginBottom: height * 0.01 }}
+            style={{
+              width: width * 0.2,
+              height: height * 0.1,
+              marginBottom: height * 0.01,
+            }}
             testID="warning-logo"
           />
           <Text
@@ -377,13 +411,31 @@ const UnavailableAvailablePage = ({ navigation }) => {
             Maintenant que vous êtes indisponibles :
           </Text>
           <View testID="warning-text" style={{ maxWidth: '80%' }}>
-            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
+            <Text
+              style={{
+                fontSize: width * 0.04,
+                textAlign: 'left',
+                marginBottom: 5,
+              }}
+            >
               • Changez votre statut lorsque vous êtes prêt à intervenir.
             </Text>
-            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
+            <Text
+              style={{
+                fontSize: width * 0.04,
+                textAlign: 'left',
+                marginBottom: 5,
+              }}
+            >
               • Restez informé des mises à jour des situations d'urgence.
             </Text>
-            <Text style={{ fontSize: width * 0.04, textAlign: 'left', marginBottom: 5 }}>
+            <Text
+              style={{
+                fontSize: width * 0.04,
+                textAlign: 'left',
+                marginBottom: 5,
+              }}
+            >
               • Assurez-vous que votre emplacement est mis à jour si nécessaire.
             </Text>
           </View>

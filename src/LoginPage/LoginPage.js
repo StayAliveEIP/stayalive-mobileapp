@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -7,29 +7,29 @@ import {
   ScrollView,
   Alert,
   Dimensions,
-  StyleSheet
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FadeInView } from '../Animations/Animations';
-import { StayAliveColors } from '../Style/StayAliveStyle';
-import { TextInputStayAlive } from '../Utils/textInputStayAlive';
-import PropTypes from 'prop-types';
-import { urlApi } from '../Utils/Api';
+  StyleSheet,
+} from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { FadeInView } from '../Animations/Animations'
+import { StayAliveColors } from '../Style/StayAliveStyle'
+import { TextInputStayAlive } from '../Utils/textInputStayAlive'
+import PropTypes from 'prop-types'
+import { urlApi } from '../Utils/Api'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export default function LoginPage({ navigation }) {
-  const [email, onChangeEmail] = useState('');
-  const [password, onChangePassword] = useState('');
+  const [email, onChangeEmail] = useState('')
+  const [password, onChangePassword] = useState('')
 
   LoginPage.propTypes = {
     navigation: PropTypes.object.isRequired,
-  };
+  }
 
   const getAccountInfos = async () => {
-    const token = await AsyncStorage.getItem('userToken');
-    const url = `${urlApi}/rescuer/account`;
+    const token = await AsyncStorage.getItem('userToken')
+    const url = `${urlApi}/rescuer/account`
 
     return fetch(url, {
       method: 'GET',
@@ -40,26 +40,28 @@ export default function LoginPage({ navigation }) {
     })
       .then((response) => {
         if (response.ok) {
-          return response.json();
+          return response.json()
         }
-        return Promise.reject(new Error('Failed to send position'));
+        return Promise.reject(new Error('Failed to send position'))
       })
       .then((data) => {
-        console.log('Account infos: ', data);
-        return data;
+        console.log('Account infos: ', data)
+        return data
       })
       .catch((error) => {
-        console.error('There was an issue with the fetch operation:', error);
-        Alert.alert('Erreur', 'We could not send your position', [{ text: 'OK' }]);
-      });
-  };
+        console.error('There was an issue with the fetch operation:', error)
+        Alert.alert('Erreur', 'We could not send your position', [
+          { text: 'OK' },
+        ])
+      })
+  }
 
   const onClickLogin = () => {
-    const url = `${urlApi}/rescuer/auth/login`;
+    const url = `${urlApi}/rescuer/auth/login`
     const body = JSON.stringify({
       email,
       password,
-    });
+    })
 
     fetch(url, {
       method: 'POST',
@@ -70,36 +72,39 @@ export default function LoginPage({ navigation }) {
     })
       .then((response) => {
         if (response.ok) {
-          return response.json();
+          return response.json()
         }
-        Alert.alert('Erreur', 'Mauvais identifiants ou mot de passe');
-        return Promise.reject(new Error('Invalid credentials'));
+        Alert.alert('Erreur', 'Mauvais identifiants ou mot de passe')
+        return Promise.reject(new Error('Invalid credentials'))
       })
       .then(async (data) => {
-        const token = data.accessToken.split(' ')[1];
-        await AsyncStorage.setItem('userToken', token);
-        const accountData = await getAccountInfos();
-        await AsyncStorage.setItem('userId', accountData?._id);
-        navigation.navigate('UnavailableAvailablePage');
+        const token = data.accessToken.split(' ')[1]
+        await AsyncStorage.setItem('userToken', token)
+        const accountData = await getAccountInfos()
+        await AsyncStorage.setItem('userId', accountData?._id)
+        navigation.navigate('UnavailableAvailablePage')
       })
       .catch((error) => {
         if (error.message !== 'Invalid credentials') {
-          Alert.alert('Erreur', 'Nous ne parvenons pas à contacter nos serveurs');
+          Alert.alert(
+            'Erreur',
+            'Nous ne parvenons pas à contacter nos serveurs'
+          )
         }
-      });
-  };
+      })
+  }
 
   const onClickJoin = () => {
-    navigation.navigate('RegistrationPage');
-  };
+    navigation.navigate('RegistrationPage')
+  }
 
   const onClickLoginWithGoogle = () => {
-    console.log('Google !');
-  };
+    console.log('Google !')
+  }
 
   const onClickForgotPassword = () => {
-    navigation.navigate('ForgotPasswordPage');
-  };
+    navigation.navigate('ForgotPasswordPage')
+  }
 
   return (
     <FadeInView duration={200}>
@@ -120,8 +125,6 @@ export default function LoginPage({ navigation }) {
         />
       </View>
       <ScrollView contentContainerStyle={styles.container}>
-
-
         <View style={styles.content}>
           <Image
             style={styles.mainImage}
@@ -170,7 +173,10 @@ export default function LoginPage({ navigation }) {
 
           <Text style={styles.orText}>OU</Text>
 
-          <TouchableOpacity onPress={onClickLoginWithGoogle} style={styles.googleButton}>
+          <TouchableOpacity
+            onPress={onClickLoginWithGoogle}
+            style={styles.googleButton}
+          >
             <Image
               style={styles.googleIcon}
               source={require('../../assets/GoogleLogo.png')}
@@ -182,7 +188,7 @@ export default function LoginPage({ navigation }) {
         </View>
       </ScrollView>
     </FadeInView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -301,4 +307,4 @@ const styles = StyleSheet.create({
     color: StayAliveColors.StayAliveRed,
     fontWeight: 'bold',
   },
-});
+})

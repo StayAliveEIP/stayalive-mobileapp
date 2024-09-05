@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, } from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 import { StayAliveColors } from '../../Style/StayAliveStyle'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export const CardRescue = ({ number, id, info, address, status }) => {
   const [expanded, setExpanded] = useState(false)
@@ -23,7 +29,7 @@ export const CardRescue = ({ number, id, info, address, status }) => {
 
   return (
     <TouchableOpacity
-      style={{ width: width, alignItems: 'center' }}
+      style={{ width, alignItems: 'center' }}
       onPress={handleToggleExpansion}
       testID={`rescue-card-${id}`}
     >

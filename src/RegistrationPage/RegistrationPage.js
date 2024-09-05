@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  Dimensions,
+} from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -10,7 +17,7 @@ import { SlideInView } from '../Animations/Animations'
 import PropTypes from 'prop-types'
 import { urlApi } from '../Utils/Api'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export default function RegistrationPage({ navigation }) {
   const [names, onChangeNames] = useState('')
@@ -106,8 +113,6 @@ export default function RegistrationPage({ navigation }) {
         />
       </View>
       <ScrollView>
-
-
         <View style={{ flex: 1 }}>
           <TouchableOpacity
             style={{ flex: 1, zIndex: 1 }}

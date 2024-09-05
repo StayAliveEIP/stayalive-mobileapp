@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, TextInput, TouchableOpacity, Dimensions } from 'react-native'
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native'
 import PropTypes from 'prop-types'
 import { StayAliveColors } from '../../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export function EditInfosMenu(props) {
   EditInfosMenu.propTypes = {
@@ -95,9 +101,13 @@ export function EditInfosMenu(props) {
           />
           <TouchableOpacity
             onPress={handleSaveClick}
-            style={{ marginLeft: height * 0.01}}
+            style={{ marginLeft: height * 0.01 }}
           >
-            <Icon name="save" size={width * 0.05} color={StayAliveColors.StayAliveRed} />
+            <Icon
+              name="save"
+              size={width * 0.05}
+              color={StayAliveColors.StayAliveRed}
+            />
           </TouchableOpacity>
         </View>
       ) : (

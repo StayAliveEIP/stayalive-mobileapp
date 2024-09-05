@@ -107,8 +107,8 @@ export function IntroductionPage2({ navigation }) {
               source={require('../../assets/Introduction-logo1.png')}
             />
             <Text style={styles.description2}>
-              Accélération du <Text style={styles.redText}>temps</Text> de
-              prise en charge
+              Accélération du <Text style={styles.redText}>temps</Text> de prise
+              en charge
             </Text>
           </View>
           <View style={styles.textWithLogo}>

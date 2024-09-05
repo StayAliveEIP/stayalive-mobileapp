@@ -3,7 +3,7 @@ import { Text, TextInput, View, Dimensions } from 'react-native'
 import { StayAliveColors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export function TextInputStayAlive(props) {
   TextInputStayAlive.propTypes = {

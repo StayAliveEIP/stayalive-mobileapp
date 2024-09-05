@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export function Menu(props) {
   Menu.propTypes = {

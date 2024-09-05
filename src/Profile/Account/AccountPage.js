@@ -22,7 +22,7 @@ import {
 } from './RequestUpdateInfos/RequestsUpdateInfos'
 import { urlApi } from '../../Utils/Api'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export default function AccountPage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -191,7 +191,7 @@ export default function AccountPage({ navigation }) {
                 padding: 8,
                 borderRadius: 20,
                 right: width * 0.02,
-                top: height * 0.14
+                top: height * 0.14,
               }}
               onPress={selectImage}
             >
