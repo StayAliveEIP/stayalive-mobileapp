@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Snackbar from 'react-native-snackbar'
 import PropTypes from 'prop-types'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export default function SendDocumentPage({ navigation }) {
   const [selectedFiles, setSelectedFiles] = useState({
@@ -143,7 +143,11 @@ export default function SendDocumentPage({ navigation }) {
       <View style={{ alignItems: 'center' }}>
         <View style={{ alignItems: 'center' }}>
           <Image
-            style={{ alignSelf: 'center', width: width * 0.25, height: height * 0.136 }}
+            style={{
+              alignSelf: 'center',
+              width: width * 0.32,
+              height: height * 0.15,
+            }}
             source={require('../../../assets/DocumentLogo.png')}
           />
           <Text

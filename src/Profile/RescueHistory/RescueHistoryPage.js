@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../../Utils/Api'
 import { CardRescue } from './CardRescue'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export default function RescueHistoryPage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -235,13 +235,15 @@ export default function RescueHistoryPage({ navigation }) {
             marginTop: -height * 0.04,
           }}
         >
-          <Text style={{ fontSize: width * 0.04, color: StayAliveColors.black }}>
+          <Text
+            style={{ fontSize: width * 0.04, color: StayAliveColors.black }}
+          >
             Nombre de sauvetages :
           </Text>
           <View
             style={{
               marginLeft: height * 0.01,
-              width: width * 0.07,
+              width: width * 0.08,
               height: height * 0.04,
               borderRadius: 15,
               backgroundColor: StayAliveColors.StayAliveRed,
@@ -249,7 +251,9 @@ export default function RescueHistoryPage({ navigation }) {
               alignItems: 'center',
             }}
           >
-            <Text style={{ color: 'white', fontSize: width * 0.04 }}>{rescueNumber}</Text>
+            <Text style={{ color: 'white', fontSize: width * 0.04 }}>
+              {rescueNumber}
+            </Text>
           </View>
         </View>
         {rescueNumber >= 2 ? (

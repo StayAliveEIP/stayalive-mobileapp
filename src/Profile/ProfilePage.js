@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  Dimensions
+  Dimensions,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -16,7 +16,7 @@ import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export default function ProfilePage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -102,11 +102,7 @@ export default function ProfilePage({ navigation }) {
       </View>
 
       {loading && (
-
-          <ActivityIndicator
-            size="large"
-            color={StayAliveColors.StayAliveRed}
-          />
+        <ActivityIndicator size="large" color={StayAliveColors.StayAliveRed} />
       )}
 
       <View style={{ flex: 1, alignItems: 'center' }}>
@@ -122,7 +118,7 @@ export default function ProfilePage({ navigation }) {
               testID="user-avatar"
               style={{
                 alignSelf: 'center',
-                width: width * 0.38,
+                width: width * 0.4,
                 height: height * 0.19,
                 borderRadius: 100,
                 resizeMode: 'contain',

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 import { StayAliveColors } from '../../Style/StayAliveStyle'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export default function SettingsPage({ navigation }) {
   SettingsPage.propTypes = {
@@ -38,7 +38,11 @@ export default function SettingsPage({ navigation }) {
       <View style={{ alignItems: 'center' }}>
         <View style={{ alignItems: 'flex-start', marginTop: '17%' }}>
           <Image
-            style={{ alignSelf: 'center', width: width * 0.32, height: height * 0.18 }}
+            style={{
+              alignSelf: 'center',
+              width: width * 0.37,
+              height: height * 0.18,
+            }}
             source={require('../../../assets/SettingsLogo.png')}
           />
           <Text

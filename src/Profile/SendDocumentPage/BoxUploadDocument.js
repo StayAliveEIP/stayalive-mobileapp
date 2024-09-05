@@ -5,7 +5,7 @@ import { Image, Text, TouchableOpacity, View, Dimensions } from 'react-native'
 import { StayAliveColors } from '../../Style/StayAliveStyle'
 import SendDocumentPage from './SendDocumentPage'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 const imagePaths = {
   ID_CARD: require('../../../assets/DocumentID.png'),
@@ -43,7 +43,11 @@ export function BoxUploadDocument(props) {
       }}
     >
       <Image
-        style={{ marginTop: height * 0.01, width: width * 0.1, height: height * 0.056 }}
+        style={{
+          marginTop: height * 0.01,
+          width: width * 0.12,
+          height: height * 0.056,
+        }}
         source={imagePaths[id]}
       />
       <Text

@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { View, Text, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native'
 import { FadeInView } from '../Animations/Animations'
 import { StayAliveColors } from '../Style/StayAliveStyle'
 import { TextInputStayAlive } from '../Utils/textInputStayAlive'
@@ -8,14 +15,14 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 import { urlApi } from '../Utils/Api'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export default function ForgotPasswordPage({ navigation }) {
   const [email, onChangeEmail] = useState('')
   const [token, onChangeToken] = useState('')
   const [newPassword, onChangeNewPassword] = useState('')
   const [confirmPassword, onChangeConfirmPassword] = useState('')
-  const [resetStep, setResetStep] = useState(1)
+  const [resetStep, setResetStep] = useState(0)
 
   ForgotPasswordPage.propTypes = {
     navigation: PropTypes.object.isRequired,

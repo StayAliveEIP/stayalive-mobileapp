@@ -16,7 +16,7 @@ import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Snackbar from 'react-native-snackbar'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
 export default function ReportBugPage({ navigation }) {
   ReportBugPage.propTypes = {
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     alignSelf: 'center',
-    width: width * 0.3,
+    width: width * 0.36,
     height: height * 0.17,
   },
   title: {
