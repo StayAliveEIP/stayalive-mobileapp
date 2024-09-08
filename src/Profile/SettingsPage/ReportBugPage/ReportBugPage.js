@@ -15,6 +15,7 @@ import { TextInputStayAlive } from '../../../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Snackbar from 'react-native-snackbar'
+import { tokenReportBug } from '../../../Utils/Api'
 
 const { width, height } = Dimensions.get('window')
 
@@ -51,7 +52,7 @@ export default function ReportBugPage({ navigation }) {
         {
           method: 'POST',
           headers: {
-            Authorization: `token ${process.env.GITHUB_TOKEN}`,
+            Authorization: `token ${tokenReportBug}`,
             Accept: 'application/vnd.github.v3+json',
             'Content-Type': 'application/json',
           },
@@ -61,7 +62,7 @@ export default function ReportBugPage({ navigation }) {
           }),
         }
       )
-
+      console.log(response)
       if (response.status === 201) {
         Snackbar.show({
           text: 'Le bug a été signalé avec succès !',
@@ -80,7 +81,7 @@ export default function ReportBugPage({ navigation }) {
         })
       }
     } catch (error) {
-      console.error(error)
+      console.log(error)
       Snackbar.show({
         text: 'Erreur: Une erreur est survenue',
         duration: Snackbar.LENGTH_LONG,
