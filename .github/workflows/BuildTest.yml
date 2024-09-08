@@ -1,13 +1,14 @@
 name: Build Tests
 
 on:
-  push:
-    branches:
-      - main
-      - dev
+  workflow_run:
+    workflows: ["Style Test"]
+    types:
+      - completed
 
 jobs:
   ReactNative-JestTests:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

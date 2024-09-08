@@ -15,6 +15,4 @@ describe('SettingsPage', () => {
 
     expect(navigationMock.goBack).toHaveBeenCalled()
   })
-
-  // Add more tests as needed
 })
