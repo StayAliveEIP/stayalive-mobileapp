@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
 import Swiper from 'react-native-swiper'
 import LinearGradient from 'react-native-linear-gradient'
 import PropTypes from 'prop-types'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 
 export function IntroductionPage1({ navigation }) {
   IntroductionPage1.propTypes = {
@@ -24,7 +24,7 @@ export function IntroductionPage1({ navigation }) {
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -43,7 +43,7 @@ export function IntroductionPage1({ navigation }) {
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -63,14 +63,14 @@ export function IntroductionPage1({ navigation }) {
         <View style={styles.textContainer}>
           <Text style={styles.title}>Bienvenue sur StayAlive !</Text>
           <Text style={styles.description}>
-            Chaque <Text style={styles.redText}>'seconde'</Text> compte pour
+            Chaque <Text style={styles.redText}>seconde</Text> compte pour
             sauver une vie
           </Text>
           <Text style={styles.description}>
-            C'est la <Text style={styles.redText}>'mission'</Text> de StayAlive
+            C'est la <Text style={styles.redText}>mission</Text> de StayAlive
           </Text>
           <Text style={styles.description}>
-            StayAlive <Text style={styles.redText}>'révolutionne'</Text>{' '}
+            StayAlive <Text style={styles.redText}>révolutionne</Text>{' '}
             l'intervention d'urgence.
           </Text>
         </View>
@@ -107,8 +107,8 @@ export function IntroductionPage2({ navigation }) {
               source={require('../../assets/Introduction-logo1.png')}
             />
             <Text style={styles.description2}>
-              Accélération du <Text style={styles.redText}>'temps'</Text> de
-              prise en charge
+              Accélération du <Text style={styles.redText}>temps</Text> de prise
+              en charge
             </Text>
           </View>
           <View style={styles.textWithLogo}>
@@ -117,7 +117,7 @@ export function IntroductionPage2({ navigation }) {
               source={require('../../assets/Introduction-logo2.png')}
             />
             <Text style={styles.description2}>
-              Accroissement des <Text style={styles.redText}>'chances'</Text> de
+              Accroissement des <Text style={styles.redText}>chances</Text> de
               survie
             </Text>
           </View>
@@ -128,7 +128,7 @@ export function IntroductionPage2({ navigation }) {
             />
             <Text style={styles.description2}>
               <Text> Une communauté </Text>
-              <Text style={styles.redText}>'d'experts'</Text> dédiés et prêts à
+              <Text style={styles.redText}>d'experts</Text> dédiés et prêts à
               agir
             </Text>
           </View>
@@ -165,7 +165,7 @@ export function IntroductionPage3({ navigation }) {
           <Text style={styles.description3}>
             Dès qu'un centre d'appel d'urgence transfère l'alerte, notre système{' '}
             <Text style={styles.redText}>
-              'notifie les soignants qualifiés à proximité'
+              notifie les soignants qualifiés à proximité
             </Text>
             .{'\n\n'}
             Cela garantit une réponse rapide et augmente les chances de survie.
@@ -195,7 +195,7 @@ export default function IntroductionPage({ navigation }) {
             key={i}
             style={{
               fontSize: 40,
-              color: i === index ? colors.StayAliveRed : 'lightgray',
+              color: i === index ? StayAliveColors.StayAliveRed : 'lightgray',
               marginHorizontal: 5,
             }}
           >
@@ -250,15 +250,15 @@ const styles = StyleSheet.create({
   button: {
     borderWidth: 3,
     borderRadius: 50,
-    borderColor: colors.StayAliveRed,
+    borderColor: StayAliveColors.StayAliveRed,
     paddingHorizontal: 50,
     paddingVertical: 10,
-    backgroundColor: colors.StayAliveRed,
+    backgroundColor: StayAliveColors.StayAliveRed,
   },
   buttonText: {
     textAlign: 'center',
     fontSize: 18,
-    color: colors.white,
+    color: StayAliveColors.white,
     fontWeight: 'bold',
   },
   image: {
@@ -281,27 +281,27 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: colors.black,
+    color: StayAliveColors.black,
     marginBottom: 20,
   },
   description: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.black,
+    color: StayAliveColors.black,
     flexWrap: 'wrap',
   },
   description2: {
     flex: 1,
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.black,
+    color: StayAliveColors.black,
     flexWrap: 'wrap',
   },
   description3: {
     alignItems: 'center',
     fontSize: 17,
     fontWeight: 'bold',
-    color: colors.black,
+    color: StayAliveColors.black,
     marginLeft: 20,
   },
   textWithLogo: {
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   redText: {
-    color: colors.StayAliveRed,
+    color: StayAliveColors.StayAliveRed,
   },
   logoIcon: {
     width: 40,

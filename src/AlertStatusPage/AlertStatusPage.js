@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -41,7 +41,7 @@ export default function AlertStatusPage({ navigation, route }) {
 
         if (response.ok) {
           console.log('Emergency refused successfully')
-          navigation.navigate('AvailablePage')
+          navigation.navigate('UnavailableAvailablePage')
         } else {
           console.error('Failed to refuse emergency')
         }
@@ -126,7 +126,7 @@ export default function AlertStatusPage({ navigation, route }) {
           style={{
             fontSize: 28,
             fontWeight: 'bold',
-            color: colors.StayAliveRed,
+            color: StayAliveColors.StayAliveRed,
             marginTop: 5,
           }}
         >
@@ -142,8 +142,8 @@ export default function AlertStatusPage({ navigation, route }) {
       <View
         style={{
           flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
+          flexDirection: 'row', // Assure que les éléments sont disposés horizontalement
+          justifyContent: 'flex-start', // Aligne les éléments sur l'axe principal (horizontalement) à gauche
           alignItems: 'center',
           marginLeft: 0,
           maxWidth: 300,
@@ -246,10 +246,10 @@ export default function AlertStatusPage({ navigation, route }) {
           marginBottom: 10,
           borderWidth: 3,
           borderRadius: 50,
-          borderColor: colors.StayAliveRed,
+          borderColor: StayAliveColors.StayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 10,
-          backgroundColor: colors.StayAliveRed,
+          backgroundColor: StayAliveColors.StayAliveRed,
           maxWidth: 500,
           alignSelf: 'center',
         }}
@@ -273,19 +273,19 @@ export default function AlertStatusPage({ navigation, route }) {
           marginBottom: 40,
           borderWidth: 3,
           borderRadius: 50,
-          borderColor: colors.StayAliveRed,
+          borderColor: StayAliveColors.StayAliveRed,
           paddingHorizontal: 50,
           paddingVertical: 10,
           backgroundColor: 'white',
-          maxWidth: 500,
-          alignSelf: 'center',
+          maxWidth: 500, // Ajoutez cette ligne pour définir une largeur maximale
+          alignSelf: 'center', // Ajoutez cette ligne pour centrer le bouton horizontalement
         }}
       >
         <Text
           style={{
             textAlign: 'center',
             fontSize: 18,
-            color: colors.StayAliveRed,
+            color: StayAliveColors.StayAliveRed,
             fontWeight: 'bold',
           }}
           testID="joinUs-button"

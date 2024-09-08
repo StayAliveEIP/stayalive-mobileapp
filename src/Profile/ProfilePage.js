@@ -6,14 +6,17 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { Menu } from './Menu'
-import { colors } from '../Style/StayAliveStyle'
+import { StayAliveColors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
+
+const { width, height } = Dimensions.get('window')
 
 export default function ProfilePage({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -83,15 +86,15 @@ export default function ProfilePage({ navigation }) {
       <View
         style={{
           alignSelf: 'center',
-          top: -260,
-          width: 550,
-          height: 500,
+          top: -height * 0.35,
+          width: width * 1.3,
+          height: height * 0.6,
           borderRadius: 1000,
           overflow: 'hidden',
         }}
       >
         <LinearGradient
-          colors={[colors.StayAliveRed, colors.white]}
+          colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{ flex: 1 }}
@@ -99,20 +102,7 @@ export default function ProfilePage({ navigation }) {
       </View>
 
       {loading && (
-        <View
-          style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <ActivityIndicator size="large" color={colors.StayAliveRed} />
-        </View>
+        <ActivityIndicator size="large" color={StayAliveColors.StayAliveRed} />
       )}
 
       <View style={{ flex: 1, alignItems: 'center' }}>
@@ -121,15 +111,15 @@ export default function ProfilePage({ navigation }) {
             style={{
               position: 'absolute',
               justifyContent: 'center',
-              top: -360,
+              top: -height * 0.49,
             }}
           >
             <Image
               testID="user-avatar"
               style={{
                 alignSelf: 'center',
-                width: 160,
-                height: 160,
+                width: width * 0.4,
+                height: height * 0.19,
                 borderRadius: 100,
                 resizeMode: 'contain',
               }}
@@ -146,9 +136,9 @@ export default function ProfilePage({ navigation }) {
           testID="user-name"
           style={{
             alignSelf: 'center',
-            top: -210,
-            marginTop: 14,
-            fontSize: 22,
+            top: -height * 0.3,
+            marginTop: height * 0.02,
+            fontSize: width * 0.06,
             color: 'black',
             fontWeight: 'bold',
           }}
@@ -162,8 +152,8 @@ export default function ProfilePage({ navigation }) {
           testID="button-left-arrow"
           style={{
             position: 'absolute',
-            top: -440,
-            left: 30,
+            top: height * -0.55,
+            left: width * 0.1,
             zIndex: 1,
           }}
           onPress={goBack}
@@ -190,6 +180,12 @@ export default function ProfilePage({ navigation }) {
         />
         <Menu
           navigation={navigation}
+          name="Les Défibrilateurs"
+          icon="heart-outline"
+          goTo="DefibrilatorListPage"
+        />
+        <Menu
+          navigation={navigation}
           name="Préférences"
           icon="settings-outline"
           goTo="SettingsPage"
@@ -199,10 +195,10 @@ export default function ProfilePage({ navigation }) {
           style={{
             position: 'absolute',
             alignSelf: 'center',
-            marginTop: 200,
+            marginTop: height * 0.25,
             borderWidth: 3,
             borderRadius: 50,
-            borderColor: colors.StayAliveRed,
+            borderColor: StayAliveColors.StayAliveRed,
             paddingHorizontal: 50,
             paddingVertical: 10,
             backgroundColor: 'white',
@@ -212,8 +208,8 @@ export default function ProfilePage({ navigation }) {
           <Text
             style={{
               textAlign: 'center',
-              fontSize: 18,
-              color: colors.StayAliveRed,
+              fontSize: width * 0.045,
+              color: StayAliveColors.StayAliveRed,
               fontWeight: 'bold',
             }}
             testID="joinUs-button"

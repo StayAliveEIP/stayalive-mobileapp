@@ -100,7 +100,7 @@ describe('LoginPage', () => {
         }),
       })
       expect(Alert.alert).toHaveBeenCalledWith(
-        'Error',
+        'Erreur',
         'Nous ne parvenons pas à contacter nos serveurs'
       )
     })

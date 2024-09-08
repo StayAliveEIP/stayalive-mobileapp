@@ -1,8 +1,16 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { colors } from '../../Style/StayAliveStyle'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
+import { StayAliveColors } from '../../Style/StayAliveStyle'
+
+const { width, height } = Dimensions.get('window')
 
 export const CardRescue = ({ number, id, info, address, status }) => {
   const [expanded, setExpanded] = useState(false)
@@ -21,7 +29,7 @@ export const CardRescue = ({ number, id, info, address, status }) => {
 
   return (
     <TouchableOpacity
-      style={{ width: '100%', alignItems: 'center' }}
+      style={{ width, alignItems: 'center' }}
       onPress={handleToggleExpansion}
       testID={`rescue-card-${id}`}
     >
@@ -30,8 +38,8 @@ export const CardRescue = ({ number, id, info, address, status }) => {
           <Text style={styles.title}>Sauvetage {number}</Text>
           <Icon
             name={expanded ? 'chevron-up' : 'chevron-down'}
-            size={20}
-            color={colors.black}
+            size={width * 0.05}
+            color={StayAliveColors.black}
           />
         </View>
         <View style={styles.row}>
@@ -66,9 +74,9 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     borderRadius: 8,
-    padding: 15,
+    padding: height * 0.02,
     marginBottom: 20,
-    width: '80%',
+    width: width * 0.8,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -84,8 +92,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
-    color: colors.StayAliveRed,
+    fontSize: width * 0.057,
+    color: StayAliveColors.StayAliveRed,
     fontWeight: 'bold',
   },
   row: {
@@ -93,20 +101,20 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontWeight: 'bold',
-    color: colors.black,
+    color: StayAliveColors.black,
   },
   id: {
     fontStyle: 'italic',
     color: '#666',
-    marginBottom: 10,
+    marginBottom: height * 0.01,
   },
   status: {
     fontStyle: 'italic',
     color: '#666',
   },
   infos: {
-    color: colors.black,
-    maxWidth: 265,
+    color: StayAliveColors.black,
+    maxWidth: width * 0.6,
   },
   separator: {
     borderBottomColor: '#ddd',

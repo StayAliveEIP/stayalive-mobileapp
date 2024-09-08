@@ -1,4 +1,4 @@
-export const colors = {
+export const StayAliveColors = {
   StayAliveRed: '#E33A26',
   white: '#FFFFFF',
   black: '#000000',

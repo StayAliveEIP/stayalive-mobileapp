@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SendDocumentPage renders correctly 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "left": 37.5,
+        "opacity": 1,
+        "position": "absolute",
+        "top": 66.7,
+        "zIndex": 1,
+      }
+    }
+    testID="button-left-arrow"
+  >
+    <Text
+      allowFontScaling={false}
+      selectable={false}
+      style={
+        [
+          {
+            "color": undefined,
+            "fontSize": 30,
+          },
+          undefined,
+          {
+            "fontFamily": "FontAwesome",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          {},
+        ]
+      }
+      testID="document-logo"
+    >
+      
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "alignItems": "center",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+        }
+      }
+    >
+      <Image
+        source={
+          {
+            "testUri": "../../../assets/DocumentLogo.png",
+          }
+        }
+        style={
+          {
+            "alignSelf": "center",
+            "height": 200.1,
+            "width": 240,
+          }
+        }
+      />
+      <Text
+        style={
+          {
+            "color": "black",
+            "fontSize": 45,
+            "fontWeight": "bold",
+            "marginBottom": 53.36,
+            "marginTop": 13.34,
+          }
+        }
+      >
+        Envoyer mes documents
+      </Text>
+    </View>
+    <ActivityIndicator
+      color="#E33A26"
+      size="large"
+    />
+  </View>
+</View>
+`;
