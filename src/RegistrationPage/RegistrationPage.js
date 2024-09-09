@@ -183,7 +183,7 @@ export default function RegistrationPage({ navigation }) {
                 }}
               >
                 <TextInputStayAlive
-                  valueTestID="login-password-input"
+                  valueTestID="password-input"
                   text="Votre mot de passe"
                   field={password}
                   onChangeField={onChangePassword}
