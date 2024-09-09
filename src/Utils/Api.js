@@ -1,4 +1,4 @@
 export const urlApi = 'https://api.stayalive.fr'
 
 export const tokenReportBug =
-  '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'
+  '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'

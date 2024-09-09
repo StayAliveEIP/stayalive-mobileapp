@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { View, Text, ActivityIndicator } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import RegistrationPage from './RegistrationPage/RegistrationPage'
@@ -21,10 +22,10 @@ import { UserProvider } from './Utils/UserContext'
 import notifee, { EventType } from '@notifee/react-native'
 import UnavailableAvailablePage from './UnavailableAvailablePage/UnavailableAvailablePage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { StayAliveColors } from './Style/StayAliveStyle'
 
 const Stack = createNativeStackNavigator()
 
-// Handle background notifications
 notifee.onBackgroundEvent(async ({ type, detail }) => {
   const { notification, pressAction } = detail
 
@@ -46,19 +47,29 @@ export default function App() {
       try {
         const firstLaunch = await AsyncStorage.getItem('firstLaunch')
         if (firstLaunch === null) {
+          console.log('First launch')
           await AsyncStorage.setItem('firstLaunch', 'false')
           setInitialRoute('IntroductionPage')
         } else {
+          console.log('Not First launch')
           setInitialRoute('LoginPage')
         }
       } catch (error) {
         console.error('Error checking first launch: ', error)
-        setInitialRoute('LoginPage')
       }
     }
     requestNotificationPermission()
     checkFirstLaunch()
   }, [])
+
+  if (initialRoute === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={StayAliveColors.StayAliveRed} />
+        <Text>Chargement...</Text>
+      </View>
+    )
+  }
 
   return (
     <UserProvider>

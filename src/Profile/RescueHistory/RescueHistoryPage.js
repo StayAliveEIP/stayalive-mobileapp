@@ -170,7 +170,7 @@ export default function RescueHistoryPage({ navigation }) {
         </View>
       )}
 
-      <View style={{ flex: 1, alignItems: 'center' }}>
+      <View style={{ alignItems: 'center' }}>
         <View style={{ position: 'absolute', alignItems: 'center' }}>
           <View
             style={{
@@ -256,22 +256,24 @@ export default function RescueHistoryPage({ navigation }) {
             </Text>
           </View>
         </View>
-        {rescueNumber >= 2 ? (
+        {rescueNumber > 1 && (
           <TextInput
             style={{
-              height: height * 0.05,
-              width: width * 0.88,
+              height: height * 0.04,
+              marginTop: height * 0.02,
+              marginBottom: height * 0.04,
+              width: width * 0.75,
+              alignSelf: 'center',
               borderColor: 'gray',
               borderWidth: 1,
               borderRadius: 10,
-              marginBottom: 20,
               padding: 10,
             }}
             onChangeText={(text) => setSearchTerm(text)}
             value={searchTerm}
             placeholder="Rechercher une information d'un sauvetage..."
           />
-        ) : null}
+        )}
 
         {rescueNumber === 0 ? (
           <Text
