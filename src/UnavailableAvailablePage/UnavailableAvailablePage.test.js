@@ -7,6 +7,12 @@ jest.mock('@react-native-community/geolocation', () => ({
   getCurrentPosition: jest.fn(),
 }))
 
+jest.mock('@notifee/react-native', () => ({
+  requestPermission: jest.fn(),
+  createChannel: jest.fn(),
+  displayNotification: jest.fn(),
+}))
+
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn().mockResolvedValue('mockToken'),
 }))

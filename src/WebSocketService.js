@@ -79,12 +79,12 @@ class WebSocketService {
       if (token) {
         const socketUrl = `${urlApi}/rescuer/ws?token=${token}`
         this.socket = io(socketUrl)
-
+        console.log('WebSocket initialized:', socketUrl)
         this.socket.on('message', (data) => {
-          const jsonData = data?.data
-          if (jsonData !== null && jsonData !== undefined)
-            this.onDisplayNotification(navigation, jsonData, token)
-          navigation.navigate('AlertStatusPage', { dataAlert: jsonData })
+          if (data.data !== undefined) {
+            this.onDisplayNotification(navigation, data.data, token)
+            navigation.navigate('AlertStatusPage', { dataAlert: data.data })
+          }
         })
 
         await AsyncStorage.setItem('Websocket', socketUrl)
@@ -95,11 +95,13 @@ class WebSocketService {
   }
 
   disconnectWebSocket() {
-    if (this.socket !== null) {
+    if (this.socket && this.socket.connected) {
       console.log('Disconnecting WebSocket...')
       this.socket.disconnect()
       this.socket.removeAllListeners()
       this.socket = null
+    } else {
+      console.log('WebSocket is not connected or already disconnected.')
     }
   }
 }

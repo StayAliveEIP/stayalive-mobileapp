@@ -31,7 +31,6 @@ export default function Maps({ navigation, route }) {
   const [origin, setOrigin] = useState(null)
   const [currentPosition, setCurrentPosition] = useState(null)
   const [expanded, setExpanded] = useState(true)
-  const [walkingDuration, setWalkingDuration] = useState(null)
 
   Maps.propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -95,30 +94,6 @@ export default function Maps({ navigation, route }) {
 
     calculateRegion()
   }, [])
-
-  useEffect(() => {
-    const fetchWalkingDuration = async () => {
-      try {
-        console.log(currentPosition)
-        const response = await fetch(
-          `https://maps.googleapis.com/maps/api/directions/json?origin=${currentPosition.coords.latitude},${currentPosition.coords.longitude}&destination=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&mode=walking&key=AIzaSyDZzzsyTDbIIkYjUII8pAQbbkpBA3Amwj0`
-        )
-        const data = await response.json()
-        console.log(data)
-        const duration = data.routes[0].legs[0].duration.text
-        setWalkingDuration(duration)
-        console.log('Walking duration:', duration)
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération du temps d'itinéraire à pied :",
-          error
-        )
-      }
-    }
-    if (origin && currentPosition) {
-      fetchWalkingDuration()
-    }
-  }, [origin, currentPosition])
 
   const showMapOptions = () => {
     if (Platform.OS === 'ios') {
@@ -253,13 +228,13 @@ export default function Maps({ navigation, route }) {
           {expanded ? (
             <Icon
               name="chevron-down"
-              size={30}
+              size={width * 0.08}
               color={StayAliveColors.StayAliveRed}
             />
           ) : (
             <Icon
               name="chevron-up"
-              size={30}
+              size={width * 0.08}
               color={StayAliveColors.StayAliveRed}
             />
           )}
@@ -294,14 +269,6 @@ export default function Maps({ navigation, route }) {
           </>
         )}
       </TouchableOpacity>
-      <View style={styles.timeContainer}>
-        <View style={styles.timeBox}>
-          <Text style={styles.timeText}>{walkingDuration}</Text>
-        </View>
-        <Text style={styles.addressText}>
-          {dataAlert?.data?.emergency?.address}
-        </Text>
-      </View>
     </View>
   )
 }
@@ -331,125 +298,99 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  timeContainer: {
-    borderColor: StayAliveColors.StayAliveRed,
-    borderWidth: 2,
-    bottom: '185%',
-    maxWidth: '90%',
-    alignSelf: 'center',
-    flexDirection: 'row',
-    backgroundColor: 'white',
-  },
-  timeBox: {
-    backgroundColor: StayAliveColors.StayAliveRed,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  timeText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  addressText: {
-    textAlign: 'center',
-    fontSize: 15,
-    maxWidth: '50%',
-    fontWeight: 'bold',
-    color: StayAliveColors.StayAliveRed,
-  },
   floatingWindowExpanded: {
     position: 'absolute',
     bottom: 50,
     alignSelf: 'center',
-    width: '80%',
-    maxHeight: height / 2,
+    width: width * 0.83,
+    maxHeight: height * 0.5,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 20,
+    padding: width * 0.04,
   },
   floatingWindowNotExpanded: {
     position: 'absolute',
-    bottom: 50,
+    bottom: height * 0.04,
     alignSelf: 'center',
-    width: '80%',
-    maxHeight: height / 2,
+    width: width * 0.8,
+    maxHeight: height * 0.5,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 5,
+    padding: width * 0.04,
   },
   header: {
     alignItems: 'center',
   },
   title: {
     color: StayAliveColors.StayAliveRed,
-    fontSize: 18,
+    fontSize: width * 0.05,
     fontWeight: 'bold',
   },
   infoSection: {
-    marginVertical: 20,
+    marginVertical: height * 0.01,
   },
   infoItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
-    maxWidth: 250,
+    marginBottom: height * 0.01,
+    maxWidth: width * 0.6,
   },
   icon: {
-    marginRight: 10,
-    fontSize: 24,
+    marginRight: height * 0.01,
+    fontSize: width * 0.06,
     color: 'white',
   },
   iconChatEmergency: {
-    fontSize: 30,
+    fontSize: width * 0.08,
     color: 'white',
   },
   infoName: {
-    fontSize: 18,
+    fontSize: width * 0.05,
   },
   infoDetail: {
-    fontSize: 15,
+    fontSize: width * 0.037,
     fontWeight: 'bold',
   },
   buttonSection: {
     alignItems: 'center',
   },
   redButton: {
-    marginTop: 10,
-    marginBottom: 5,
+    marginTop: height * 0.01,
+    marginBottom: height * 0.01,
     borderWidth: 3,
     borderRadius: 50,
     borderColor: StayAliveColors.StayAliveRed,
-    paddingHorizontal: 50,
-    paddingVertical: 10,
+    paddingHorizontal: width * 0.08,
+    paddingVertical: height * 0.01,
     backgroundColor: StayAliveColors.StayAliveRed,
   },
   whiteButton: {
-    marginTop: 5,
-    marginBottom: 10,
+    marginBottom: height * 0.01,
     borderWidth: 3,
     borderRadius: 50,
     borderColor: StayAliveColors.StayAliveRed,
-    paddingHorizontal: 50,
-    paddingVertical: 10,
+    paddingHorizontal: width * 0.07,
+    paddingVertical: width * 0.02,
     backgroundColor: 'white',
   },
   buttonText: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: width * 0.04,
     color: 'white',
     fontWeight: 'bold',
   },
   redText: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: width * 0.04,
     color: StayAliveColors.StayAliveRed,
     fontWeight: 'bold',
   },
   chatButton: {
     position: 'absolute',
-    top: 20,
-    left: 20,
+    top: height * 0.03,
+    left: width * 0.08,
     borderRadius: 50,
     backgroundColor: StayAliveColors.StayAliveRed,
-    padding: 12,
+    padding: width * 0.03,
   },
 })

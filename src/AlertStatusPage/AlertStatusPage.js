@@ -1,10 +1,12 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native'
 import { StayAliveColors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
+
+const { width, height } = Dimensions.get('window')
 
 export default function AlertStatusPage({ navigation, route }) {
   const { dataAlert } = route.params
@@ -93,13 +95,9 @@ export default function AlertStatusPage({ navigation, route }) {
         onPress={goProfilePage}
         style={{
           position: 'absolute',
-          top: 50,
-          right: 20,
+          top: height * 0.05,
+          right: width * 0.05,
           shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
           shadowOpacity: 0.25,
           shadowRadius: 3.84,
           elevation: 5,
@@ -107,7 +105,7 @@ export default function AlertStatusPage({ navigation, route }) {
       >
         <Image
           testID="profile-badge-image"
-          style={{ width: 60, height: 60 }}
+          style={{ width: width * 0.14, height: height * 0.07 }}
           source={require('../../assets/ProfileBadge.png')}
         />
       </TouchableOpacity>
@@ -117,17 +115,19 @@ export default function AlertStatusPage({ navigation, route }) {
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: 150,
+          marginTop: height * 0.2,
         }}
       >
-        <Text style={{ fontSize: 24, color: 'black' }}>Votre statut:</Text>
+        <Text style={{ fontSize: width * 0.06, color: 'black' }}>
+          Votre statut:
+        </Text>
         <Text
           testID="status-text"
           style={{
-            fontSize: 28,
+            fontSize: width * 0.065,
             fontWeight: 'bold',
             color: StayAliveColors.StayAliveRed,
-            marginTop: 5,
+            marginTop: height * 0.01,
           }}
         >
           En attente de réponse ...
@@ -135,7 +135,11 @@ export default function AlertStatusPage({ navigation, route }) {
 
         <Image
           testID="unavailable-logo"
-          style={{ width: 150, height: 150, marginTop: 30 }}
+          style={{
+            width: width * 0.38,
+            height: height * 0.2,
+            marginTop: height * 0.02,
+          }}
           source={require('../../assets/WarningLogo.png')}
         />
       </View>
@@ -145,26 +149,25 @@ export default function AlertStatusPage({ navigation, route }) {
           flexDirection: 'row', // Assure que les éléments sont disposés horizontalement
           justifyContent: 'flex-start', // Aligne les éléments sur l'axe principal (horizontalement) à gauche
           alignItems: 'center',
-          marginLeft: 0,
-          maxWidth: 300,
+          maxWidth: width * 0.7,
         }}
       >
         <View
           style={{
-            marginRight: 10,
+            marginRight: width * 0.02,
             backgroundColor: 'lightcoral',
             borderRadius: 100,
             padding: 10,
-            marginLeft: 20,
+            marginLeft: width * 0.05,
           }}
         >
-          <Icon name="flag-o" size={30} color="red" />
+          <Icon name="flag-o" size={width * 0.07} color="red" />
         </View>
         <View>
           <Text
             style={{
               textAlign: 'left',
-              fontSize: 18,
+              fontSize: width * 0.05,
               color: 'gray',
               fontWeight: 'bold',
             }}
@@ -174,7 +177,7 @@ export default function AlertStatusPage({ navigation, route }) {
           <Text
             style={{
               textAlign: 'left',
-              fontSize: 16,
+              fontSize: width * 0.04,
               color: 'black',
               fontWeight: 'bold',
             }}
@@ -187,14 +190,14 @@ export default function AlertStatusPage({ navigation, route }) {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginBottom: 70,
-          maxWidth: 350,
-          marginTop: -50,
+          marginBottom: height * 0.07,
+          maxWidth: width * 0.7,
+          marginTop: -height * 0.06,
         }}
       >
         <View
           style={{
-            marginRight: 10,
+            marginRight: width * 0.02,
           }}
         >
           <View
@@ -205,10 +208,10 @@ export default function AlertStatusPage({ navigation, route }) {
               aspectRatio: 1,
               justifyContent: 'center',
               alignItems: 'center',
-              marginLeft: 20,
+              marginLeft: width * 0.05,
             }}
           >
-            <Icon name="user-o" size={30} color="red" />
+            <Icon name="user-o" size={width * 0.07} color="red" />
           </View>
         </View>
         <View
@@ -219,7 +222,7 @@ export default function AlertStatusPage({ navigation, route }) {
           <Text
             style={{
               textAlign: 'left',
-              fontSize: 18,
+              fontSize: width * 0.05,
               color: 'gray',
               fontWeight: 'bold',
             }}
@@ -229,7 +232,7 @@ export default function AlertStatusPage({ navigation, route }) {
           <Text
             style={{
               textAlign: 'left',
-              fontSize: 16,
+              fontSize: width * 0.04,
               color: 'black',
               fontWeight: 'bold',
             }}
@@ -242,22 +245,22 @@ export default function AlertStatusPage({ navigation, route }) {
       <TouchableOpacity
         onPress={AcceptAlert}
         style={{
-          marginTop: 20,
-          marginBottom: 10,
+          marginTop: height * 0.02,
+          marginBottom: height * 0.01,
           borderWidth: 3,
           borderRadius: 50,
           borderColor: StayAliveColors.StayAliveRed,
-          paddingHorizontal: 50,
-          paddingVertical: 10,
+          paddingHorizontal: width * 0.09,
+          paddingVertical: height * 0.013,
           backgroundColor: StayAliveColors.StayAliveRed,
-          maxWidth: 500,
+          maxWidth: width * 0.7,
           alignSelf: 'center',
         }}
       >
         <Text
           style={{
             textAlign: 'center',
-            fontSize: 18,
+            fontSize: width * 0.04,
             color: 'white',
             fontWeight: 'bold',
           }}
@@ -270,21 +273,21 @@ export default function AlertStatusPage({ navigation, route }) {
       <TouchableOpacity
         onPress={RefuseAlert}
         style={{
-          marginBottom: 40,
+          marginBottom: height * 0.07,
           borderWidth: 3,
           borderRadius: 50,
           borderColor: StayAliveColors.StayAliveRed,
-          paddingHorizontal: 50,
-          paddingVertical: 10,
+          paddingHorizontal: width * 0.09,
+          paddingVertical: height * 0.013,
           backgroundColor: 'white',
-          maxWidth: 500, // Ajoutez cette ligne pour définir une largeur maximale
-          alignSelf: 'center', // Ajoutez cette ligne pour centrer le bouton horizontalement
+          maxWidth: width * 0.7,
+          alignSelf: 'center',
         }}
       >
         <Text
           style={{
             textAlign: 'center',
-            fontSize: 18,
+            fontSize: width * 0.04,
             color: StayAliveColors.StayAliveRed,
             fontWeight: 'bold',
           }}
