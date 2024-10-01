@@ -15,16 +15,17 @@ import { TextInputStayAlive } from '../../../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Snackbar from 'react-native-snackbar'
+import { launchImageLibrary } from 'react-native-image-picker'
+import { tokenReportBug, urlApi } from '../../../Utils/Api'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const { width, height } = Dimensions.get('window')
 
 export default function ReportBugPage({ navigation }) {
-  ReportBugPage.propTypes = {
-    navigation: PropTypes.object.isRequired,
-  }
-
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
+  const [importance, setImportance] = useState(1) // Default importance level
+  const [photos, setPhotos] = useState([]) // To store selected photos
   const [loading, setLoading] = useState(false)
 
   const goBack = () => {
@@ -32,10 +33,16 @@ export default function ReportBugPage({ navigation }) {
     navigation.goBack()
   }
 
-  const handleSubmit = async () => {
-    if (title.trim() === '' || description.trim() === '') {
+  ReportBugPage.propTypes = {
+    navigation: PropTypes.shape({
+      goBack: PropTypes.func.isRequired,
+    }).isRequired,
+  }
+
+  const handleImagePick = () => {
+    if (photos.length >= 5) {
       Snackbar.show({
-        text: 'Erreur: Veuillez remplir tous les champs',
+        text: 'Vous ne pouvez ajouter que 5 photos',
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: 'white',
         textColor: 'red',
@@ -43,28 +50,110 @@ export default function ReportBugPage({ navigation }) {
       return
     }
 
+    launchImageLibrary({ mediaType: 'photo' }, (response) => {
+      if (response.didCancel) {
+        console.log('Image picker cancelled')
+      } else if (response.error) {
+        console.error('Image picker error', response.error)
+      } else {
+        setPhotos([...photos, response.assets[0]])
+      }
+    })
+  }
+
+  const removePhoto = (index) => {
+    const newPhotos = [...photos]
+    newPhotos.splice(index, 1)
+    setPhotos(newPhotos)
+  }
+
+  const sendToBackend = async () => {
     setLoading(true)
 
+    try {
+      const token = await AsyncStorage.getItem('userToken') // Récupération du token
+
+      const formData = new FormData()
+
+      formData.append('message', `${title}\n${description}`)
+
+      // Ajout des fichiers photos
+      photos.forEach((photo) => {
+        formData.append('file', {
+          uri: photo.uri,
+          type: photo.type || 'image/jpeg', // Assurez-vous d'indiquer le bon type MIME
+          name: photo.fileName || 'photo.jpg', // Utiliser un nom de fichier par défaut si fileName n'est pas défini
+        })
+      })
+
+      // Ajout du niveau d'importance
+      formData.append('level', importance)
+
+      // Envoyer la requête à votre backend
+      const response = await fetch(`${urlApi}/rescuer/report/bug`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`, // Utiliser le token récupéré
+          Accept: 'application/json',
+        },
+        body: formData,
+      })
+
+      console.log(response)
+
+      if (response.ok) {
+        Snackbar.show({
+          text: 'Le bug a été signalé avec succès à nos serveurs!',
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: 'white',
+          textColor: 'green',
+        })
+        setTitle('')
+        setDescription('')
+        setPhotos([]) // Réinitialiser les photos après le succès
+      } else {
+        Snackbar.show({
+          text: "Erreur: Une erreur est survenue dans l'envoie du bug à nos serveurs",
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: 'white',
+          textColor: 'red',
+        })
+      }
+    } catch (error) {
+      console.log(error)
+      Snackbar.show({
+        text: "Erreur: Une erreur est survenue dans l'envoie du bug à nos serveurs",
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: 'white',
+        textColor: 'red',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const sendToGithub = async () => {
+    setLoading(true)
     try {
       const response = await fetch(
         'https://api.github.com/repos/StayAliveEIP/stayalive-mobileapp/issues',
         {
           method: 'POST',
           headers: {
-            Authorization: `token ${process.env.GITHUB_TOKEN}`,
+            Authorization: `token ${tokenReportBug}`,
             Accept: 'application/vnd.github.v3+json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             title,
-            body: description,
+            body: `Importance : ${importance}\n\n${description}`,
           }),
         }
       )
-
+      console.log(response)
       if (response.status === 201) {
         Snackbar.show({
-          text: 'Le bug a été signalé avec succès !',
+          text: 'Le bug a été signalé avec succès à notre Github !',
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: 'white',
           textColor: 'green',
@@ -73,16 +162,16 @@ export default function ReportBugPage({ navigation }) {
         setDescription('')
       } else {
         Snackbar.show({
-          text: 'Erreur: Une erreur est survenue',
+          text: "Erreur: Une erreur est survenue dans l'envoie du bug à notre Github",
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: 'white',
           textColor: 'red',
         })
       }
     } catch (error) {
-      console.error(error)
+      console.log(error)
       Snackbar.show({
-        text: 'Erreur: Une erreur est survenue',
+        text: "Erreur: Une erreur est survenue dans l'envoie du bug à notre Github",
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: 'white',
         textColor: 'red',
@@ -90,6 +179,23 @@ export default function ReportBugPage({ navigation }) {
     } finally {
       setLoading(false)
     }
+  }
+  const handleSubmit = async () => {
+    if (
+      title.trim() === '' ||
+      description.trim() === '' ||
+      photos.length === 0
+    ) {
+      Snackbar.show({
+        text: 'Erreur: Veuillez remplir tous les champs et ajouter au moins une photo.',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: 'white',
+        textColor: 'red',
+      })
+      return
+    }
+    await sendToGithub()
+    await sendToBackend()
   }
 
   return (
@@ -121,25 +227,77 @@ export default function ReportBugPage({ navigation }) {
             source={require('../../../../assets/BugLogo.png')}
           />
           <Text style={styles.title}>Signaler un Bug</Text>
+
+          {/* Niveau d'importance */}
           <View style={styles.inputContainer}>
-            <TextInputStayAlive
-              valueTestID="bug-title-input"
-              text="Titre du Bug"
-              field={title}
-              onChangeField={setTitle}
-              label="Donnez un titre à ce bug"
-            />
-            <TextInputStayAlive
-              style={styles.descriptionInput}
-              valueTestID="bug-description-input"
-              text="Description du Bug"
-              field={description}
-              onChangeField={setDescription}
-              label="Veuillez décrire en détail le problème rencontré"
-              multiline
-              numberOfLines={15}
-              maxLength={510}
-            />
+            <Text style={styles.label}>Niveau d'importance</Text>
+            <View style={styles.importanceSelector}>
+              <TouchableOpacity
+                style={[
+                  styles.importanceButton,
+                  importance === 1 && styles.selectedButton,
+                ]}
+                onPress={() => setImportance(1)}
+              >
+                <Text style={styles.importanceText}>1 - Faible</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.importanceButton,
+                  importance === 2 && styles.selectedButton,
+                ]}
+                onPress={() => setImportance(2)}
+              >
+                <Text style={styles.importanceText}>2 - Moyenne</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.importanceButton,
+                  importance === 3 && styles.selectedButton,
+                ]}
+                onPress={() => setImportance(3)}
+              >
+                <Text style={styles.importanceText}>3 - Élevée</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <TextInputStayAlive
+            valueTestID="bug-title-input"
+            text="Titre du Bug"
+            field={title}
+            onChangeField={setTitle}
+            label="Donnez un titre à ce bug"
+          />
+          <TextInputStayAlive
+            valueTestID="bug-description-input"
+            text="Description du Bug"
+            field={description}
+            onChangeField={setDescription}
+            label="Veuillez décrire en détail le problème rencontré"
+            multiline
+            numberOfLines={8}
+            maxLength={510}
+          />
+
+          <TouchableOpacity
+            onPress={handleImagePick}
+            style={styles.imageButton}
+          >
+            <Text style={styles.imageButtonText}>Ajouter des Photos</Text>
+          </TouchableOpacity>
+          <View style={styles.photosContainer}>
+            {photos.map((photo, index) => (
+              <View key={index} style={styles.photoWrapper}>
+                <Image source={{ uri: photo.uri }} style={styles.photo} />
+                <TouchableOpacity
+                  style={styles.removePhotoButton}
+                  onPress={() => removePhoto(index)}
+                >
+                  <Text style={styles.removePhotoButtonText}>X</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
           </View>
 
           <TouchableOpacity
@@ -150,9 +308,7 @@ export default function ReportBugPage({ navigation }) {
             {loading ? (
               <ActivityIndicator size="small" color="white" />
             ) : (
-              <Text style={styles.submitButtonText} testID="submit-button">
-                Signaler ce Bug
-              </Text>
+              <Text style={styles.submitButtonText}>Signaler ce Bug</Text>
             )}
           </TouchableOpacity>
         </View>
@@ -164,6 +320,11 @@ export default function ReportBugPage({ navigation }) {
 const styles = StyleSheet.create({
   scrollViewContent: {
     flexGrow: 1,
+    paddingBottom: 50,
+  },
+  backButton: {
+    marginLeft: height * 0.04,
+    marginTop: width * 0.09,
   },
   gradient1: {
     position: 'absolute',
@@ -177,55 +338,116 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -height * 0.2,
     left: -width * 0.3,
-    width: width * 0.7,
+    width: width * 0.8,
     height: height * 0.4,
     borderRadius: 10000,
   },
   mainContainer: {
     flex: 1,
     alignItems: 'center',
-  },
-  backButton: {
-    position: 'absolute',
-    top: height * 0.08,
-    left: width * 0.1,
-    zIndex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: height * 0.03,
   },
   content: {
-    marginTop: height * 0.07,
+    width: '100%',
     alignItems: 'center',
   },
   logo: {
-    alignSelf: 'center',
-    width: width * 0.36,
-    height: height * 0.17,
+    width: width * 0.3,
+    height: height * 0.2,
+    resizeMode: 'contain',
+    marginTop: -height * 0.02,
+    marginBottom: -height * 0.01,
   },
   title: {
-    marginTop: height * 0.02,
-    fontSize: width * 0.07,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: 'black',
+    marginBottom: height * 0.02,
   },
   inputContainer: {
-    marginTop: height * 0.05,
-    width: width * 0.7,
+    width: '100%',
+    marginBottom: 20,
   },
-  descriptionInput: {
-    height: height * 1,
-    textAlignVertical: 'top',
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  importanceSelector: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  importanceButton: {
+    flex: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    marginHorizontal: 5,
+    backgroundColor: 'lightgray',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  selectedButton: {
+    backgroundColor: StayAliveColors.StayAliveRed,
+  },
+  importanceText: {
+    color: 'white',
+  },
+  imageButton: {
+    alignSelf: 'center',
+    borderWidth: 3,
+    borderRadius: 50,
+    marginTop: height * 0.01,
+    borderColor: StayAliveColors.StayAliveRed,
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.008,
+    backgroundColor: 'white',
+  },
+  imageButtonText: {
+    textAlign: 'center',
+    fontSize: width * 0.035,
+    color: StayAliveColors.StayAliveRed,
+    fontWeight: 'bold',
+  },
+  photosContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'nowrap', // Pas de retour à la ligne
+    marginVertical: height * 0.02,
+  },
+  photoWrapper: {
+    position: 'relative',
+    marginRight: 5,
+  },
+  photo: {
+    width: width * 0.15, // Taille réduite pour s'adapter à 5 photos sur une ligne
+    height: height * 0.07, // Taille réduite pour s'adapter à 5 photos sur une ligne
+    borderRadius: 5,
+  },
+  removePhotoButton: {
+    position: 'absolute',
+    top: -height * 0.01,
+    right: -width * 0.01,
+    backgroundColor: 'red',
+    borderRadius: 100000,
+    padding: width * 0.01,
+  },
+  removePhotoButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
   submitButton: {
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: height * 0.02,
     borderWidth: 3,
     borderRadius: 50,
     borderColor: StayAliveColors.StayAliveRed,
-    paddingHorizontal: 50,
-    paddingVertical: 10,
+    paddingVertical: height * 0.013,
     backgroundColor: StayAliveColors.StayAliveRed,
+    width: width * 0.5,
   },
   submitButtonText: {
-    fontSize: 18,
+    textAlign: 'center',
+    fontSize: width * 0.04,
     color: 'white',
     fontWeight: 'bold',
   },
