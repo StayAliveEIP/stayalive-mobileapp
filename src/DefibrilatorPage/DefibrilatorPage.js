@@ -54,7 +54,11 @@ export default function DefibrillatorPage({ navigation }) {
       const response = await fetch(apiUrl)
       const json = await response.json()
       if (json.status === 'OK') {
-        setPredictions(json.predictions)
+        // Filtrer les résultats pour ne garder que les adresses précises
+        const filteredPredictions = json.predictions.filter(
+          (prediction) => prediction.types.includes('street_address') // Vérifier le type
+        )
+        setPredictions(filteredPredictions)
       } else {
         console.error('Error fetching predictions', json)
       }
@@ -65,6 +69,12 @@ export default function DefibrillatorPage({ navigation }) {
 
   const onAddressChange = (text) => {
     setAddress(text)
+
+    if (text.trim() === '') {
+      setPredictions([])
+      return
+    }
+
     fetchPredictions(text)
   }
 
