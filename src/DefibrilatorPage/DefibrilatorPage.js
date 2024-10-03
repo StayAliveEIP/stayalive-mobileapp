@@ -54,19 +54,30 @@ export default function DefibrillatorPage({ navigation }) {
       const response = await fetch(apiUrl)
       const json = await response.json()
       if (json.status === 'OK') {
-        setPredictions(json.predictions)
+        // Filtrer les résultats pour ne garder que les adresses précises
+        const filteredPredictions = json.predictions.filter((prediction) =>
+          prediction.types.includes("street_address") // Vérifier le type
+        );
+        setPredictions(filteredPredictions);
       } else {
-        console.error('Error fetching predictions', json)
+        console.error('Error fetching predictions', json);
       }
     } catch (error) {
-      console.error('Error fetching predictions', error)
+      console.error('Error fetching predictions', error);
     }
   }
 
+
   const onAddressChange = (text) => {
-    setAddress(text)
-    fetchPredictions(text)
-  }
+    setAddress(text);
+
+    if (text.trim() === '') {
+      setPredictions([]);
+      return;
+    }
+
+    fetchPredictions(text);
+  };
 
   const selectPrediction = async (description) => {
     setAddress(description)
