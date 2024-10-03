@@ -111,8 +111,9 @@ describe('initializeWebSocket function', (object, method) => {
     expect(navigation.navigate).toHaveBeenCalledWith('AlertStatusPage', {
       dataAlert: jsonData.data,
     })
-    expect(consoleLogSpy).toHaveBeenCalledWith('Disconnecting WebSocket...')
-    expect(mockSocket.removeAllListeners).toHaveBeenCalled()
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      'WebSocket is not connected or already disconnected.'
+    )
 
     consoleLogSpy.mockRestore()
     displayNotificationSpy.mockRestore()

@@ -17,11 +17,14 @@ import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
 import { urlApi } from '../Utils/Api'
 
+import Icon from 'react-native-vector-icons/Feather'
+
 const { width, height } = Dimensions.get('window')
 
 export default function LoginPage({ navigation }) {
   const [email, onChangeEmail] = useState('')
   const [password, onChangePassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   LoginPage.propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -144,14 +147,28 @@ export default function LoginPage({ navigation }) {
               onChangeField={onChangeEmail}
               label="E-mail"
             />
-            <TextInputStayAlive
-              valueTestID="login-password-input"
-              text="Votre mot de passe"
-              field={password}
-              onChangeField={onChangePassword}
-              label="Mot de passe"
-              secureTextEntry
-            />
+
+            <View style={styles.passwordContainer}>
+              <TextInputStayAlive
+                valueTestID="login-password-input"
+                text="Votre mot de passe"
+                field={password}
+                onChangeField={onChangePassword}
+                label="Mot de passe"
+                secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.eyeIcon}
+              >
+                <Icon
+                  name={showPassword ? 'eye-off' : 'eye'}
+                  size={24}
+                  color="gray"
+                />
+              </TouchableOpacity>
+            </View>
+
             <TouchableOpacity onPress={onClickForgotPassword}>
               <Text style={styles.forgotPasswordText}>
                 Vous avez oublié votre mot de passe ?
@@ -281,30 +298,38 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   orText: {
+    marginBottom: height * 0.03,
+    fontSize: width * 0.04,
     fontWeight: 'bold',
-    fontSize: width * 0.027,
+    color: StayAliveColors.StayAliveRed,
   },
   googleButton: {
-    borderWidth: 3,
-    borderRadius: 50,
-    marginTop: height * 0.02,
-    borderColor: StayAliveColors.StayAliveRed,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    borderWidth: 3,
+    borderRadius: 50,
+    borderColor: StayAliveColors.StayAliveRed,
+    paddingHorizontal: width * 0.08,
+    paddingVertical: height * 0.012,
     backgroundColor: 'white',
   },
   googleIcon: {
-    width: width * 0.05,
-    height: width * 0.06,
+    width: 25,
+    height: 25,
     marginRight: 10,
   },
   googleButtonText: {
-    textAlign: 'center',
     fontSize: width * 0.04,
     color: StayAliveColors.StayAliveRed,
     fontWeight: 'bold',
+  },
+  passwordContainer: {
+    position: 'relative',
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: width * 0.04,
+    bottom: height * 0.014,
+    zIndex: 1,
   },
 })

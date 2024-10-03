@@ -17,20 +17,28 @@ import { urlApi } from '../Utils/Api'
 import Geolocation from '@react-native-community/geolocation'
 import StayAliveSlider from './StayAliveSlider'
 import LinearGradient from 'react-native-linear-gradient'
+import WebSocketService from '../WebSocketService'
 
 const { width, height } = Dimensions.get('window')
 
 const UnavailableAvailablePage = ({ navigation }) => {
   const [available, setAvailable] = useState(false)
   const [loading, setLoading] = useState(true)
+  const webSocketService = new WebSocketService()
 
   useEffect(() => {
     getStatus()
   }, [])
 
   useEffect(() => {
-    // Update available status when it changes
+    // Met à jour le statut disponible/indisponible et gère le WebSocket en fonction du statut
+    sendPosition()
     setStatus(available)
+    if (available) {
+      webSocketService.initializeWebSocket(navigation) // Initialise le WebSocket quand l'utilisateur est disponible
+    } else {
+      webSocketService.disconnectWebSocket() // Déconnecte le WebSocket quand l'utilisateur est indisponible
+    }
   }, [available])
 
   const getInfosAccount = async () => {
@@ -172,7 +180,6 @@ const UnavailableAvailablePage = ({ navigation }) => {
       if (response.ok) {
         console.log('Status updated successfully!')
         if (isAvailable) {
-          await sendPosition()
           await getInfosAccount()
         }
       } else {

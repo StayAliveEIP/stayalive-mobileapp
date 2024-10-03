@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 import LinearGradient from 'react-native-linear-gradient'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/Feather'
 import Snackbar from 'react-native-snackbar'
 import { TextInputStayAlive } from './textInputStayAlive'
 import { StayAliveColors } from '../Style/StayAliveStyle'
@@ -25,6 +25,7 @@ export default function RegistrationPage({ navigation }) {
   const [password, onChangePassword] = useState('')
   const [phone, onChangePhone] = useState('')
   const [selectCGUV, setSelectionCGUV] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   RegistrationPage.propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -176,14 +177,35 @@ export default function RegistrationPage({ navigation }) {
                 label="E-mail"
                 style={{ marginTop: -50 }}
               />
-              <TextInputStayAlive
-                valueTestID="password-input"
-                text="Votre mot de passe"
-                field={password}
-                onChangeField={onChangePassword}
-                label="Mot de passe"
-                secureTextEntry
-              />
+              <View
+                style={{
+                  position: 'relative',
+                }}
+              >
+                <TextInputStayAlive
+                  valueTestID="password-input"
+                  text="Votre mot de passe"
+                  field={password}
+                  onChangeField={onChangePassword}
+                  label="Mot de passe"
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: width * 0.04,
+                    bottom: height * 0.014,
+                    zIndex: 1,
+                  }}
+                >
+                  <Icon
+                    name={showPassword ? 'eye-off' : 'eye'}
+                    size={24}
+                    color="gray"
+                  />
+                </TouchableOpacity>
+              </View>
               <TextInputStayAlive
                 valueTestID="phone-input"
                 text="Votre téléphone"
@@ -192,7 +214,6 @@ export default function RegistrationPage({ navigation }) {
                 label="(+33) 01 02 03 04 05"
                 secureTextEntry={false}
               />
-              {/* Ajoutez les autres TextInputStayAlive */}
             </View>
             <View
               style={{

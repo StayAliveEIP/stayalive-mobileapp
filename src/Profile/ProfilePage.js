@@ -15,6 +15,7 @@ import { StayAliveColors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
+import Snackbar from 'react-native-snackbar'
 
 const { width, height } = Dimensions.get('window')
 
@@ -62,9 +63,46 @@ export default function ProfilePage({ navigation }) {
     fetchProfileData()
   }, [])
 
+  const setStatus = async () => {
+    setLoading(true)
+    const token = await AsyncStorage.getItem('userToken')
+    const url = `${urlApi}/rescuer/status`
+    console.log('opfjazfpoiazjaofjzaopfza')
+    console.log(token)
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          status: 'NOT_AVAILABLE',
+        }),
+      })
+      console.log(response)
+      if (response.ok) {
+        console.log('Status updated successfully!')
+      } else {
+        throw new Error('Failed to update status')
+      }
+    } catch (error) {
+      console.error('There was an issue with the fetch operation:', error)
+      Snackbar.show({
+        text: "Nous n'avons pas pu mettre a jour votre status",
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: 'white',
+        textColor: 'red',
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const onClickDisconnect = async () => {
     console.log('Disconnect button press !')
 
+    setStatus()
     const socketInfoString = await AsyncStorage.getItem('socketInfo')
     if (socketInfoString) {
       socketInfoString.off('message')
@@ -72,7 +110,6 @@ export default function ProfilePage({ navigation }) {
     }
     await AsyncStorage.setItem('userToken', 'Empty')
     await AsyncStorage.removeItem('socketInfo')
-
     navigation.navigate('LoginPage')
   }
 
