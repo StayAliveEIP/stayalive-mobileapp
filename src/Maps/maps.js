@@ -37,63 +37,79 @@ export default function Maps({ navigation, route }) {
     route: PropTypes.object.isRequired,
   }
 
+  Geolocation.requestAuthorization();
+
   useEffect(() => {
     const calculateRegion = async () => {
+      console.log('Calculate Region');
       const watchId = Geolocation.watchPosition(
         (position) => {
-          setCurrentPosition(position)
-          const { latitude, longitude } = position.coords
+          if (!position || !position.coords) {
+            console.error('Coordonnées de position non disponibles');
+            return;
+          }
+
+          console.log(position);
+          console.log('Set current position');
+          setCurrentPosition(position);
+          const { latitude, longitude } = position.coords;
+
+          if (!latitude || !longitude) {
+            console.error('Latitude ou longitude non disponible');
+            return;
+          }
+
           const userRegion = {
             latitude,
             longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
-          }
-          setOrigin(userRegion)
+          };
+          setOrigin(userRegion);
 
           const minLat = Math.min(
             userRegion.latitude,
-            dataAlert?.data?.emergency?.position?.latitude
-          )
+            dataAlert?.data?.emergency?.position?.latitude || userRegion.latitude
+          );
           const maxLat = Math.max(
             userRegion.latitude,
-            dataAlert?.data?.emergency?.position?.latitude
-          )
+            dataAlert?.data?.emergency?.position?.latitude || userRegion.latitude
+          );
           const minLng = Math.min(
             userRegion.longitude,
-            dataAlert?.data?.emergency?.position?.longitude
-          )
+            dataAlert?.data?.emergency?.position?.longitude || userRegion.longitude
+          );
           const maxLng = Math.max(
             userRegion.longitude,
-            dataAlert?.data?.emergency?.position?.longitude
-          )
+            dataAlert?.data?.emergency?.position?.longitude || userRegion.longitude
+          );
 
-          const deltaLat = maxLat - minLat
-          const deltaLng = maxLng - minLng
+          const deltaLat = maxLat - minLat;
+          const deltaLng = maxLng - minLng;
 
           const region = {
             latitude: (minLat + maxLat) / 2,
             longitude: (minLng + maxLng) / 2,
             latitudeDelta: deltaLat * 1.7,
             longitudeDelta: deltaLng * 1.7,
-          }
+          };
 
-          setRegion(region)
+          setRegion(region);
         },
-        (error) => console.log(error),
+        (error) => console.error('Erreur lors de la récupération de la position:', error),
         {
           enableHighAccuracy: true,
-          timeout: 20000,
+          timeout: 30000,
           maximumAge: 1000,
           distanceFilter: 10,
         }
-      )
+      );
 
-      return () => Geolocation.clearWatch(watchId)
-    }
+      return () => Geolocation.clearWatch(watchId);
+    };
 
-    calculateRegion()
-  }, [])
+    calculateRegion();
+  }, [currentPosition]);
 
   const showMapOptions = () => {
     if (Platform.OS === 'ios') {
@@ -120,12 +136,13 @@ export default function Maps({ navigation, route }) {
   }
 
   const openAppleMaps = () => {
-    const url = `http://maps.apple.com/?daddr=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&saddr=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&origin=${currentPosition.coords.latitude},${currentPosition.coords.longitude}&travelmode=walking`
     Linking.openURL(url)
   }
 
   const openGoogleMaps = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&origin=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`
+    console.log('currentPosition', currentPosition)
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&origin=${currentPosition.coords.latitude},${currentPosition.coords.longitude}&travelmode=walking`
     Linking.openURL(url)
   }
 

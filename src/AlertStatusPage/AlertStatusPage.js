@@ -1,46 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
-import { StayAliveColors } from '../Style/StayAliveStyle';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Geolocation from '@react-native-community/geolocation';
+import React, { useEffect, useState } from 'react'
+import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { StayAliveColors } from '../Style/StayAliveStyle'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import Geolocation from '@react-native-community/geolocation'
 
-import PropTypes from 'prop-types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { urlApi } from '../Utils/Api';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import MapViewDirections from 'react-native-maps-directions';
+import PropTypes from 'prop-types'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { urlApi } from '../Utils/Api'
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
+import MapViewDirections from 'react-native-maps-directions'
 
-const { width, height } = Dimensions.get('window');
-const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.002;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const { width, height } = Dimensions.get('window')
+const ASPECT_RATIO = width / height
+const LATITUDE_DELTA = 0.002
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
 export default function AlertStatusPage({ navigation, route }) {
-  const { dataAlert } = route.params;
-  const [region, setRegion] = useState(null);
-  const [origin, setOrigin] = useState(null);
-  const [currentPosition, setCurrentPosition] = useState(null);
+  const { dataAlert } = route.params
+  const [region, setRegion] = useState(null)
+  const [origin, setOrigin] = useState(null)
 
-  console.log(dataAlert?.emergency?.position);
+  console.log(dataAlert?.emergency?.position)
 
   useEffect(() => {
     const calculateRegion = async () => {
       const watchId = Geolocation.watchPosition(
         (position) => {
-          const { latitude, longitude } = position.coords;
+          const { latitude, longitude } = position.coords
           const userRegion = {
             latitude,
             longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
-          };
-          setCurrentPosition(position);
-          setOrigin(userRegion);
+          }
+          setOrigin(userRegion)
 
           setRegion({
             latitude:
-              (userRegion.latitude +
-                dataAlert?.emergency?.position?.latitude) /
+              (userRegion.latitude + dataAlert?.emergency?.position?.latitude) /
               2,
             longitude:
               (userRegion.longitude +
@@ -48,79 +45,79 @@ export default function AlertStatusPage({ navigation, route }) {
               2,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
-          });
+          })
         },
         (error) => console.log(error),
         { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-      );
-      return () => Geolocation.clearWatch(watchId);
-    };
+      )
+      return () => Geolocation.clearWatch(watchId)
+    }
 
-    calculateRegion();
-  }, [dataAlert]);
+    calculateRegion()
+  }, [dataAlert])
 
   const RefuseAlert = async () => {
-    console.log('You refuse the alert!');
+    console.log('You refuse the alert!')
     try {
-      const token = await AsyncStorage.getItem('userToken');
-      const emergencyId = dataAlert?.emergency?.id;
+      const token = await AsyncStorage.getItem('userToken')
+      const emergencyId = dataAlert?.emergency?.id
 
       if (emergencyId && token) {
-        const acceptUrl = `${urlApi}/rescuer/emergency/refuse?id=${emergencyId}`;
+        const acceptUrl = `${urlApi}/rescuer/emergency/refuse?id=${emergencyId}`
         const response = await fetch(acceptUrl, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        })
 
         if (response.ok) {
-          console.log('Emergency refused successfully');
-          navigation.navigate('UnavailableAvailablePage');
+          console.log('Emergency refused successfully')
+          navigation.navigate('UnavailableAvailablePage')
         } else {
-          console.error('Failed to refuse emergency');
+          console.error('Failed to refuse emergency')
         }
       } else {
-        console.error('Emergency ID not found');
+        console.error('Emergency ID not found')
       }
     } catch (error) {
-      console.error('Error refusing emergency:', error);
+      console.error('Error refusing emergency:', error)
     }
-  };
+  }
 
   const AcceptAlert = async () => {
-    console.log('You accept the alert!');
+    console.log('You accept the alert!')
     try {
-      const token = await AsyncStorage.getItem('userToken');
-      const emergencyId = dataAlert?.emergency?.id;
+      const token = await AsyncStorage.getItem('userToken')
+      const emergencyId = dataAlert?.emergency?.id
 
       if (emergencyId && token) {
-        const acceptUrl = `${urlApi}/rescuer/emergency/accept?id=${emergencyId}`;
+        const acceptUrl = `${urlApi}/rescuer/emergency/accept?id=${emergencyId}`
         const response = await fetch(acceptUrl, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        })
 
         if (response.ok) {
-          console.log('Emergency accepted successfully');
+          console.log('Emergency accepted successfully')
 
-          navigation.navigate('Maps', { data: dataAlert });
+          navigation.navigate('Maps', { data: dataAlert })
         } else {
-          console.error('Failed to accept emergency');
+          console.error('Failed to accept emergency')
         }
       } else {
-        console.error('Emergency ID not found');
+        console.error('Emergency ID not found')
       }
     } catch (error) {
-      console.error('Error accepting emergency:', error);
+      console.error('Error accepting emergency:', error)
     }
-  };
+  }
 
   const goProfilePage = () => {
-    navigation.push('ProfilePage');
-  };
+    navigation.push('ProfilePage')
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -183,7 +180,13 @@ export default function AlertStatusPage({ navigation, route }) {
           marginLeft: height * 0.03,
         }}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: height * 0.02 }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: height * 0.02,
+          }}
+        >
           <View
             style={{
               marginRight: width * 0.03,
@@ -345,11 +348,10 @@ export default function AlertStatusPage({ navigation, route }) {
         </Text>
       </TouchableOpacity>
     </View>
-  );
-
+  )
 }
 
 AlertStatusPage.propTypes = {
   navigation: PropTypes.object.isRequired,
   route: PropTypes.object.isRequired,
-};
+}
