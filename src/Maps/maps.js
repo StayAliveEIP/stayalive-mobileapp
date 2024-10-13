@@ -6,9 +6,6 @@ import {
   Dimensions,
   TouchableOpacity,
   Linking,
-  Platform,
-  ActionSheetIOS,
-  Alert,
 } from 'react-native'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
@@ -29,7 +26,12 @@ export default function Maps({ navigation, route }) {
   const dataAlert = route.params
   const [region, setRegion] = useState(null)
   const [origin, setOrigin] = useState(null)
-  const [currentPosition, setCurrentPosition] = useState(null)
+  const [currentPosition, setCurrentPosition] = useState({
+    coords: {
+      latitude: null,
+      longitude: null,
+    },
+  })
   const [expanded, setExpanded] = useState(true)
 
   Maps.propTypes = {
@@ -37,95 +39,95 @@ export default function Maps({ navigation, route }) {
     route: PropTypes.object.isRequired,
   }
 
+  const calculateRegion = async () => {
+    try {
+      const position = await new Promise((resolve, reject) => {
+        Geolocation.getCurrentPosition(
+          (position) => resolve(position),
+          (error) => reject(error),
+          {
+            enableHighAccuracy: true,
+            timeout: 30000,
+            maximumAge: 1000,
+          }
+        )
+      })
+
+      if (!position || !position.coords) {
+        console.error('Coordonnées non disponibles')
+        return
+      }
+
+      const { latitude, longitude } = position.coords
+      console.log('Position actuelle:', latitude, longitude)
+
+      // Définir la région
+      const userRegion = {
+        latitude,
+        longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      }
+
+      setCurrentPosition(position)
+      setOrigin(userRegion)
+
+      // Calcul de la région
+      const minLat = Math.min(
+        userRegion.latitude,
+        dataAlert?.data?.emergency?.position?.latitude || userRegion.latitude
+      )
+      const maxLat = Math.max(
+        userRegion.latitude,
+        dataAlert?.data?.emergency?.position?.latitude || userRegion.latitude
+      )
+      const minLng = Math.min(
+        userRegion.longitude,
+        dataAlert?.data?.emergency?.position?.longitude || userRegion.longitude
+      )
+      const maxLng = Math.max(
+        userRegion.longitude,
+        dataAlert?.data?.emergency?.position?.longitude || userRegion.longitude
+      )
+
+      const deltaLat = maxLat - minLat
+      const deltaLng = maxLng - minLng
+
+      const region = {
+        latitude: (minLat + maxLat) / 2,
+        longitude: (minLng + maxLng) / 2,
+        latitudeDelta: deltaLat * 1.7,
+        longitudeDelta: deltaLng * 1.7,
+      }
+
+      setRegion(region)
+    } catch (error) {
+      console.error('Erreur lors de la récupération de la position:', error)
+    }
+  }
+
   useEffect(() => {
-    const calculateRegion = async () => {
-      const watchId = Geolocation.watchPosition(
-        (position) => {
-          setCurrentPosition(position)
-          const { latitude, longitude } = position.coords
-          const userRegion = {
-            latitude,
-            longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }
-          setOrigin(userRegion)
+    if (dataAlert) {
+      calculateRegion()
+    }
+  }, [dataAlert])
 
-          const minLat = Math.min(
-            userRegion.latitude,
-            dataAlert?.data?.emergency?.position?.latitude
-          )
-          const maxLat = Math.max(
-            userRegion.latitude,
-            dataAlert?.data?.emergency?.position?.latitude
-          )
-          const minLng = Math.min(
-            userRegion.longitude,
-            dataAlert?.data?.emergency?.position?.longitude
-          )
-          const maxLng = Math.max(
-            userRegion.longitude,
-            dataAlert?.data?.emergency?.position?.longitude
-          )
-
-          const deltaLat = maxLat - minLat
-          const deltaLng = maxLng - minLng
-
-          const region = {
-            latitude: (minLat + maxLat) / 2,
-            longitude: (minLng + maxLng) / 2,
-            latitudeDelta: deltaLat * 1.7,
-            longitudeDelta: deltaLng * 1.7,
-          }
-
-          setRegion(region)
-        },
-        (error) => console.log(error),
-        {
-          enableHighAccuracy: true,
-          timeout: 20000,
-          maximumAge: 1000,
-          distanceFilter: 10,
-        }
-      )
-
-      return () => Geolocation.clearWatch(watchId)
+  const openMaps = () => {
+    if (
+      !currentPosition?.coords?.latitude ||
+      !currentPosition?.coords?.longitude
+    ) {
+      console.error('Position actuelle non disponible')
+      return
     }
 
-    calculateRegion()
-  }, [])
-
-  const showMapOptions = () => {
-    if (Platform.OS === 'ios') {
-      ActionSheetIOS.showActionSheetWithOptions(
-        {
-          options: ['Cancel', 'Apple Maps', 'Google Maps'],
-          cancelButtonIndex: 0,
-        },
-        (buttonIndex) => {
-          if (buttonIndex === 1) {
-            openAppleMaps()
-          } else if (buttonIndex === 2) {
-            openGoogleMaps()
-          }
-        }
-      )
-    } else {
-      Alert.alert('Ouvrir dans maps', 'Choisissez une application', [
-        { text: 'Retour', onPress: () => {}, style: 'cancel' },
-        { text: 'Apple Maps', onPress: () => openAppleMaps() },
-        { text: 'Google Maps', onPress: () => openGoogleMaps() },
-      ])
+    const destination = dataAlert?.data?.emergency?.position
+    if (!destination) {
+      console.error('Destination non disponible')
+      return
     }
-  }
 
-  const openAppleMaps = () => {
-    const url = `http://maps.apple.com/?daddr=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&saddr=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`
-    Linking.openURL(url)
-  }
-
-  const openGoogleMaps = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${dataAlert?.data?.emergency?.position?.latitude},${dataAlert?.data?.emergency?.position?.longitude}&origin=${currentPosition.coords.latitude},${currentPosition.coords.longitude}`
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${destination.latitude},${destination.longitude}&origin=${currentPosition.coords.latitude},${currentPosition.coords.longitude}&travelmode=walking`
     Linking.openURL(url)
   }
 
@@ -134,28 +136,27 @@ export default function Maps({ navigation, route }) {
       const token = await AsyncStorage.getItem('userToken')
       const emergencyId = dataAlert?.data?.emergency?.id
 
-      if (emergencyId && token) {
-        const terminateUrl = `${urlApi}/rescuer/emergency/terminate?id=${emergencyId}`
-
-        const response = await fetch(terminateUrl, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        console.log(response)
-        if (response.ok) {
-          console.log('Emergency terminated successfully')
-
-          navigation.navigate('UnavailableAvailablePage')
-        } else {
-          console.error('Failed to terminate emergency')
-          navigation.navigate('UnavailableAvailablePage')
-        }
-      } else {
-        console.error('Emergency ID not found')
-        navigation.navigate('UnavailableAvailablePage')
+      if (!emergencyId || !token) {
+        console.error('Emergency ID or Token not found')
+        return navigation.navigate('UnavailableAvailablePage')
       }
+
+      const terminateUrl = `${urlApi}/rescuer/emergency/terminate?id=${emergencyId}`
+
+      const response = await fetch(terminateUrl, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) {
+        console.error('Failed to terminate emergency')
+        return navigation.navigate('UnavailableAvailablePage')
+      }
+
+      console.log('Emergency terminated successfully')
+      navigation.navigate('UnavailableAvailablePage')
     } catch (error) {
       console.error('Error terminating emergency:', error)
       navigation.navigate('UnavailableAvailablePage')
@@ -185,7 +186,11 @@ export default function Maps({ navigation, route }) {
             mode={'WALKING'}
           />
         </MapView>
-      ) : null}
+      ) : (
+        <View style={styles.loadingContainer}>
+          <Text>Chargement de la carte...</Text>
+        </View>
+      )}
 
       <TouchableOpacity
         testID="chatButton"
@@ -256,10 +261,7 @@ export default function Maps({ navigation, route }) {
             </View>
 
             <View style={styles.buttonSection}>
-              <TouchableOpacity
-                style={styles.redButton}
-                onPress={showMapOptions}
-              >
+              <TouchableOpacity style={styles.redButton} onPress={openMaps}>
                 <Text style={styles.buttonText}>Ouvrir dans maps</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.whiteButton} onPress={onClickEnd}>
@@ -392,5 +394,10 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: StayAliveColors.StayAliveRed,
     padding: width * 0.03,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
