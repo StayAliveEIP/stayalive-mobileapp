@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native'
 import { StayAliveColors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Geolocation from '@react-native-community/geolocation'
-
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import MapViewDirections from 'react-native-maps-directions'
-
+import Geolocation from '@react-native-community/geolocation'
 const { width, height } = Dimensions.get('window')
 const ASPECT_RATIO = width / height
 const LATITUDE_DELTA = 0.002
@@ -19,42 +17,6 @@ export default function AlertStatusPage({ navigation, route }) {
   const { dataAlert } = route.params
   const [region, setRegion] = useState(null)
   const [origin, setOrigin] = useState(null)
-
-  console.log(dataAlert?.emergency?.position)
-
-  useEffect(() => {
-    const calculateRegion = async () => {
-      const watchId = Geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords
-          const userRegion = {
-            latitude,
-            longitude,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }
-          setOrigin(userRegion)
-
-          setRegion({
-            latitude:
-              (userRegion.latitude + dataAlert?.emergency?.position?.latitude) /
-              2,
-            longitude:
-              (userRegion.longitude +
-                dataAlert?.emergency?.position?.longitude) /
-              2,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          })
-        },
-        (error) => console.log(error),
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-      )
-      return () => Geolocation.clearWatch(watchId)
-    }
-
-    calculateRegion()
-  }, [dataAlert])
 
   const RefuseAlert = async () => {
     console.log('You refuse the alert!')
@@ -118,6 +80,37 @@ export default function AlertStatusPage({ navigation, route }) {
   const goProfilePage = () => {
     navigation.push('ProfilePage')
   }
+
+  useEffect(() => {
+    // Vérifiez que les données de position sont disponibles
+    const emergencyPosition = dataAlert?.emergency?.position
+    if (emergencyPosition) {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords
+          const userLocation = { latitude, longitude }
+          setOrigin(userLocation)
+
+          // Calculer le centre entre la destination et la localisation de l'utilisateur
+          const midLatitude =
+            (emergencyPosition.latitude + userLocation.latitude) / 2
+          const midLongitude =
+            (emergencyPosition.longitude + userLocation.longitude) / 2
+
+          setRegion({
+            latitude: midLatitude,
+            longitude: midLongitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          })
+        },
+        (error) => {
+          console.error('Error getting user location:', error)
+        },
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      )
+    }
+  }, [dataAlert])
 
   return (
     <View style={{ flex: 1 }}>
@@ -275,9 +268,9 @@ export default function AlertStatusPage({ navigation, route }) {
           }}
         >
           <MapView
-            style={{ flex: 1 }} // Utilise flex: 1 pour remplir le conteneur
+            style={{ flex: 1 }}
             provider={PROVIDER_GOOGLE}
-            initialRegion={region}
+            region={region}
             showsUserLocation={true}
           >
             <Marker coordinate={dataAlert?.emergency?.position} />
