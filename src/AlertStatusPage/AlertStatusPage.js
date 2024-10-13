@@ -1,30 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native'
 import { StayAliveColors } from '../Style/StayAliveStyle'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { urlApi } from '../Utils/Api'
-
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
+import MapViewDirections from 'react-native-maps-directions'
+import Geolocation from '@react-native-community/geolocation'
 const { width, height } = Dimensions.get('window')
+const ASPECT_RATIO = width / height
+const LATITUDE_DELTA = 0.002
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
 export default function AlertStatusPage({ navigation, route }) {
   const { dataAlert } = route.params
-
-  AlertStatusPage.propTypes = {
-    navigation: PropTypes.object.isRequired,
-    route: PropTypes.shape({
-      params: PropTypes.shape({
-        dataAlert: PropTypes.shape({
-          emergency: PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            address: PropTypes.string,
-            info: PropTypes.string,
-          }),
-        }),
-      }),
-    }),
-  }
+  const [region, setRegion] = useState(null)
+  const [origin, setOrigin] = useState(null)
 
   const RefuseAlert = async () => {
     console.log('You refuse the alert !')
@@ -89,12 +81,43 @@ export default function AlertStatusPage({ navigation, route }) {
     navigation.push('ProfilePage')
   }
 
+  useEffect(() => {
+    // Vérifiez que les données de position sont disponibles
+    const emergencyPosition = dataAlert?.emergency?.position
+    if (emergencyPosition) {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords
+          const userLocation = { latitude, longitude }
+          setOrigin(userLocation)
+
+          // Calculer le centre entre la destination et la localisation de l'utilisateur
+          const midLatitude =
+            (emergencyPosition.latitude + userLocation.latitude) / 2
+          const midLongitude =
+            (emergencyPosition.longitude + userLocation.longitude) / 2
+
+          setRegion({
+            latitude: midLatitude,
+            longitude: midLongitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          })
+        },
+        (error) => {
+          console.error('Error getting user location:', error)
+        },
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      )
+    }
+  }, [dataAlert])
+
   return (
     <View style={{ flex: 1 }}>
       <TouchableOpacity
         onPress={goProfilePage}
         style={{
-          position: 'absolute',
+          alignSelf: 'flex-end',
           top: height * 0.05,
           right: width * 0.05,
           shadowColor: '#000',
@@ -115,19 +138,17 @@ export default function AlertStatusPage({ navigation, route }) {
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          marginTop: height * 0.2,
         }}
       >
-        <Text style={{ fontSize: width * 0.06, color: 'black' }}>
+        <Text style={{ fontSize: width * 0.05, color: 'black' }}>
           Votre statut:
         </Text>
         <Text
           testID="status-text"
           style={{
-            fontSize: width * 0.065,
+            fontSize: width * 0.055,
             fontWeight: 'bold',
             color: StayAliveColors.StayAliveRed,
-            marginTop: height * 0.01,
           }}
         >
           En attente de réponse ...
@@ -136,111 +157,136 @@ export default function AlertStatusPage({ navigation, route }) {
         <Image
           testID="unavailable-logo"
           style={{
-            width: width * 0.38,
-            height: height * 0.2,
-            marginTop: height * 0.02,
+            width: width * 0.28,
+            height: height * 0.15,
           }}
           source={require('../../assets/WarningLogo.png')}
         />
       </View>
+
       <View
         style={{
-          flex: 1,
-          flexDirection: 'row', // Assure que les éléments sont disposés horizontalement
-          justifyContent: 'flex-start', // Aligne les éléments sur l'axe principal (horizontalement) à gauche
-          alignItems: 'center',
+          flexDirection: 'column',
           maxWidth: width * 0.7,
+          marginTop: height * 0.02,
+          marginBottom: height * 0.05,
+          marginLeft: height * 0.03,
         }}
       >
         <View
           style={{
-            marginRight: width * 0.02,
-            backgroundColor: 'lightcoral',
-            borderRadius: 100,
-            padding: 10,
-            marginLeft: width * 0.05,
-          }}
-        >
-          <Icon name="flag-o" size={width * 0.07} color="red" />
-        </View>
-        <View>
-          <Text
-            style={{
-              textAlign: 'left',
-              fontSize: width * 0.05,
-              color: 'gray',
-              fontWeight: 'bold',
-            }}
-          >
-            Destination
-          </Text>
-          <Text
-            style={{
-              textAlign: 'left',
-              fontSize: width * 0.04,
-              color: 'black',
-              fontWeight: 'bold',
-            }}
-          >
-            {dataAlert?.emergency?.address}
-          </Text>
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginBottom: height * 0.07,
-          maxWidth: width * 0.7,
-          marginTop: -height * 0.06,
-        }}
-      >
-        <View
-          style={{
-            marginRight: width * 0.02,
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: height * 0.02,
           }}
         >
           <View
             style={{
+              marginRight: width * 0.03,
+              backgroundColor: 'lightcoral',
+              borderRadius: 100,
+              padding: 10,
+            }}
+          >
+            <Icon name="flag-o" size={width * 0.07} color="red" />
+          </View>
+          <View>
+            <Text
+              style={{
+                textAlign: 'left',
+                fontSize: width * 0.05,
+                color: 'gray',
+                fontWeight: 'bold',
+              }}
+            >
+              Destination
+            </Text>
+            <Text
+              style={{
+                textAlign: 'left',
+                fontSize: width * 0.04,
+                color: 'black',
+                fontWeight: 'bold',
+              }}
+            >
+              {dataAlert?.emergency?.address}
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View
+            style={{
+              marginRight: width * 0.02,
               backgroundColor: 'lightcoral',
               borderRadius: 100,
               padding: 10,
               aspectRatio: 1,
               justifyContent: 'center',
               alignItems: 'center',
-              marginLeft: width * 0.05,
             }}
           >
             <Icon name="user-o" size={width * 0.07} color="red" />
           </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'column',
-          }}
-        >
-          <Text
+          <View
             style={{
-              textAlign: 'left',
-              fontSize: width * 0.05,
-              color: 'gray',
-              fontWeight: 'bold',
+              flexDirection: 'column',
             }}
           >
-            Personne à secourir
-          </Text>
-          <Text
-            style={{
-              textAlign: 'left',
-              fontSize: width * 0.04,
-              color: 'black',
-              fontWeight: 'bold',
-            }}
-          >
-            {dataAlert?.emergency?.info}
-          </Text>
+            <Text
+              style={{
+                textAlign: 'left',
+                fontSize: width * 0.05,
+                color: 'gray',
+                fontWeight: 'bold',
+              }}
+            >
+              Personne à secourir
+            </Text>
+            <Text
+              style={{
+                textAlign: 'left',
+                fontSize: width * 0.04,
+                color: 'black',
+                fontWeight: 'bold',
+              }}
+            >
+              {dataAlert?.emergency?.info}
+            </Text>
+          </View>
         </View>
       </View>
+
+      {region && (
+        <View
+          style={{
+            width: '80%',
+            height: '20%',
+            borderRadius: 30,
+            overflow: 'hidden',
+            alignSelf: 'center', // Assure que la carte est centrée
+          }}
+        >
+          <MapView
+            style={{ flex: 1 }}
+            provider={PROVIDER_GOOGLE}
+            region={region}
+            showsUserLocation={true}
+          >
+            <Marker coordinate={dataAlert?.emergency?.position} />
+            {origin && (
+              <MapViewDirections
+                origin={origin}
+                destination={dataAlert?.emergency?.position}
+                strokeWidth={11}
+                strokeColor={StayAliveColors.StayAliveRed}
+                apikey={'AIzaSyDZzzsyTDbIIkYjUII8pAQbbkpBA3Amwj0'}
+                mode={'WALKING'}
+              />
+            )}
+          </MapView>
+        </View>
+      )}
 
       <TouchableOpacity
         onPress={AcceptAlert}
@@ -260,26 +306,25 @@ export default function AlertStatusPage({ navigation, route }) {
         <Text
           style={{
             textAlign: 'center',
-            fontSize: width * 0.04,
-            color: 'white',
+            fontSize: width * 0.05,
             fontWeight: 'bold',
+            color: 'white',
           }}
-          testID="login-button"
         >
-          Accepter l'alerte
+          Accepter
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={RefuseAlert}
         style={{
-          marginBottom: height * 0.07,
+          marginBottom: height * 0.01,
           borderWidth: 3,
           borderRadius: 50,
           borderColor: StayAliveColors.StayAliveRed,
           paddingHorizontal: width * 0.09,
           paddingVertical: height * 0.013,
-          backgroundColor: 'white',
+          backgroundColor: StayAliveColors.white,
           maxWidth: width * 0.7,
           alignSelf: 'center',
         }}
@@ -287,13 +332,12 @@ export default function AlertStatusPage({ navigation, route }) {
         <Text
           style={{
             textAlign: 'center',
-            fontSize: width * 0.04,
-            color: StayAliveColors.StayAliveRed,
+            fontSize: width * 0.05,
             fontWeight: 'bold',
+            color: StayAliveColors.StayAliveRed,
           }}
-          testID="joinUs-button"
         >
-          Refuser l'alerte
+          Refuser
         </Text>
       </TouchableOpacity>
     </View>
@@ -302,4 +346,5 @@ export default function AlertStatusPage({ navigation, route }) {
 
 AlertStatusPage.propTypes = {
   navigation: PropTypes.object.isRequired,
+  route: PropTypes.object.isRequired,
 }
