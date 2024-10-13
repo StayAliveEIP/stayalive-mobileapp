@@ -163,7 +163,7 @@ export default function LoginPage({ navigation }) {
               >
                 <Icon
                   name={showPassword ? 'eye-off' : 'eye'}
-                  size={24}
+                  size={26}
                   color="gray"
                 />
               </TouchableOpacity>
@@ -328,8 +328,10 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     position: 'absolute',
-    right: width * 0.04,
-    bottom: height * 0.014,
+    padding: 3,
+    width: 100,
+    left: width * 0.56,
+    bottom: height * 0.01,
     zIndex: 1,
   },
 })
