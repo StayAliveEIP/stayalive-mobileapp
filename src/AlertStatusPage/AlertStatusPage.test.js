@@ -2,20 +2,9 @@ import React from 'react'
 import { render, fireEvent } from '@testing-library/react-native'
 import fetchMock from 'jest-fetch-mock'
 import AlertStatusPage from './AlertStatusPage'
-import Geolocation from '@react-native-community/geolocation'
+import {} from '@react-native-community/geolocation'
 
 fetchMock.enableMocks()
-
-jest.mock('@react-native-community/geolocation', () => ({
-  getCurrentPosition(successCallback, errorCallback, options) {
-    successCallback({
-      coords: {
-        latitude: 48.8534,
-        longitude: 2.3488,
-      },
-    })
-  }
-}))
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
@@ -25,6 +14,12 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 
 jest.mock('react-native/Libraries/Alert/Alert', () => ({
   alert: jest.fn(),
+}))
+
+jest.mock('@react-native-community/geolocation', () => ({
+  watchPosition: jest.fn(),
+  clearWatch: jest.fn(),
+  Geolocation: jest.fn(),
 }))
 
 const mockNavigate = jest.fn()
@@ -54,7 +49,7 @@ describe('SettingsPage', () => {
         route={{ params: { dataAlert: {} } }}
       />
     )
-    const refuseButton = getByText("Refuser")
+    const refuseButton = getByText('Refuser')
     fireEvent.press(refuseButton)
     expect(consoleLogSpy).toHaveBeenCalledWith('You refuse the alert !')
     consoleLogSpy.mockRestore()
@@ -68,7 +63,7 @@ describe('SettingsPage', () => {
         route={{ params: { dataAlert: {} } }}
       />
     )
-    const acceptButton = getByText("Accepter")
+    const acceptButton = getByText('Accepter')
     fireEvent.press(acceptButton)
     expect(consoleLogSpy).toHaveBeenCalledWith('You accept the alert !')
     consoleLogSpy.mockRestore()
