@@ -88,6 +88,7 @@ export default function RescueHistoryPage({ navigation }) {
 
         const data = await response.json()
 
+        console.log('data')
         console.log(data)
         setRescueData(data)
         setFilteredData(data)
@@ -158,9 +159,14 @@ export default function RescueHistoryPage({ navigation }) {
       {loading && (
         <View
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             justifyContent: 'center',
             alignItems: 'center',
+            zIndex: 1,
           }}
         >
           <ActivityIndicator
@@ -184,8 +190,8 @@ export default function RescueHistoryPage({ navigation }) {
               style={{
                 alignSelf: 'center',
                 width: width * 0.4,
-                height: height * 0.18,
-                borderRadius: 100,
+                height: width * 0.4,
+                borderRadius: width * 0.2,
                 resizeMode: 'contain',
               }}
               source={
@@ -267,11 +273,12 @@ export default function RescueHistoryPage({ navigation }) {
               borderColor: 'gray',
               borderWidth: 1,
               borderRadius: 10,
-              padding: 10,
+              paddingHorizontal: 10,
+              paddingVertical: 1,
             }}
             onChangeText={(text) => setSearchTerm(text)}
             value={searchTerm}
-            placeholder="Rechercher une information d'un sauvetage..."
+            placeholder="Rechercher une information..."
           />
         )}
 
@@ -279,6 +286,7 @@ export default function RescueHistoryPage({ navigation }) {
           <Text
             testID="no-rescues-message"
             style={{
+              flex: 1,
               fontSize: width * 0.05,
               color: StayAliveColors.black,
               marginTop: height * 0.1,

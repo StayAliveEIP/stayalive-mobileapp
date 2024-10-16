@@ -117,9 +117,9 @@ export function BoxDocument(props) {
         alignItems: 'center',
         backgroundColor: '#ededed',
         width: width * 0.8,
-        height: height * 0.26,
         borderRadius: 20,
         marginBottom: height * 0.03,
+        paddingBottom: height * 0.02,
         elevation: 7,
       }}
     >
@@ -128,12 +128,13 @@ export function BoxDocument(props) {
           marginTop: height * 0.01,
           width: width * 0.12,
           height: height * 0.056,
+          resizeMode: 'contain',
         }}
         source={imagePaths[id]}
       />
       <Text
         style={{
-          fontSize: width * 0.04,
+          fontSize: width * 0.035,
           fontWeight: 'bold',
           color: 'black',
           marginBottom: height * 0.005,
@@ -143,50 +144,37 @@ export function BoxDocument(props) {
       </Text>
       <View
         style={{
-          flexDirection: 'row',
+          flexDirection: 'column',
           justifyContent: 'center',
-          flexWrap: 'wrap',
+          alignItems: 'flex-start',
         }}
       >
         {Object.entries(props.data).map(
           ([key, value]) =>
             key !== 'uri' && (
-              <View key={key} style={{ flexDirection: 'column' }}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: StayAliveColors.StayAliveRed,
-                      fontWeight: 'bold',
-                      marginRight: 5,
-                    }}
-                  >
-                    {key}:
-                  </Text>
-                  {key === 'size' ? (
-                    <Text
-                      style={{
-                        fontSize: width * 0.036,
-                        color: 'black',
-                        marginRight: 5,
-                      }}
-                    >
-                      {value === null
-                        ? 'Aucune information'
-                        : `${(value / 1024).toFixed(2)} Ko`}
-                    </Text>
-                  ) : (
-                    <Text
-                      style={{
-                        fontSize: width * 0.036,
-                        color: 'black',
-                        marginRight: 5,
-                      }}
-                    >
-                      {value === null ? 'Aucune information' : value}
-                    </Text>
-                  )}
-                </View>
+              <View key={key} style={{ flexDirection: 'row', marginBottom: 5 }}>
+                <Text
+                  style={{
+                    fontSize: width * 0.033,
+                    color: StayAliveColors.StayAliveRed,
+                    fontWeight: 'bold',
+                    marginRight: 5,
+                  }}
+                >
+                  {key}:
+                </Text>
+                <Text
+                  style={{
+                    fontSize: width * 0.032,
+                    color: 'black',
+                  }}
+                >
+                  {value === null
+                    ? 'Aucune information'
+                    : key === 'size'
+                    ? `${(value / 1024).toFixed(2)} Ko`
+                    : value}
+                </Text>
               </View>
             )
         )}
@@ -194,9 +182,9 @@ export function BoxDocument(props) {
       <View
         style={{
           flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'flex-end',
-          maxWidth: width * 0.44,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: height * 0.02,
         }}
       >
         <TouchableOpacity
@@ -205,10 +193,13 @@ export function BoxDocument(props) {
           style={{
             borderWidth: 3,
             borderRadius: 50,
-            marginRight: 10,
             borderColor: StayAliveColors.StayAliveRed,
             paddingHorizontal: width * 0.06,
+            paddingVertical: height * 0.002,
+
             backgroundColor: StayAliveColors.StayAliveRed,
+            marginRight: 5,
+            maxWidth: '45%',
           }}
         >
           {loadingDelete ? (
@@ -221,9 +212,10 @@ export function BoxDocument(props) {
             <Text
               style={{
                 textAlign: 'center',
-                fontSize: width * 0.03,
+                fontSize: width * 0.025,
                 color: 'white',
                 fontWeight: 'bold',
+                flexWrap: 'wrap',
               }}
               testID={`selectDocument-button-${id}`}
             >
@@ -235,12 +227,14 @@ export function BoxDocument(props) {
           testID={'download-document-button'}
           onPress={handleDownloadDocument}
           style={{
-            marginTop: 14,
             borderWidth: 3,
             borderRadius: 50,
             borderColor: StayAliveColors.StayAliveRed,
-            paddingHorizontal: width * 0.06,
+            paddingVertical: height * 0.002,
             backgroundColor: StayAliveColors.StayAliveRed,
+            marginLeft: 5,
+            paddingHorizontal: width * 0.06,
+            maxWidth: '45%',
           }}
         >
           {loadingDownload ? (
@@ -253,9 +247,10 @@ export function BoxDocument(props) {
             <Text
               style={{
                 textAlign: 'center',
-                fontSize: width * 0.03,
+                fontSize: width * 0.025,
                 color: 'white',
                 fontWeight: 'bold',
+                flexWrap: 'wrap',
               }}
               testID={`selectDocument-button-${id}`}
             >

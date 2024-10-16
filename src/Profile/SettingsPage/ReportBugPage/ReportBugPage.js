@@ -24,8 +24,8 @@ const { width, height } = Dimensions.get('window')
 export default function ReportBugPage({ navigation }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [importance, setImportance] = useState(1) // Default importance level
-  const [photos, setPhotos] = useState([]) // To store selected photos
+  const [importance, setImportance] = useState(1)
+  const [photos, setPhotos] = useState([])
   const [loading, setLoading] = useState(false)
 
   const goBack = () => {
@@ -71,29 +71,26 @@ export default function ReportBugPage({ navigation }) {
     setLoading(true)
 
     try {
-      const token = await AsyncStorage.getItem('userToken') // Récupération du token
+      const token = await AsyncStorage.getItem('userToken')
 
       const formData = new FormData()
 
       formData.append('message', `${title}\n${description}`)
 
-      // Ajout des fichiers photos
       photos.forEach((photo) => {
         formData.append('file', {
           uri: photo.uri,
-          type: photo.type || 'image/jpeg', // Assurez-vous d'indiquer le bon type MIME
-          name: photo.fileName || 'photo.jpg', // Utiliser un nom de fichier par défaut si fileName n'est pas défini
+          type: photo.type || 'image/jpeg',
+          name: photo.fileName || 'photo.jpg',
         })
       })
 
-      // Ajout du niveau d'importance
       formData.append('level', importance)
 
-      // Envoyer la requête à votre backend
       const response = await fetch(`${urlApi}/rescuer/report/bug`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`, // Utiliser le token récupéré
+          Authorization: `Bearer ${token}`,
           Accept: 'application/json',
         },
         body: formData,
@@ -110,7 +107,7 @@ export default function ReportBugPage({ navigation }) {
         })
         setTitle('')
         setDescription('')
-        setPhotos([]) // Réinitialiser les photos après le succès
+        setPhotos([])
       } else {
         Snackbar.show({
           text: "Erreur: Une erreur est survenue dans l'envoie du bug à nos serveurs",
@@ -199,14 +196,7 @@ export default function ReportBugPage({ navigation }) {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <TouchableOpacity
-        testID="button-left-arrow"
-        style={styles.backButton}
-        onPress={() => goBack()}
-      >
-        <Icon testID="document-logo" name="arrow-left" size={width * 0.08} />
-      </TouchableOpacity>
+    <View style={styles.container}>
       <LinearGradient
         colors={[StayAliveColors.StayAliveRed, StayAliveColors.white]}
         start={{ x: 0, y: 0 }}
@@ -220,106 +210,115 @@ export default function ReportBugPage({ navigation }) {
         style={styles.gradient2}
       />
 
-      <View style={styles.mainContainer}>
-        <View style={styles.content}>
-          <Image
-            style={styles.logo}
-            source={require('../../../../assets/BugLogo.png')}
-          />
-          <Text style={styles.title}>Signaler un Bug</Text>
+      <TouchableOpacity
+        testID="button-left-arrow"
+        style={styles.backButton}
+        onPress={() => goBack()}
+      >
+        <Icon testID="document-logo" name="arrow-left" size={width * 0.08} />
+      </TouchableOpacity>
 
-          {/* Niveau d'importance */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Niveau d'importance</Text>
-            <View style={styles.importanceSelector}>
-              <TouchableOpacity
-                style={[
-                  styles.importanceButton,
-                  importance === 1 && styles.selectedButton,
-                ]}
-                onPress={() => setImportance(1)}
-              >
-                <Text style={styles.importanceText}>1 - Faible</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.importanceButton,
-                  importance === 2 && styles.selectedButton,
-                ]}
-                onPress={() => setImportance(2)}
-              >
-                <Text style={styles.importanceText}>2 - Moyenne</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.importanceButton,
-                  importance === 3 && styles.selectedButton,
-                ]}
-                onPress={() => setImportance(3)}
-              >
-                <Text style={styles.importanceText}>3 - Élevée</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.mainContainer}>
+          <View style={styles.content}>
+            <Image
+              style={styles.logo}
+              source={require('../../../../assets/BugLogo.png')}
+            />
+            <Text style={styles.title}>Signaler un Bug</Text>
 
-          <TextInputStayAlive
-            valueTestID="bug-title-input"
-            text="Titre du Bug"
-            field={title}
-            onChangeField={setTitle}
-            label="Donnez un titre à ce bug"
-          />
-          <TextInputStayAlive
-            valueTestID="bug-description-input"
-            text="Description du Bug"
-            field={description}
-            onChangeField={setDescription}
-            label="Veuillez décrire en détail le problème rencontré"
-            multiline
-            numberOfLines={8}
-            maxLength={510}
-          />
-
-          <TouchableOpacity
-            onPress={handleImagePick}
-            style={styles.imageButton}
-          >
-            <Text style={styles.imageButtonText}>Ajouter des Photos</Text>
-          </TouchableOpacity>
-          <View style={styles.photosContainer}>
-            {photos.map((photo, index) => (
-              <View key={index} style={styles.photoWrapper}>
-                <Image source={{ uri: photo.uri }} style={styles.photo} />
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Niveau d'importance</Text>
+              <View style={styles.importanceSelector}>
                 <TouchableOpacity
-                  style={styles.removePhotoButton}
-                  onPress={() => removePhoto(index)}
+                  style={[
+                    styles.importanceButton,
+                    importance === 1 && styles.selectedButton,
+                  ]}
+                  onPress={() => setImportance(1)}
                 >
-                  <Text style={styles.removePhotoButtonText}>X</Text>
+                  <Text style={styles.importanceText}>1 - Faible</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.importanceButton,
+                    importance === 2 && styles.selectedButton,
+                  ]}
+                  onPress={() => setImportance(2)}
+                >
+                  <Text style={styles.importanceText}>2 - Moyenne</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.importanceButton,
+                    importance === 3 && styles.selectedButton,
+                  ]}
+                  onPress={() => setImportance(3)}
+                >
+                  <Text style={styles.importanceText}>3 - Élevée</Text>
                 </TouchableOpacity>
               </View>
-            ))}
-          </View>
+            </View>
 
-          <TouchableOpacity
-            onPress={handleSubmit}
-            style={styles.submitButton}
-            disabled={loading}
-          >
-            {loading ? (
-              <ActivityIndicator size="small" color="white" />
-            ) : (
-              <Text style={styles.submitButtonText}>Signaler ce Bug</Text>
-            )}
-          </TouchableOpacity>
+            <TextInputStayAlive
+              valueTestID="bug-title-input"
+              text="Titre du Bug"
+              field={title}
+              onChangeField={setTitle}
+              label="Donnez un titre à ce bug"
+              numberOfLines={1}
+            />
+            <TextInputStayAlive
+              valueTestID="bug-description-input"
+              text="Description du Bug"
+              field={description}
+              onChangeField={setDescription}
+              label="Veuillez décrire en détail le problème rencontré"
+              multiline
+              numberOfLines={6}
+              maxLength={510}
+            />
+
+            <TouchableOpacity
+              onPress={handleImagePick}
+              style={styles.imageButton}
+            >
+              <Text style={styles.imageButtonText}>Ajouter des Photos</Text>
+            </TouchableOpacity>
+            <View style={styles.photosContainer}>
+              {photos.map((photo, index) => (
+                <View key={index} style={styles.photoWrapper}>
+                  <Image source={{ uri: photo.uri }} style={styles.photo} />
+                  <TouchableOpacity
+                    style={styles.removePhotoButton}
+                    onPress={() => removePhoto(index)}
+                  >
+                    <Text style={styles.removePhotoButtonText}>X</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+
+            <TouchableOpacity
+              onPress={handleSubmit}
+              style={styles.submitButton}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Text style={styles.submitButtonText}>Signaler ce Bug</Text>
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   scrollViewContent: {
-    flexGrow: 1,
     paddingBottom: 50,
   },
   backButton: {
@@ -346,21 +345,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: height * 0.03,
+    paddingHorizontal: height * 0.02,
   },
   content: {
     width: '100%',
     alignItems: 'center',
   },
   logo: {
-    width: width * 0.3,
-    height: height * 0.2,
+    alignSelf: 'center',
+    width: width * 0.36,
+    height: height * 0.17,
     resizeMode: 'contain',
-    marginTop: -height * 0.02,
-    marginBottom: -height * 0.01,
   },
   title: {
-    fontSize: 24,
+    fontSize: width * 0.055,
     fontWeight: 'bold',
     marginBottom: height * 0.02,
   },
@@ -369,13 +367,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontSize: 16,
+    fontSize: width * 0.04,
     fontWeight: 'bold',
     marginBottom: 10,
   },
   importanceSelector: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: -10,
   },
   importanceButton: {
     flex: 1,
@@ -391,6 +390,7 @@ const styles = StyleSheet.create({
   },
   importanceText: {
     color: 'white',
+    fontSize: width * 0.028,
   },
   imageButton: {
     alignSelf: 'center',
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    flexWrap: 'nowrap', // Pas de retour à la ligne
+    flexWrap: 'nowrap',
     marginVertical: height * 0.02,
   },
   photoWrapper: {
@@ -420,8 +420,8 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   photo: {
-    width: width * 0.15, // Taille réduite pour s'adapter à 5 photos sur une ligne
-    height: height * 0.07, // Taille réduite pour s'adapter à 5 photos sur une ligne
+    width: width * 0.14,
+    height: height * 0.065,
     borderRadius: 5,
   },
   removePhotoButton: {
@@ -437,7 +437,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   submitButton: {
-    marginTop: height * 0.02,
     borderWidth: 3,
     borderRadius: 50,
     borderColor: StayAliveColors.StayAliveRed,

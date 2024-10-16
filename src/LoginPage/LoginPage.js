@@ -8,6 +8,7 @@ import {
   Alert,
   Dimensions,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -17,14 +18,12 @@ import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import PropTypes from 'prop-types'
 import { urlApi } from '../Utils/Api'
 
-import Icon from 'react-native-vector-icons/Feather'
-
 const { width, height } = Dimensions.get('window')
 
 export default function LoginPage({ navigation }) {
   const [email, onChangeEmail] = useState('')
   const [password, onChangePassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   LoginPage.propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -66,6 +65,8 @@ export default function LoginPage({ navigation }) {
       password,
     })
 
+    setLoading(true) // Démarrer le loader
+
     fetch(url, {
       method: 'POST',
       headers: {
@@ -74,6 +75,7 @@ export default function LoginPage({ navigation }) {
       body,
     })
       .then((response) => {
+        setLoading(false) // Arrêter le loader
         if (response.ok) {
           return response.json()
         }
@@ -88,6 +90,7 @@ export default function LoginPage({ navigation }) {
         navigation.navigate('UnavailableAvailablePage')
       })
       .catch((error) => {
+        setLoading(false) // Arrêter le loader
         if (error.message !== 'Invalid credentials') {
           Alert.alert(
             'Erreur',
@@ -146,30 +149,28 @@ export default function LoginPage({ navigation }) {
               field={email}
               onChangeField={onChangeEmail}
               label="E-mail"
+              numberOfLines={1}
             />
 
             <View style={styles.passwordContainer}>
-              <TextInputStayAlive
-                valueTestID="login-password-input"
-                text="Votre mot de passe"
-                field={password}
-                onChangeField={onChangePassword}
-                label="Mot de passe"
-                secureTextEntry={!showPassword}
-              />
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.eyeIcon}
-              >
-                <Icon
-                  name={showPassword ? 'eye-off' : 'eye'}
-                  size={26}
-                  color="gray"
+              <View style={styles.passwordWrapper}>
+                <TextInputStayAlive
+                  valueTestID="login-password-input"
+                  text="Votre mot de passe"
+                  field={password}
+                  onChangeField={onChangePassword}
+                  label="Mot de passe"
+                  style={styles.textInput}
+                  secureTextEntry={true}
+                  numberOfLines={1}
                 />
-              </TouchableOpacity>
+              </View>
             </View>
 
-            <TouchableOpacity onPress={onClickForgotPassword}>
+            <TouchableOpacity
+              onPress={onClickForgotPassword}
+              style={styles.forgotPasswordButton}
+            >
               <Text style={styles.forgotPasswordText}>
                 Vous avez oublié votre mot de passe ?
               </Text>
@@ -177,9 +178,13 @@ export default function LoginPage({ navigation }) {
           </View>
 
           <TouchableOpacity onPress={onClickLogin} style={styles.loginButton}>
-            <Text style={styles.loginButtonText} testID="login-button">
-              Se connecter
-            </Text>
+            {loading ? ( // Afficher le loader ou le texte selon l'état
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={styles.loginButtonText} testID="login-button">
+                Se connecter
+              </Text>
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity onPress={onClickJoin} style={styles.joinButton}>
@@ -210,7 +215,6 @@ export default function LoginPage({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
     alignItems: 'center',
   },
   gradientCircle: {
@@ -243,6 +247,10 @@ const styles = StyleSheet.create({
     height: height * 0.3,
     resizeMode: 'cover',
   },
+  forgotPasswordButton: {
+    paddingHorizontal: width * 0.01,
+    maxWidth: '70%',
+  },
   logoImage: {
     width: width * 0.31,
     height: height * 0.15,
@@ -260,15 +268,21 @@ const styles = StyleSheet.create({
     marginTop: height * 0.01,
     width: '90%',
   },
+  passwordWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+  },
   forgotPasswordText: {
     fontWeight: 'bold',
-    marginTop: height * 0.01,
+    fontSize: width * 0.03,
+    marginTop: height * 0.04,
     color: StayAliveColors.StayAliveRed,
     textDecorationLine: 'underline',
   },
   loginButton: {
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: height * 0.06,
+    marginBottom: height * 0.02,
     borderWidth: 3,
     borderRadius: 50,
     borderColor: StayAliveColors.StayAliveRed,
@@ -287,9 +301,8 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 50,
     borderColor: StayAliveColors.StayAliveRed,
-    paddingHorizontal: 50,
-    paddingVertical: 10,
-    backgroundColor: 'white',
+    paddingHorizontal: width * 0.12,
+    paddingVertical: height * 0.012,
   },
   joinButtonText: {
     textAlign: 'center',
@@ -298,10 +311,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   orText: {
-    marginBottom: height * 0.03,
-    fontSize: width * 0.04,
+    fontSize: width * 0.03,
     fontWeight: 'bold',
-    color: StayAliveColors.StayAliveRed,
+    marginBottom: height * 0.01,
   },
   googleButton: {
     flexDirection: 'row',
@@ -309,29 +321,18 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 50,
     borderColor: StayAliveColors.StayAliveRed,
-    paddingHorizontal: width * 0.08,
+    paddingHorizontal: width * 0.05,
     paddingVertical: height * 0.012,
-    backgroundColor: 'white',
   },
   googleIcon: {
     width: 25,
     height: 25,
-    marginRight: 10,
+    resizeMode: 'contain',
+    marginRight: width * 0.03,
   },
   googleButtonText: {
     fontSize: width * 0.04,
     color: StayAliveColors.StayAliveRed,
     fontWeight: 'bold',
-  },
-  passwordContainer: {
-    position: 'relative',
-  },
-  eyeIcon: {
-    position: 'absolute',
-    padding: 3,
-    width: 100,
-    left: width * 0.56,
-    bottom: height * 0.01,
-    zIndex: 1,
   },
 })

@@ -95,6 +95,7 @@ export function EditInfosMenu(props) {
               color: 'blue',
               fontWeight: 'bold',
               fontSize: width * 0.04,
+              maxWidth: width * 0.5,
             }}
             value={textValue}
             onChangeText={(newText) => setTextValue(newText)}

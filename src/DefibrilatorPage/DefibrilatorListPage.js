@@ -8,6 +8,7 @@ import {
   StyleSheet,
   FlatList,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -120,12 +121,23 @@ export default function DefibrilatorListPage({ navigation }) {
       )}
 
       {filteredData.length === 0 ? (
-        <Text
-          testID="no-defibrillators-message"
-          style={styles.noDefibrillatorsMessage}
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1,
+          }}
         >
-          Aucun défibrillateur trouvé...
-        </Text>
+          <ActivityIndicator
+            size="large"
+            color={StayAliveColors.StayAliveRed}
+          />
+        </View>
       ) : (
         <FlatList
           style={{ width: '100%' }}
@@ -144,7 +156,6 @@ export default function DefibrilatorListPage({ navigation }) {
           onPress={() =>
             navigation.navigate('MapDefibrilatorPage', { defibrillators })
           }
-          s
         >
           <Icon
             name="map-marker"
@@ -186,19 +197,19 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-    marginTop: height * 0.05,
+    marginTop: height * 0.07,
   },
   image: {
     alignSelf: 'center',
-    width: width * 0.3,
-    height: height * 0.135,
+    width: width * 0.36,
+    height: height * 0.17,
+    resizeMode: 'contain',
   },
   header: {
     fontSize: width * 0.06,
     fontWeight: 'bold',
     color: 'black',
     marginBottom: height * 0.01,
-    marginTop: height * 0.02,
   },
   validatedCountContainer: {
     flexDirection: 'row',
@@ -226,12 +237,13 @@ const styles = StyleSheet.create({
     height: height * 0.04,
     marginTop: height * 0.02,
     marginBottom: height * 0.04,
-    width: width * 0.7,
+    width: width * 0.75,
     alignSelf: 'center',
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 10,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 1,
   },
   noDefibrillatorsMessage: {
     fontSize: width * 0.05,
@@ -250,9 +262,9 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   button: {
-    width: width * 0.15,
+    width: height * 0.07,
     height: height * 0.07,
-    borderRadius: 30,
+    borderRadius: (height * 0.07) / 2,
     justifyContent: 'center',
     alignItems: 'center',
   },

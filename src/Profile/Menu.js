@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, TouchableOpacity, Dimensions } from 'react-native'
+import { Text, TouchableOpacity, Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import PropTypes from 'prop-types'
 
@@ -13,53 +13,51 @@ export function Menu(props) {
     navigation: PropTypes.object.isRequired,
   }
 
-  const onClickRightArrow = () => {
+  const onClickMenu = () => {
     console.log('Menu ' + props.name)
     props.navigation.navigate(props.goTo)
   }
+
   return (
-    <View
+    <TouchableOpacity
       testID="box-menu"
       style={{
-        flex: 1,
-        justifyContent: 'center',
-        top: -height * 0.25,
+        flexDirection: 'row',
+        alignItems: 'center',
         borderWidth: 2,
+        top: -height * 0.25,
         width: '100%',
-        height: 60,
+        height: height * 0.075,
         borderColor: 'gray',
+        marginVertical: -1,
       }}
+      onPress={onClickMenu}
     >
       <Icon
         testID="icon-menu"
-        style={{ position: 'absolute', marginLeft: 30 }}
+        style={{ marginLeft: 30 }}
         name={props.icon}
-        size={width * 0.09}
+        size={width * 0.08}
       />
       <Text
         testID="text-menu"
         style={{
-          marginLeft: -width * 0.2,
+          flex: 1,
           textAlign: 'center',
           color: 'black',
           fontWeight: 'bold',
-          fontSize: width * 0.045,
+          fontSize: width * 0.04,
         }}
       >
         {props.name}
       </Text>
 
-      <TouchableOpacity
+      <Icon
         testID="button-right-arrow"
-        style={{ flex: 1, zIndex: 1, position: 'absolute' }}
-        onPress={onClickRightArrow}
-      >
-        <Icon
-          style={{ marginLeft: '90%' }}
-          name="chevron-forward-outline"
-          size={width * 0.09}
-        />
-      </TouchableOpacity>
-    </View>
+        style={{ marginRight: 30 }}
+        name="chevron-forward-outline"
+        size={width * 0.08}
+      />
+    </TouchableOpacity>
   )
 }

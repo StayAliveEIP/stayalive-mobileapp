@@ -82,7 +82,6 @@ export default function AlertStatusPage({ navigation, route }) {
   }
 
   useEffect(() => {
-    // Vérifiez que les données de position sont disponibles
     const emergencyPosition = dataAlert?.emergency?.position
     if (emergencyPosition) {
       Geolocation.getCurrentPosition(
@@ -91,7 +90,6 @@ export default function AlertStatusPage({ navigation, route }) {
           const userLocation = { latitude, longitude }
           setOrigin(userLocation)
 
-          // Calculer le centre entre la destination et la localisation de l'utilisateur
           const midLatitude =
             (emergencyPosition.latitude + userLocation.latitude) / 2
           const midLongitude =
@@ -106,8 +104,7 @@ export default function AlertStatusPage({ navigation, route }) {
         },
         (error) => {
           console.error('Error getting user location:', error)
-        },
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        }
       )
     }
   }, [dataAlert])
@@ -264,7 +261,7 @@ export default function AlertStatusPage({ navigation, route }) {
             height: '20%',
             borderRadius: 30,
             overflow: 'hidden',
-            alignSelf: 'center', // Assure que la carte est centrée
+            alignSelf: 'center',
           }}
         >
           <MapView

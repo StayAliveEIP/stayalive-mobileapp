@@ -47,6 +47,7 @@ export function BoxUploadDocument(props) {
           marginTop: height * 0.01,
           width: width * 0.12,
           height: height * 0.056,
+          resizeMode: 'contain',
         }}
         source={imagePaths[id]}
       />

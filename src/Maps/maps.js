@@ -44,12 +44,7 @@ export default function Maps({ navigation, route }) {
       const position = await new Promise((resolve, reject) => {
         Geolocation.getCurrentPosition(
           (position) => resolve(position),
-          (error) => reject(error),
-          {
-            enableHighAccuracy: true,
-            timeout: 30000,
-            maximumAge: 1000,
-          }
+          (error) => reject(error)
         )
       })
 
@@ -61,7 +56,6 @@ export default function Maps({ navigation, route }) {
       const { latitude, longitude } = position.coords
       console.log('Position actuelle:', latitude, longitude)
 
-      // Définir la région
       const userRegion = {
         latitude,
         longitude,
@@ -72,7 +66,6 @@ export default function Maps({ navigation, route }) {
       setCurrentPosition(position)
       setOrigin(userRegion)
 
-      // Calcul de la région
       const minLat = Math.min(
         userRegion.latitude,
         dataAlert?.data?.emergency?.position?.latitude || userRegion.latitude

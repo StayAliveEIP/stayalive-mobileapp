@@ -6,12 +6,13 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native'
 import CheckBox from '@react-native-community/checkbox'
 import LinearGradient from 'react-native-linear-gradient'
-import Icon from 'react-native-vector-icons/Feather'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Snackbar from 'react-native-snackbar'
-import { TextInputStayAlive } from './textInputStayAlive'
+import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import { StayAliveColors } from '../Style/StayAliveStyle'
 import { SlideInView } from '../Animations/Animations'
 import PropTypes from 'prop-types'
@@ -25,7 +26,7 @@ export default function RegistrationPage({ navigation }) {
   const [password, onChangePassword] = useState('')
   const [phone, onChangePhone] = useState('')
   const [selectCGUV, setSelectionCGUV] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   RegistrationPage.propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -33,6 +34,8 @@ export default function RegistrationPage({ navigation }) {
 
   useEffect(() => {}, [])
   const onClickJoinUs = async () => {
+    setLoading(true)
+
     console.log(`${urlApi}/rescuer/auth/register`)
 
     let message = ''
@@ -65,8 +68,15 @@ export default function RegistrationPage({ navigation }) {
         code = response.status
       } catch (error) {
         console.log('Erreur lors de la requête POST :', error)
+        message = 'Une erreur est survenue, veuillez réessayer.'
+        code = 500
       }
-    } else message = 'Vous devez acceptez nos CGU et nos CGV'
+    } else {
+      message = 'Vous devez accepter nos CGU et nos CGV'
+    }
+
+    setLoading(false)
+
     Snackbar.show({
       text: message.toString(),
       duration: Snackbar.LENGTH_LONG,
@@ -160,7 +170,7 @@ export default function RegistrationPage({ navigation }) {
               Nous rejoindre
             </Text>
 
-            <View style={{ marginTop: height * 0.02 }}>
+            <View style={{ marginTop: height * 0.01 }}>
               <TextInputStayAlive
                 valueTestID="names-input"
                 text="Votre nom et prénom"
@@ -168,6 +178,7 @@ export default function RegistrationPage({ navigation }) {
                 onChangeField={onChangeNames}
                 label="Nom et Prénom"
                 secureTextEntry={false}
+                numberOfLines={1}
               />
               <TextInputStayAlive
                 valueTestID="email-input"
@@ -175,7 +186,7 @@ export default function RegistrationPage({ navigation }) {
                 field={email}
                 onChangeField={onChangeEmail}
                 label="E-mail"
-                style={{ marginTop: -50 }}
+                numberOfLines={1}
               />
               <View
                 style={{
@@ -188,23 +199,9 @@ export default function RegistrationPage({ navigation }) {
                   field={password}
                   onChangeField={onChangePassword}
                   label="Mot de passe"
-                  secureTextEntry={!showPassword}
+                  secureTextEntry={true}
+                  numberOfLines={1}
                 />
-                <TouchableOpacity
-                  onPress={() => setShowPassword(!showPassword)}
-                  style={{
-                    position: 'absolute',
-                    right: width * 0.04,
-                    bottom: height * 0.014,
-                    zIndex: 1,
-                  }}
-                >
-                  <Icon
-                    name={showPassword ? 'eye-off' : 'eye'}
-                    size={24}
-                    color="gray"
-                  />
-                </TouchableOpacity>
               </View>
               <TextInputStayAlive
                 valueTestID="phone-input"
@@ -213,6 +210,7 @@ export default function RegistrationPage({ navigation }) {
                 onChangeField={onChangePhone}
                 label="(+33) 01 02 03 04 05"
                 secureTextEntry={false}
+                numberOfLines={1}
               />
             </View>
             <View
@@ -246,18 +244,26 @@ export default function RegistrationPage({ navigation }) {
                 paddingVertical: height * 0.012,
                 backgroundColor: 'white',
               }}
+              disabled={loading}
             >
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: width * 0.045,
-                  color: StayAliveColors.StayAliveRed,
-                  fontWeight: 'bold',
-                }}
-                testID="joinUs-button"
-              >
-                Nous rejoindre
-              </Text>
+              {loading ? (
+                <ActivityIndicator
+                  size="small"
+                  color={StayAliveColors.StayAliveRed}
+                />
+              ) : (
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: width * 0.045,
+                    color: StayAliveColors.StayAliveRed,
+                    fontWeight: 'bold',
+                  }}
+                  testID="joinUs-button"
+                >
+                  Nous rejoindre
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>

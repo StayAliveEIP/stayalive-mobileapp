@@ -50,7 +50,6 @@ describe('UnavailableAvailablePage', () => {
   })
 
   it('updates status and navigates to AvailablePage when available button is clicked', async () => {
-    // Mock pour console.log
     const consoleSpy = jest.spyOn(console, 'log')
 
     const { getByTestId } = render(
@@ -62,10 +61,8 @@ describe('UnavailableAvailablePage', () => {
       expect(global.fetch).toHaveBeenCalled()
     })
 
-    // Vérifie que console.log a été appelé avec le message attendu
     expect(consoleSpy).toHaveBeenCalledWith('Status updated successfully!')
 
-    // Assurez-vous de nettoyer le mock après le test
     consoleSpy.mockRestore()
   })
 })

@@ -42,6 +42,7 @@ export default function SettingsPage({ navigation }) {
               alignSelf: 'center',
               width: width * 0.37,
               height: height * 0.18,
+              resizeMode: 'contain',
             }}
             source={require('../../../assets/SettingsLogo.png')}
           />

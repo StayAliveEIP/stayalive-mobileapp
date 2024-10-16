@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native'
 import { FadeInView } from '../Animations/Animations'
 import { StayAliveColors } from '../Style/StayAliveStyle'
@@ -23,12 +24,14 @@ export default function ForgotPasswordPage({ navigation }) {
   const [newPassword, onChangeNewPassword] = useState('')
   const [confirmPassword, onChangeConfirmPassword] = useState('')
   const [resetStep, setResetStep] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
 
   ForgotPasswordPage.propTypes = {
     navigation: PropTypes.object.isRequired,
   }
 
   const resetPassword = async () => {
+    setIsLoading(true)
     try {
       const url = `${urlApi}/rescuer/forgot-password/link?email=${encodeURIComponent(
         email
@@ -56,21 +59,24 @@ export default function ForgotPasswordPage({ navigation }) {
       }
     } catch (error) {
       console.error('Error during password reset link request:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const submitNewPassword = async () => {
-    try {
-      if (newPassword !== confirmPassword) {
-        Snackbar.show({
-          text: 'Les mots de passe ne correspondent pas.',
-          duration: Snackbar.LENGTH_LONG,
-          backgroundColor: 'white',
-          textColor: 'red',
-        })
-        return
-      }
+    if (newPassword !== confirmPassword) {
+      Snackbar.show({
+        text: 'Les mots de passe ne correspondent pas.',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: 'white',
+        textColor: 'red',
+      })
+      return
+    }
 
+    setIsLoading(true)
+    try {
       const url = `${urlApi}/rescuer/forgot-password/reset`
       const body = {
         token,
@@ -98,7 +104,9 @@ export default function ForgotPasswordPage({ navigation }) {
         })
       }
     } catch (error) {
-      console.error('Error during password reset link request:', error)
+      console.error('Error during password reset request:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -188,6 +196,7 @@ export default function ForgotPasswordPage({ navigation }) {
                 field={email}
                 onChangeField={onChangeEmail}
                 label="E-mail"
+                numberOfLines={1}
               />
               <TouchableOpacity
                 onPress={resetPassword}
@@ -200,22 +209,27 @@ export default function ForgotPasswordPage({ navigation }) {
                   paddingVertical: 10,
                   backgroundColor: StayAliveColors.StayAliveRed,
                 }}
+                disabled={isLoading}
               >
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: width * 0.04,
-                    color: 'white',
-                    fontWeight: 'bold',
-                  }}
-                  testID="login-button"
-                >
-                  Envoyer un e-mail
-                </Text>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="white" />
+                ) : (
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: width * 0.04,
+                      color: 'white',
+                      fontWeight: 'bold',
+                    }}
+                    testID="login-button"
+                  >
+                    Envoyer un e-mail
+                  </Text>
+                )}
               </TouchableOpacity>
             </>
           ) : resetStep === 1 ? (
-            <>
+            <View>
               <TextInputStayAlive
                 valueTestID="resetpass-token-input"
                 testID="resetpass-token-input"
@@ -223,25 +237,26 @@ export default function ForgotPasswordPage({ navigation }) {
                 field={token}
                 onChangeField={onChangeToken}
                 label="Token de validation"
+                numberOfLines={1}
               />
               <TextInputStayAlive
-                valueTestID="resetpass-newpassword-input"
-                TestID="resetpass-newpassword-input"
-                text="Entrez le nouveau mot de passe"
+                valueTestID="password-input"
+                text="Votre mot de passe"
                 field={newPassword}
                 onChangeField={onChangeNewPassword}
-                label="Nouveau mot de passe"
-                secureTextEntry
+                label="Mot de passe"
+                secureTextEntry={true}
+                numberOfLines={1}
               />
 
               <TextInputStayAlive
-                valueTestID="resetpass-confirm-password-input"
-                testID="resetpass-confirm-password-input"
-                text="Confirmez le nouveau mot de passe"
+                valueTestID="password-input"
+                text="Votre mot de passe"
                 field={confirmPassword}
                 onChangeField={onChangeConfirmPassword}
-                label="Confirmez le mot de passe"
-                secureTextEntry
+                label="Mot de passe"
+                secureTextEntry={true}
+                numberOfLines={1}
               />
               <TouchableOpacity
                 onPress={submitNewPassword}
@@ -255,25 +270,30 @@ export default function ForgotPasswordPage({ navigation }) {
                   paddingVertical: height * 0.01,
                   backgroundColor: StayAliveColors.StayAliveRed,
                 }}
+                disabled={isLoading}
               >
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: width * 0.037,
-                    color: 'white',
-                    fontWeight: 'bold',
-                  }}
-                  testID="submit-newpassword-button"
-                >
-                  Réinitialiser mon mot de passe
-                </Text>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="white" />
+                ) : (
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: width * 0.037,
+                      color: 'white',
+                      fontWeight: 'bold',
+                    }}
+                    testID="submit-newpassword-button"
+                  >
+                    Réinitialiser mon mot de passe
+                  </Text>
+                )}
               </TouchableOpacity>
-            </>
+            </View>
           ) : (
             <Text
               style={{
-                marginTop: height * 0.1,
-                fontSize: 16,
+                marginTop: height * 0.03,
+                fontSize: width * 0.04,
                 color: 'black',
                 fontWeight: 'bold',
               }}

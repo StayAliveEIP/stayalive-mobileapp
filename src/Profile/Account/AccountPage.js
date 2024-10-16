@@ -29,6 +29,7 @@ export default function AccountPage({ navigation }) {
   const [loading, setLoading] = useState(true)
   const [originalProfileData, setOriginalProfileData] = useState({})
   const [profileData, setProfileData] = useState({})
+  const [isSaving, setIsSaving] = useState(false)
 
   AccountPage.propTypes = {
     navigation: PropTypes.object.isRequired,
@@ -88,11 +89,13 @@ export default function AccountPage({ navigation }) {
 
   const saveChanges = async () => {
     try {
+      setIsSaving(true)
       if (profileData !== originalProfileData) {
         const token = await AsyncStorage.getItem('userToken')
         if (profileData.email.email !== originalProfileData.email.email) {
           const success = await requestUpdateEmail(profileData, token)
           if (success) {
+            setIsSaving(false)
             setOriginalProfileData(profileData)
             Snackbar.show({
               text: 'Changements sauvegardés avec succès.',
@@ -107,6 +110,7 @@ export default function AccountPage({ navigation }) {
           console.log('change phone !!!!')
           const success = await requestUpdatePhone(profileData, token)
           if (success) {
+            setIsSaving(false)
             setOriginalProfileData(profileData)
             Snackbar.show({
               text: 'Changements sauvegardés avec succès.',
@@ -145,9 +149,14 @@ export default function AccountPage({ navigation }) {
       {loading && (
         <View
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             justifyContent: 'center',
             alignItems: 'center',
+            zIndex: 1,
           }}
         >
           <ActivityIndicator
@@ -174,8 +183,8 @@ export default function AccountPage({ navigation }) {
               style={{
                 alignSelf: 'center',
                 width: width * 0.4,
-                height: height * 0.18,
-                borderRadius: 100,
+                height: width * 0.4,
+                borderRadius: width * 0.2,
                 resizeMode: 'contain',
               }}
               source={
@@ -336,17 +345,21 @@ export default function AccountPage({ navigation }) {
             width: '60%',
           }}
         >
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 18,
-              color: 'white',
-              fontWeight: 'bold',
-            }}
-            testID="login-button"
-          >
-            Sauvegarder
-          </Text>
+          {isSaving ? (
+            <ActivityIndicator size="small" color="white" />
+          ) : (
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 18,
+                color: 'white',
+                fontWeight: 'bold',
+              }}
+              testID="login-button"
+            >
+              Sauvegarder
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     </ScrollView>

@@ -139,7 +139,42 @@ export default function ProfilePage({ navigation }) {
       </View>
 
       {loading && (
-        <ActivityIndicator size="large" color={StayAliveColors.StayAliveRed} />
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1,
+          }}
+        >
+          <ActivityIndicator
+            size="large"
+            color={StayAliveColors.StayAliveRed}
+          />
+        </View>
+      )}
+      {loading && (
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1,
+          }}
+        >
+          <ActivityIndicator
+            size="large"
+            color={StayAliveColors.StayAliveRed}
+          />
+        </View>
       )}
 
       <View style={{ flex: 1, alignItems: 'center' }}>
@@ -156,8 +191,8 @@ export default function ProfilePage({ navigation }) {
               style={{
                 alignSelf: 'center',
                 width: width * 0.4,
-                height: height * 0.19,
-                borderRadius: 100,
+                height: width * 0.4,
+                borderRadius: width * 0.2,
                 resizeMode: 'contain',
               }}
               source={

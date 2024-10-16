@@ -14,7 +14,7 @@ import { TextInputStayAlive } from '../Utils/textInputStayAlive'
 import { StayAliveColors } from '../Style/StayAliveStyle'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { launchImageLibrary } from 'react-native-image-picker' // Import here
+import { launchImageLibrary } from 'react-native-image-picker'
 import { urlApi } from '../Utils/Api'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Snackbar from 'react-native-snackbar'
@@ -54,9 +54,8 @@ export default function DefibrillatorPage({ navigation }) {
       const response = await fetch(apiUrl)
       const json = await response.json()
       if (json.status === 'OK') {
-        // Filtrer les résultats pour ne garder que les adresses précises
-        const filteredPredictions = json.predictions.filter(
-          (prediction) => prediction.types.includes('street_address') // Vérifier le type
+        const filteredPredictions = json.predictions.filter((prediction) =>
+          prediction.types.includes('street_address')
         )
         setPredictions(filteredPredictions)
       } else {
@@ -124,7 +123,7 @@ export default function DefibrillatorPage({ navigation }) {
     const body = JSON.stringify({
       name,
       placeId,
-      imageSrc: photo, // Assuming photo is a base64 string
+      imageSrc: photo,
     })
 
     try {
@@ -164,7 +163,7 @@ export default function DefibrillatorPage({ navigation }) {
   }
 
   const fetchPlaceId = async (address) => {
-    const apiKey = 'AIzaSyDZzzsyTDbIIkYjUII8pAQbbkpBA3Amwj0' // Remplacez par votre clé API
+    const apiKey = 'AIzaSyDZzzsyTDbIIkYjUII8pAQbbkpBA3Amwj0'
     const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
       address
     )}&key=${apiKey}`
@@ -173,7 +172,7 @@ export default function DefibrillatorPage({ navigation }) {
       const response = await fetch(geocodeUrl)
       const json = await response.json()
       if (json.status === 'OK') {
-        return json.results[0].place_id // Récupère le place ID
+        return json.results[0].place_id
       } else {
         console.error('Erreur lors de la récupération du place ID:', json)
         return null
@@ -190,9 +189,9 @@ export default function DefibrillatorPage({ navigation }) {
         style={{
           position: 'absolute',
           alignSelf: 'center',
-          top: -height * 0.4,
+          top: -height * 0.3,
           width: width * 1.2,
-          height: height * 0.65,
+          height: height * 0.52,
           borderRadius: 1000,
           overflow: 'hidden',
         }}
@@ -225,6 +224,7 @@ export default function DefibrillatorPage({ navigation }) {
           field={name}
           onChangeField={setName}
           label="Vestiaire Gymnase"
+          numberOfLines={1}
         />
 
         <TextInputStayAlive
@@ -233,6 +233,7 @@ export default function DefibrillatorPage({ navigation }) {
           field={address}
           onChangeField={onAddressChange}
           label="12 rue de la rue, 75000 Paris"
+          numberOfLines={1}
         />
 
         {predictions.length > 0 && (
@@ -286,7 +287,7 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-    marginTop: height * 0.04,
+    marginTop: height * 0.07,
   },
   backButton: {
     position: 'absolute',
@@ -298,13 +299,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: width * 0.36,
     height: height * 0.17,
+    resizeMode: 'contain',
   },
   header: {
     fontSize: width * 0.06,
     fontWeight: 'bold',
     color: 'black',
     marginBottom: height * 0.02,
-    marginTop: height * 0.04,
+    marginTop: height * 0.01,
   },
   innerContainer: {
     alignItems: 'center',
@@ -312,7 +314,7 @@ const styles = StyleSheet.create({
   mapContainer: {
     width: width * 0.8,
     height: height * 0.2,
-    marginTop: height * 0.01,
+    marginTop: height * 0.02,
     borderRadius: 30,
     overflow: 'hidden',
   },
@@ -325,7 +327,7 @@ const styles = StyleSheet.create({
     color: StayAliveColors.StayAliveRed,
   },
   button: {
-    marginTop: height * 0.01,
+    marginTop: height * 0.02,
     marginBottom: height * 0.01,
     borderWidth: 3,
     borderRadius: 50,
@@ -343,17 +345,17 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     marginTop: height * 0.01,
+    marginBottom: height * 0.01,
     borderWidth: 3,
     borderRadius: 50,
     borderColor: StayAliveColors.StayAliveRed,
     paddingHorizontal: width * 0.08,
-    paddingVertical: height * 0.001,
-    maxWidth: 290,
+    maxWidth: '75%',
     backgroundColor: 'white',
   },
   submitButtonText: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: width * 0.04,
     color: StayAliveColors.StayAliveRed,
     fontWeight: 'bold',
   },

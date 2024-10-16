@@ -6,11 +6,8 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
-  Alert,
-  Platform,
-  ActionSheetIOS,
   Linking,
-  TouchableWithoutFeedback, // Ajoutez cet import
+  TouchableWithoutFeedback,
 } from 'react-native'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -22,7 +19,7 @@ const ASPECT_RATIO = width / height
 const LATITUDE_DELTA = 0.02
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
-const defibrillatorIcon = require('../../assets/DefibrilatorPage.png') // Remplacez par le chemin de votre image
+const defibrillatorIcon = require('../../assets/DefibrilatorPage.png')
 
 export default function DefibrilatorMapPage({ navigation, route }) {
   const { defibrillators } = route.params
@@ -47,10 +44,8 @@ export default function DefibrilatorMapPage({ navigation, route }) {
       selectedDefibrillator &&
       selectedDefibrillator._id === defibrillator._id
     ) {
-      // Si le marqueur sélectionné est déjà celui qui est pressé, désélectionner
       closeDetails()
     } else {
-      // Sélectionner le nouveau marqueur
       setSelectedDefibrillator(defibrillator)
       setExpanded(true)
     }
@@ -59,35 +54,6 @@ export default function DefibrilatorMapPage({ navigation, route }) {
   const closeDetails = () => {
     setExpanded(false)
     setSelectedDefibrillator(null)
-  }
-
-  const showMapOptions = () => {
-    if (Platform.OS === 'ios') {
-      ActionSheetIOS.showActionSheetWithOptions(
-        {
-          options: ['Cancel', 'Apple Maps', 'Google Maps'],
-          cancelButtonIndex: 0,
-        },
-        (buttonIndex) => {
-          if (buttonIndex === 1) {
-            openAppleMaps()
-          } else if (buttonIndex === 2) {
-            openGoogleMaps()
-          }
-        }
-      )
-    } else {
-      Alert.alert('Ouvrir dans maps', 'Choisissez une application', [
-        { text: 'Retour', onPress: () => {}, style: 'cancel' },
-        { text: 'Apple Maps', onPress: () => openAppleMaps() },
-        { text: 'Google Maps', onPress: () => openGoogleMaps() },
-      ])
-    }
-  }
-
-  const openAppleMaps = () => {
-    const url = `http://maps.apple.com/?daddr=${selectedDefibrillator.location.lat},${selectedDefibrillator.location.lng}`
-    Linking.openURL(url)
   }
 
   const openGoogleMaps = () => {
@@ -197,7 +163,7 @@ export default function DefibrilatorMapPage({ navigation, route }) {
               <View style={styles.buttonSection}>
                 <TouchableOpacity
                   style={styles.redButton}
-                  onPress={showMapOptions}
+                  onPress={openGoogleMaps}
                 >
                   <Text style={styles.buttonText}>Ouvrir dans maps</Text>
                 </TouchableOpacity>
@@ -223,8 +189,8 @@ export default function DefibrilatorMapPage({ navigation, route }) {
         testID="profile-badge"
         style={{
           position: 'absolute',
-          top: 50,
-          right: 35,
+          top: height * 0.08,
+          right: width * 0.05,
           shadowColor: '#000',
           shadowOffset: {
             width: 0,
@@ -236,7 +202,11 @@ export default function DefibrilatorMapPage({ navigation, route }) {
         }}
       >
         <Image
-          style={{ width: 60, height: 60 }}
+          style={{
+            width: width * 0.15,
+            height: width * 0.15,
+            borderRadius: width * 0.075,
+          }}
           source={require('../../assets/ProfileBadge.png')}
           testID="profile-badge-image"
         />
@@ -328,13 +298,13 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: width * 0.04,
     color: 'white',
     fontWeight: 'bold',
   },
   backButton: {
     position: 'absolute',
-    top: 40,
+    top: 60,
     left: 20,
     borderRadius: 50,
     padding: 10,

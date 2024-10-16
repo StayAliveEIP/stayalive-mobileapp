@@ -23,18 +23,19 @@ export default function SendDocumentPage({ navigation }) {
     ID_CARD: null,
     RESCUER_CERTIFICATE: null,
   })
-  SendDocumentPage.propTypes = {
-    navigation: PropTypes.object.isRequired,
-  }
   const [documentID, setDocumentID] = useState(null)
   const [documentRescuer, setDocumentRescuer] = useState(null)
   const [loadingDocuments, setLoadingDocuments] = useState(true)
   const [loadingSendDocuments, setLoadingSendDocuments] = useState(false)
 
-  const onFileSelect = (id, filename) => {
+  SendDocumentPage.propTypes = {
+    navigation: PropTypes.object.isRequired,
+  }
+
+  const onFileSelect = (id, file) => {
     setSelectedFiles((prevSelectedFiles) => ({
       ...prevSelectedFiles,
-      [id]: filename,
+      [id]: file,
     }))
   }
 
@@ -43,9 +44,7 @@ export default function SendDocumentPage({ navigation }) {
 
     try {
       const apiUrl = `${urlApi}/rescuer/document/upload?type=${type}`
-
       const token = await AsyncStorage.getItem('userToken')
-
       const formData = new FormData()
       formData.append('file', selectedFiles[type])
 
@@ -58,19 +57,22 @@ export default function SendDocumentPage({ navigation }) {
         body: formData,
       })
 
-      if (response.status === 201)
+      if (response.status === 201) {
         Snackbar.show({
-          text: 'Les documents on été envoyés avec succès',
+          text: 'Les documents ont été envoyés avec succès',
           duration: Snackbar.LENGTH_LONG,
           backgroundColor: 'white',
           textColor: 'green',
         })
-      if (documentID === null) setDocumentID(selectedFiles.ID_CARD)
-      if (documentRescuer === null)
-        setDocumentRescuer(selectedFiles.RESCUER_CERTIFICATE)
+        if (type === 'ID_CARD') setDocumentID(selectedFiles.ID_CARD)
+        if (type === 'RESCUER_CERTIFICATE')
+          setDocumentRescuer(selectedFiles.RESCUER_CERTIFICATE)
+      } else {
+        throw new Error("Échec de l'envoi des documents")
+      }
     } catch (error) {
       Snackbar.show({
-        text: "Une erreur est apparue lors de l'envoie des documents",
+        text: "Une erreur est apparue lors de l'envoi des documents",
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: 'white',
         textColor: 'red',
@@ -106,8 +108,8 @@ export default function SendDocumentPage({ navigation }) {
       const dataOfRescuerCertificate = responseData.find(
         (item) => item.type === 'RESCUER_CERTIFICATE'
       )
-      if (dataOfIdCard.data !== null) setDocumentID(dataOfIdCard.data)
-      if (dataOfRescuerCertificate.data !== null)
+      if (dataOfIdCard && dataOfIdCard.data) setDocumentID(dataOfIdCard.data)
+      if (dataOfRescuerCertificate && dataOfRescuerCertificate.data)
         setDocumentRescuer(dataOfRescuerCertificate.data)
     } catch (error) {
       Snackbar.show({
@@ -135,7 +137,7 @@ export default function SendDocumentPage({ navigation }) {
           left: width * 0.05,
           zIndex: 1,
         }}
-        onPress={() => goBack()}
+        onPress={goBack}
       >
         <Icon testID="document-logo" name="arrow-left" size={30} />
       </TouchableOpacity>
@@ -147,6 +149,7 @@ export default function SendDocumentPage({ navigation }) {
               alignSelf: 'center',
               width: width * 0.32,
               height: height * 0.15,
+              resizeMode: 'contain',
             }}
             source={require('../../../assets/DocumentLogo.png')}
           />
@@ -180,8 +183,8 @@ export default function SendDocumentPage({ navigation }) {
             ) : (
               <BoxDocument
                 id="documentID"
-                type={'ID_CARD'}
-                title={"Pièce d'identité"}
+                type="ID_CARD"
+                title="Pièce d'identité"
                 data={documentID}
                 setData={setDocumentID}
               />
@@ -203,10 +206,9 @@ export default function SendDocumentPage({ navigation }) {
                 setData={setDocumentRescuer}
               />
             )}
-            {documentID !== null && documentRescuer !== null ? null : (
+            {(documentID === null || documentRescuer === null) && (
               <TouchableOpacity
                 onPress={() => {
-                  console.log(selectedFiles)
                   if (selectedFiles.ID_CARD !== null) {
                     onPressSendDocuments('ID_CARD')
                   }
@@ -223,7 +225,7 @@ export default function SendDocumentPage({ navigation }) {
                   paddingVertical: height * 0.01,
                   backgroundColor: 'white',
                 }}
-                testID={'sendDocument-button'}
+                testID="sendDocument-button"
               >
                 {loadingSendDocuments ? (
                   <ActivityIndicator

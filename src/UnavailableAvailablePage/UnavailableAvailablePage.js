@@ -31,13 +31,12 @@ const UnavailableAvailablePage = ({ navigation }) => {
   }, [])
 
   useEffect(() => {
-    // Met à jour le statut disponible/indisponible et gère le WebSocket en fonction du statut
     sendPosition()
     setStatus(available)
     if (available) {
-      webSocketService.initializeWebSocket(navigation) // Initialise le WebSocket quand l'utilisateur est disponible
+      webSocketService.initializeWebSocket(navigation)
     } else {
-      webSocketService.disconnectWebSocket() // Déconnecte le WebSocket quand l'utilisateur est indisponible
+      webSocketService.disconnectWebSocket()
     }
   }, [available])
 
@@ -119,8 +118,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
                 })
                 .finally(() => setLoading(false))
             },
-            (error) => console.log(error.message),
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+            (error) => console.log(error.message)
           )
         } else {
           console.log('Permission refusée')
@@ -265,7 +263,11 @@ const UnavailableAvailablePage = ({ navigation }) => {
         }}
       >
         <Image
-          style={{ width: width * 0.13, height: height * 0.074 }}
+          style={{
+            width: width * 0.13,
+            height: height * 0.074,
+            resizeMode: 'contain',
+          }}
           source={require('../../assets/ProfileBadge.png')}
           testID="profile-badge-image"
         />
@@ -294,6 +296,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
             width: width * 0.37,
             height: height * 0.17,
             marginTop: height * 0.04,
+            resizeMode: 'contain',
           }}
           source={require('../../assets/AvailableLogo.png')}
         />
@@ -303,6 +306,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
             width: width * 0.37,
             height: height * 0.17,
             marginTop: height * 0.04,
+            resizeMode: 'contain',
           }}
           source={require('../../assets/UnavailableLogo.png')}
           testID="unavailable-logo"
@@ -334,6 +338,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
               width: width * 0.2,
               height: height * 0.1,
               marginBottom: height * 0.01,
+              resizeMode: 'contain',
             }}
             testID="warning-logo"
           />
@@ -403,6 +408,7 @@ const UnavailableAvailablePage = ({ navigation }) => {
               width: width * 0.2,
               height: height * 0.1,
               marginBottom: height * 0.01,
+              resizeMode: 'contain',
             }}
             testID="warning-logo"
           />

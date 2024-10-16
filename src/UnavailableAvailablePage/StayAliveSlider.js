@@ -40,7 +40,7 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
 
   const backgroundColor = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#F6F7EE', StayAliveColors.StayAliveRed],
+    outputRange: ['#FFFFFF', StayAliveColors.StayAliveRed],
   })
 
   const textColor = animation.interpolate({
@@ -97,9 +97,9 @@ const StayAliveSlider = ({ defaultValue, setAvailable, onPress }) => {
 }
 
 StayAliveSlider.propTypes = {
-  defaultValue: PropTypes.bool.isRequired, // Propriété defaultValue de type booléen requis
-  setAvailable: PropTypes.func.isRequired, // Propriété setAvailable de type fonction requise
-  onPress: PropTypes.func.isRequired, // Propriété onPress de type fonction requise
+  defaultValue: PropTypes.bool.isRequired,
+  setAvailable: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
 }
 
 const styles = StyleSheet.create({
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
-    elevation: 4, // For Android shadow
+    elevation: 4,
   },
   buttonText: {
     fontSize: width * 0.048,
