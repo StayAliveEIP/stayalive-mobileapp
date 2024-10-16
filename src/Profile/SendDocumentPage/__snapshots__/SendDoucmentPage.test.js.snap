@@ -1,3 +1,4 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SendDocumentPage renders correctly 1`] = `
 <View
@@ -95,6 +96,7 @@ exports[`SendDocumentPage renders correctly 1`] = `
           {
             "alignSelf": "center",
             "height": 200.1,
+            "resizeMode": "contain",
             "width": 240,
           }
         }
